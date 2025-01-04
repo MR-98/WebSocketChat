@@ -1,1 +1,22 @@
-WebSocketChatApplication
+<div>
+  <h1>Chat App</h1>
+  <button (click)="logout()">Logout</button>
+
+  <div *ngIf="!connectedRoom">
+    <h2>Connect to a Room</h2>
+    <input [(ngModel)]="roomName" placeholder="Enter room name" />
+    <button (click)="connectToRoom()">Connect</button>
+  </div>
+
+  <div *ngIf="connectedRoom">
+    <h2>Room: {{ connectedRoom }}</h2>
+    <div>
+      <h3>Messages</h3>
+      <div *ngFor="let msg of messages">
+        <p>{{ msg }}</p>
+      </div>
+    </div>
+    <input [(ngModel)]="message" placeholder="Enter your message" />
+    <button (click)="sendMessage()">Send</button>
+  </div>
+</div>
