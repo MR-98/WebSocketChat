@@ -16,7 +16,7 @@ class RoomController @Autowired constructor(
 
 	@PostMapping
 	fun createRoom(@RequestBody room: ChatRoomEntity): ResponseEntity<ChatRoomEntity> {
-		if (roomRepository.findByName(room.name) != null) {
+		if (room.users.isEmpty()) {
 			return ResponseEntity.badRequest().build()
 		}
 		val savedRoom = roomRepository.save(room)
