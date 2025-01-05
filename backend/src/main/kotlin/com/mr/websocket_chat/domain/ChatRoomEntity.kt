@@ -8,7 +8,7 @@ import jakarta.persistence.*
 class ChatRoomEntity (
 	val name: String,
 	@JsonIgnoreProperties("rooms")
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 		name = "room_users",
 		joinColumns = [JoinColumn(name = "room_id")],
