@@ -22,16 +22,35 @@ services:
     environment:
       POSTGRES_PASSWORD: admin
       POSTGRES_USER: admin
-      POSTGRES_DB: websocket_chat_db
+      POSTGRES_MULTIPLE_DATABASES: websocket_chat_db,keycloak
     ports:
       - 5432:5432
     volumes:
+      - ./postgres:/docker-entrypoint-initdb.d
       - pgdata:/var/lib/postgresql/data
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -u admin" ]
       interval: 1s
       timeout: 5s
       retries: 10
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0.7
+    container_name: keycloak
+    command: start-dev
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://websocket-chat-db:5432/keycloak
+      KC_DB_USERNAME: admin
+      KC_DB_PASSWORD: admin
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_HTTP_ENABLED: true
+    ports:
+      - 8082:8080
+    depends_on:
+      - websocket-chat-db
+    restart: always
 
 volumes:
   pgdata:
