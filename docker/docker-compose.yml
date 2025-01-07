@@ -4,8 +4,11 @@ services:
     build:
       context: ../backend
       dockerfile: ./Dockerfile
+    environment:
+      JAVA_OPTS: "-Xdebug -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
     ports:
       - 8080:8080
+      - 5005:5005
 
   frontend:
     container_name: frontend
