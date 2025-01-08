@@ -6,23 +6,21 @@ import { Client } from '@stomp/stompjs';
 })
 export class WebSocketService {
   private client: Client;
-
+  private token: string = '<token>'
   constructor() {
     this.client = new Client({
       brokerURL: 'ws://host.docker.internal:8080/ws-chat', // Adres WebSocket backendu
-      connectHeaders: {},
+      connectHeaders: {
+        Authorization: `Bearer ${this.token}`
+      },
       debug: (str) => console.log(str),
-      reconnectDelay: 5000,
+      reconnectDelay: 0,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
     });
   }
 
   connect(): void {
-    // this.client.connectHeaders = {
-    //   Authorization: `Bearer ${token}`,
-    // };
-
     this.client.onConnect = () => {
       console.log('Connected to WebSocket');
 
@@ -43,9 +41,13 @@ export class WebSocketService {
 
   subscribeToRoom(roomName: string, callback: (message: any) => void): void {
     console.log("SUBSCRIBING TO ROOM: ", roomName);
-    this.client.subscribe(`/topic/${roomName}`, (message) => {
-      callback(JSON.parse(message.body));
-    });
+    this.client.subscribe(
+      `/topic/${roomName}`,
+      (message) => callback(JSON.parse(message.body)),
+      {
+        Authorization: `Bearer ${this.token}`
+      }
+    );
   }
 
   sendMessage(roomName: string, content: string, username: string): void {
@@ -58,6 +60,9 @@ export class WebSocketService {
     this.client.publish({
       destination: `/app/chat.sendMessage`,
       body: JSON.stringify(message),
+      headers: {
+        Authorization: `Bearer ${this.token}`
+      }
     });
   }
 }
