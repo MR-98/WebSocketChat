@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { WebSocketService } from "./service/web-socket-service.service";
 import { FormsModule } from "@angular/forms";
 import { NgForOf, NgIf } from "@angular/common";
+import { ChatMessage } from "./model/chat-message";
 
 @Component({
   selector: 'app-root',
@@ -29,13 +30,16 @@ export class AppComponent {
       return;
     }
 
-    this.webSocketService.connect();
-    setTimeout(() => {
-      this.webSocketService.subscribeToRoom(this.roomName, (message) => {
-        console.log('New message:', message);
-        this.messages.push(message.data);
-      });
-    }, 1000); // Opóźnienie nawiązania połączenia
+    this.webSocketService.connect(
+      () => {
+        this.webSocketService.subscribeToRoom(
+          this.roomName,
+          (message: ChatMessage) => {
+            this.messages.push(message.data);
+          }
+        );
+      }
+    );
 
     this.connectedRoom = this.roomName;
   }

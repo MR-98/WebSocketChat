@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Client } from '@stomp/stompjs';
+import { ChatMessage } from "../model/chat-message";
 
 @Injectable({
   providedIn: 'root',
@@ -20,10 +21,9 @@ export class WebSocketService {
     });
   }
 
-  connect(): void {
+  connect(onConnectCallback: () => void): void {
     this.client.onConnect = () => {
-      console.log('Connected to WebSocket');
-
+      onConnectCallback();
     };
 
     this.client.onStompError = (frame) => {
@@ -39,8 +39,7 @@ export class WebSocketService {
     this.client.deactivate();
   }
 
-  subscribeToRoom(roomName: string, callback: (message: any) => void): void {
-    console.log("SUBSCRIBING TO ROOM: ", roomName);
+  subscribeToRoom(roomName: string, callback: (message: ChatMessage) => void): void {
     this.client.subscribe(
       `/topic/${roomName}`,
       (message) => callback(JSON.parse(message.body)),
