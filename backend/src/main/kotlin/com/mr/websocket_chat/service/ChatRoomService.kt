@@ -4,14 +4,15 @@ import com.mr.websocket_chat.domain.ChatRoomEntity
 import com.mr.websocket_chat.repository.ChatRoomRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import kotlin.jvm.optionals.getOrNull
 
 @Service
 class ChatRoomService @Autowired constructor(
 	private val chatRoomRepository: ChatRoomRepository
 ){
 
-	fun isUserChatRoomMember(username: String, roomName: String): Boolean {
-		val room = chatRoomRepository.findByName(roomName) ?: return false
+	fun isUserChatRoomMember(username: String, roomId: Long): Boolean {
+		val room = chatRoomRepository.findById(roomId).getOrNull() ?: return false
 		return isUserChatRoomMember(username, room)
 	}
 

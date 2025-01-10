@@ -14,10 +14,10 @@ import { ChatMessage } from "./model/chat-message";
 })
 export class AppComponent {
 
-  roomName: string = '';
+  roomId: number = 1;
   message: string = '';
   messages: string[] = [];
-  connectedRoom: string | null = null;
+  connectedRoom: number | null = null;
   username: string = 'user1';
 
   constructor(
@@ -25,7 +25,7 @@ export class AppComponent {
   ) {}
 
   connectToRoom(): void {
-    if (!this.roomName) {
+    if (!this.roomId) {
       alert('Room name is required');
       return;
     }
@@ -33,7 +33,7 @@ export class AppComponent {
     this.webSocketService.connect(
       () => {
         this.webSocketService.subscribeToRoom(
-          this.roomName,
+          this.roomId,
           (message: ChatMessage) => {
             this.messages.push(message.data);
           }
@@ -41,7 +41,7 @@ export class AppComponent {
       }
     );
 
-    this.connectedRoom = this.roomName;
+    this.connectedRoom = this.roomId;
   }
 
   sendMessage(): void {

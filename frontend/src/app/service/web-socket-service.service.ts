@@ -39,9 +39,9 @@ export class WebSocketService {
     this.client.deactivate();
   }
 
-  subscribeToRoom(roomName: string, callback: (message: ChatMessage) => void): void {
+  subscribeToRoom(roomId: number, callback: (message: ChatMessage) => void): void {
     this.client.subscribe(
-      `/topic/${roomName}`,
+      `/topic/${roomId}`,
       (message) => callback(JSON.parse(message.body)),
       {
         Authorization: `Bearer ${this.token}`
@@ -49,10 +49,12 @@ export class WebSocketService {
     );
   }
 
-  sendMessage(roomName: string, content: string, username: string): void {
+  sendMessage(roomId: number, content: string, username: string): void {
     const message = {
       data: content,
-      room: roomName,
+      room: {
+        id: roomId
+      },
       sender: username,
     };
 
