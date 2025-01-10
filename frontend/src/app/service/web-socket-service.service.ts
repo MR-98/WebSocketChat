@@ -56,6 +56,7 @@ export class WebSocketService {
         id: roomId
       },
       sender: username,
+      timestamp: Date.now()
     };
 
     this.client.publish({
