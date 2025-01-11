@@ -1,18 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Client } from '@stomp/stompjs';
 import { ChatMessage } from "../model/chat-message";
+import { KeycloakService } from "keycloak-angular";
 
 @Injectable({
   providedIn: 'root',
 })
 export class WebSocketService {
   private client: Client;
-  private token: string = '<token>'
-  constructor() {
+  constructor(
+    private keycloakService: KeycloakService
+  ) {
     this.client = new Client({
       brokerURL: 'ws://host.docker.internal:8080/ws-chat', // Adres WebSocket backendu
       connectHeaders: {
-        Authorization: `Bearer ${this.token}`
+        Authorization: `Bearer ${this.keycloakService.getKeycloakInstance().token}`
       },
       debug: (str) => console.log(str),
       reconnectDelay: 0,
@@ -44,7 +46,7 @@ export class WebSocketService {
       `/topic/chat.listen.${roomId}`,
       (message) => callback(JSON.parse(message.body)),
       {
-        Authorization: `Bearer ${this.token}`
+        Authorization: `Bearer ${this.keycloakService.getKeycloakInstance().token}`
       }
     );
   }
@@ -63,7 +65,7 @@ export class WebSocketService {
       destination: `/app/chat.sendMessage`,
       body: JSON.stringify(message),
       headers: {
-        Authorization: `Bearer ${this.token}`
+        Authorization: `Bearer ${this.keycloakService.getKeycloakInstance().token}`
       }
     });
   }
