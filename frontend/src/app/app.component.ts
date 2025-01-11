@@ -18,7 +18,6 @@ export class AppComponent {
   message: string = '';
   messages: ChatMessage[] = [];
   connectedRoom: number | null = null;
-  username: string = 'user1';
 
   constructor(
     private webSocketService: WebSocketService
@@ -50,7 +49,7 @@ export class AppComponent {
 
   sendMessage(): void {
     if (this.connectedRoom && this.message) {
-      this.webSocketService.sendMessage(this.connectedRoom, this.message, this.username);
+      this.webSocketService.sendMessage(this.connectedRoom, this.message);
       this.message = '';
     }
   }

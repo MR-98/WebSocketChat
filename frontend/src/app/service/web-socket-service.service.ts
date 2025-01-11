@@ -51,13 +51,13 @@ export class WebSocketService {
     );
   }
 
-  sendMessage(roomId: number, content: string, username: string): void {
+  sendMessage(roomId: number, content: string): void {
     const message = {
       data: content,
       room: {
         id: roomId
       },
-      sender: username,
+      sender: this.keycloakService.getUsername(),
       timestamp: Date.now()
     };
 

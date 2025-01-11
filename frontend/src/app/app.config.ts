@@ -35,5 +35,6 @@ function initializeKeycloak(keycloak: KeycloakService) {
       initOptions: {
         onLoad: 'login-required',
       },
+      loadUserProfileAtStartUp: true
     });
 }
