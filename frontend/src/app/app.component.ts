@@ -16,7 +16,7 @@ export class AppComponent {
 
   roomId: number = 1;
   message: string = '';
-  messages: string[] = [];
+  messages: ChatMessage[] = [];
   connectedRoom: number | null = null;
   username: string = 'user1';
 
@@ -34,8 +34,12 @@ export class AppComponent {
       () => {
         this.webSocketService.subscribeToRoom(
           this.roomId,
-          (message: ChatMessage) => {
-            this.messages.push(message.data);
+          (message: ChatMessage[] | ChatMessage) => {
+            if(Array.isArray(message)) {
+              this.messages.push(...message);
+            } else {
+              this.messages.push(message);
+            }
           }
         );
       }

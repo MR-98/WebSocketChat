@@ -39,7 +39,7 @@ class WSChannelInterceptor @Autowired constructor(
 					return null
 				}
 				val roomId = try {
-					topic.substringAfterLast("/").toLong()
+					topic.substringAfterLast(".").toLong()
 				} catch (e: NumberFormatException) {
 					return null
 				}

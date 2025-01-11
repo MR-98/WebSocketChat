@@ -39,9 +39,9 @@ export class WebSocketService {
     this.client.deactivate();
   }
 
-  subscribeToRoom(roomId: number, callback: (message: ChatMessage) => void): void {
+  subscribeToRoom(roomId: number, callback: (message: ChatMessage[] | ChatMessage) => void): void {
     this.client.subscribe(
-      `/topic/${roomId}`,
+      `/topic/chat.listen.${roomId}`,
       (message) => callback(JSON.parse(message.body)),
       {
         Authorization: `Bearer ${this.token}`

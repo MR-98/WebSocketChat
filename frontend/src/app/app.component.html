@@ -13,7 +13,7 @@
     <div>
       <h3>Messages</h3>
       <div *ngFor="let msg of messages">
-        <p>{{ msg }}</p>
+        <p>{{ msg.sender }}: {{ msg.data }}</p>
       </div>
     </div>
     <input [(ngModel)]="message" placeholder="Enter your message" />
