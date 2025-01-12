@@ -4,11 +4,12 @@ import { WebSocketService } from "./service/web-socket-service.service";
 import { FormsModule } from "@angular/forms";
 import { NgForOf, NgIf } from "@angular/common";
 import { ChatMessage } from "./model/chat-message";
+import { HeaderComponent } from "./component/header/header.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule, NgIf, NgForOf],
+  imports: [RouterOutlet, FormsModule, NgIf, NgForOf, HeaderComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

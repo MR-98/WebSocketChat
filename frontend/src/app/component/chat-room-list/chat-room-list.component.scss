@@ -1,0 +1,21 @@
+.chat-room-list-container {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border-radius: 10px;
+  background-color: pink;
+}
+
+.chat-room-list-top-bar {
+  display: block;
+  width: 100%;
+  height: 40px;
+  box-sizing: border-box;
+  padding: 10px;
+  border-bottom: 1px solid;
+}
+
+.chat-room-list {
+  display: flex;
+  flex-direction: column;
+}
