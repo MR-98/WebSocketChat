@@ -1,6 +1,6 @@
 export interface ChatMessage {
   data: string
-  room: string
+  room: object
   sender: string
   timestamp: number
 }

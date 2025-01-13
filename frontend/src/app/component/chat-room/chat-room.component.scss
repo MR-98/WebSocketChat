@@ -5,7 +5,7 @@
   overflow: hidden;
   box-sizing: border-box;
   border-radius: 10px;
-  background-color: yellow;
+  background-color: #181414;
 }
 
 .chat-room-top-bar {
@@ -14,7 +14,8 @@
   height: 40px;
   box-sizing: border-box;
   padding: 10px;
-  border-bottom: 1px solid;
+  border-bottom: 1px solid #111110;
+  color: white;
 }
 
 .chat-room-messages-container {
@@ -28,7 +29,7 @@
   height: 60px;
   padding: 10px;
   box-sizing: border-box;
-  background-color: aqua;
+  background-color: #181414;
   display: flex;
   justify-content: center;
 
@@ -42,6 +43,9 @@
     border-radius: 10px;
     padding: 10px;
     resize: none;
+    background-color: #202020;
+    color: white;
+    font-size: 1.2em;
   }
 
   textarea:focus {
