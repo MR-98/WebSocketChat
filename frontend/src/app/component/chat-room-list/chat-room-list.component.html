@@ -3,21 +3,8 @@
     CREATE
   </div>
   <div class="chat-room-list">
-    <div>
-      ROOM 1
-    </div>
-    <div>
-      ROOM 2
-    </div>
-    <div>
-      ROOM 3
-    </div>
-    <div>
-      ROOM 4
-    </div>
-    <div>
-      ROOM 5
+    <div *ngFor="let chatRoom of chatRoomList" (click)="changeActiveChatRoom(chatRoom)">
+      {{chatRoom.name}}
     </div>
   </div>
-
 </div>

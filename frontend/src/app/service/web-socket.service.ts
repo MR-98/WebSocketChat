@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Client } from '@stomp/stompjs';
+import { Client, StompSubscription } from '@stomp/stompjs';
 import { ChatMessage } from "../model/chat-message";
 import { KeycloakService } from "keycloak-angular";
 
@@ -41,8 +41,8 @@ export class WebSocketService {
     this.client.deactivate();
   }
 
-  subscribeToRoom(roomId: number, callback: (message: ChatMessage[] | ChatMessage) => void): void {
-    this.client.subscribe(
+  subscribeToRoom(roomId: number, callback: (message: ChatMessage[] | ChatMessage) => void): StompSubscription {
+    return this.client.subscribe(
       `/topic/chat.listen.${roomId}`,
       (message) => callback(JSON.parse(message.body)),
       {

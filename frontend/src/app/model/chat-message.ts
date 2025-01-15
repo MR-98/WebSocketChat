@@ -3,4 +3,5 @@ export interface ChatMessage {
   room: object
   sender: string
   timestamp: number
+  id: number
 }

@@ -6,7 +6,7 @@
     <app-message *ngFor="let chatMessage of chatMessages" [chatMessage]="chatMessage"></app-message>
   </div>
   <div class="chat-room-input-container">
-    <textarea rows="1"></textarea>
-    <span>Wyślij</span>
+    <textarea rows="1" [(ngModel)]="message"></textarea>
+    <span (click)="sendMessage()">Wyślij</span>
   </div>
 </div>
