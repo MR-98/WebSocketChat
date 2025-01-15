@@ -41,6 +41,10 @@ export class WebSocketService {
     this.client.deactivate();
   }
 
+  isConnected(): boolean {
+    return this.client.connected;
+  }
+
   subscribeToRoom(roomId: number, callback: (message: ChatMessage[] | ChatMessage) => void): StompSubscription {
     return this.client.subscribe(
       `/topic/chat.listen.${roomId}`,

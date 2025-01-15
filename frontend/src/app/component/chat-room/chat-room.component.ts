@@ -30,6 +30,8 @@ export class ChatRoomComponent {
     private dataStoreService: DataStoreService
   ) {
     effect(() => {
+      if(!this.websocketService.isConnected()) return
+
       if(this.currentSubscription != undefined) {
         this.currentSubscription.unsubscribe();
         this.chatMessages = [];
