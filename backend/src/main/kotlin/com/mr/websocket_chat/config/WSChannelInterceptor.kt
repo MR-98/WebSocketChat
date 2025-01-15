@@ -3,7 +3,7 @@ package com.mr.websocket_chat.config
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.mr.websocket_chat.domain.ChatMessageEntity
 import com.mr.websocket_chat.service.ChatRoomService
-import com.mr.websocket_chat.service.JwtUtils
+import com.mr.websocket_chat.service.AuthUtils
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.Message
@@ -17,7 +17,7 @@ import java.lang.NumberFormatException
 
 @Component
 class WSChannelInterceptor @Autowired constructor(
-	private val jwtUtils: JwtUtils,
+	private val authUtils: AuthUtils,
 	private val chatRoomService: ChatRoomService
 ) : ChannelInterceptor {
 
@@ -29,11 +29,11 @@ class WSChannelInterceptor @Autowired constructor(
 		val headerAccessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor::class.java) ?: return null
 		when (headerAccessor.messageType) {
 			SimpMessageType.CONNECT -> {
-				jwtUtils.getPrincipalFromAuthorizationHeader(headerAccessor) ?: return null
+				authUtils.getPrincipalFromAuthorizationHeader(headerAccessor) ?: return null
 			}
 			SimpMessageType.SUBSCRIBE -> {
-				val principal = jwtUtils.getPrincipalFromAuthorizationHeader(headerAccessor) ?: return null
-				val subscriberUsername = jwtUtils.getUsernameFromPrincipal(principal)
+				val principal = authUtils.getPrincipalFromAuthorizationHeader(headerAccessor) ?: return null
+				val subscriberUsername = authUtils.getUsernameFromPrincipal(principal)
 				val topic = headerAccessor.destination
 				if(subscriberUsername.isNullOrEmpty() || topic.isNullOrEmpty()) {
 					return null
@@ -49,8 +49,8 @@ class WSChannelInterceptor @Autowired constructor(
 				}
 			}
 			SimpMessageType.MESSAGE -> {
-				val principal = jwtUtils.getPrincipalFromAuthorizationHeader(headerAccessor) ?: return null
-				val subscriberUsername = jwtUtils.getUsernameFromPrincipal(principal)
+				val principal = authUtils.getPrincipalFromAuthorizationHeader(headerAccessor) ?: return null
+				val subscriberUsername = authUtils.getUsernameFromPrincipal(principal)
 				if(subscriberUsername.isNullOrEmpty() || (message.payload as ByteArray).isEmpty()) {
 					return null
 				}

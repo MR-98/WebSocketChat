@@ -3,6 +3,7 @@ package com.mr.websocket_chat.controller
 import com.mr.websocket_chat.domain.ChatRoomEntity
 import com.mr.websocket_chat.repository.ChatRoomRepository
 import com.mr.websocket_chat.repository.UserRepository
+import com.mr.websocket_chat.service.AuthUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -11,7 +12,8 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/rooms")
 class RoomController @Autowired constructor(
 	private val roomRepository: ChatRoomRepository,
-	private val userRepository: UserRepository
+	private val userRepository: UserRepository,
+	private val authUtils: AuthUtils
 ) {
 
 	@PostMapping
@@ -42,6 +44,10 @@ class RoomController @Autowired constructor(
 
 	@GetMapping
 	fun getRooms(): List<ChatRoomEntity> {
-		return roomRepository.findAll()
+		val currentlyAuthenticatedUsername = authUtils.getCurrentlyAuthenticatedUsername()
+		if(currentlyAuthenticatedUsername.isNullOrEmpty()) {
+			return listOf()
+		}
+		return roomRepository.findByUsers_Username(currentlyAuthenticatedUsername)
 	}
 }

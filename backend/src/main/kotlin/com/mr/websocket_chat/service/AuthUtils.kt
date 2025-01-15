@@ -2,6 +2,8 @@ package com.mr.websocket_chat.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.security.oauth2.jwt.JwtDecoder
 import org.springframework.security.oauth2.jwt.JwtException
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter
@@ -10,10 +12,14 @@ import org.springframework.stereotype.Service
 import java.security.Principal
 
 @Service
-class JwtUtils @Autowired constructor(
+class AuthUtils @Autowired constructor(
 	private val jwtDecoder: JwtDecoder,
 	private val jwtAuthenticationConverter: JwtAuthenticationConverter
 ){
+
+	fun getCurrentlyAuthenticatedUsername(): String? {
+		return (SecurityContextHolder.getContext().authentication.principal as Jwt).getClaimAsString("preferred_username")
+	}
 
 	fun getPrincipalFromAuthorizationHeader(headerAccessor: StompHeaderAccessor): Principal? {
 		val authHeader = headerAccessor.getNativeHeader("Authorization")?.firstOrNull()
