@@ -4,8 +4,9 @@
   max-height: 100vh;
   box-sizing: border-box;
   border-radius: 10px;
-  background-color: pink;
+  background-color: #131313;
   overflow: hidden;
+  color: white;
 }
 
 .chat-room-list-top-bar {
@@ -14,7 +15,7 @@
   height: 40px;
   box-sizing: border-box;
   padding: 10px;
-  border-bottom: 1px solid;
+  border-bottom: 1px solid #111110;
 }
 
 .chat-room-list {
