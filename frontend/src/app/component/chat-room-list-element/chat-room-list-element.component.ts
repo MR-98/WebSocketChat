@@ -23,7 +23,6 @@ export class ChatRoomListElementComponent {
   }
 
   isCurrentlySelectedChatRoom() {
-    console.log("isCurrentlySelectedChatRoom")
-    return this.dataStoreService.getCurrentlySelectedChatRoomId() == this.chatRoom.id
+    return this.dataStoreService.getCurrentlySelectedChatRoom()?.id == this.chatRoom.id
   }
 }

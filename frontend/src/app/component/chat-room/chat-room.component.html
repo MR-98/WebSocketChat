@@ -1,12 +1,12 @@
 <div class="chat-room-container">
   <div class="chat-room-top-bar">
-    CHAT ROOM NAME
+    {{ chatRoomName }}
   </div>
   <div class="chat-room-messages-container">
     <app-message *ngFor="let chatMessage of chatMessages" [chatMessage]="chatMessage"></app-message>
   </div>
   <div class="chat-room-input-container">
-    <textarea rows="1" [(ngModel)]="message" (keyup.enter)="sendMessage()"></textarea>
+    <textarea rows="1" [(ngModel)]="message" (keyup.enter)="sendMessage()" [disabled]="currentChatRoom == undefined"></textarea>
     <span (click)="sendMessage()">Wyślij</span>
   </div>
 </div>

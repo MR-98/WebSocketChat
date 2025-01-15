@@ -31,6 +31,6 @@ export class ChatRoomListComponent {
   }
 
   changeActiveChatRoom(chatRoom: ChatRoom) {
-    this.dataStoreService.setCurrentlySelectedChatRoomId(chatRoom.id)
+    this.dataStoreService.setCurrentlySelectedChatRoomId(chatRoom)
   }
 }

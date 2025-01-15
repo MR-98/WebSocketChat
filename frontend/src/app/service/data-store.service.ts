@@ -1,18 +1,20 @@
 import { Injectable, signal } from '@angular/core';
+import { ChatRoom } from "../model/chat-room";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataStoreService {
-  private _currentlySelectedChatRoomId = signal<number>(0)
+  private _currentlySelectedChatRoomId = signal<ChatRoom | undefined>(undefined)
 
-  constructor() { }
+  constructor() {
+  }
 
-  getCurrentlySelectedChatRoomId(): number {
+  getCurrentlySelectedChatRoom(): ChatRoom | undefined {
     return this._currentlySelectedChatRoomId();
   }
 
-  setCurrentlySelectedChatRoomId(value: number) {
+  setCurrentlySelectedChatRoomId(value: ChatRoom) {
     this._currentlySelectedChatRoomId.set(value)
   }
 }
