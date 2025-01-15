@@ -3,12 +3,14 @@ import { ChatRoom } from "../../model/chat-room";
 import { ChatRoomService } from "../../service/chat-room.service";
 import { NgForOf } from "@angular/common";
 import { DataStoreService } from "../../service/data-store.service";
+import { ChatRoomListElementComponent } from "../chat-room-list-element/chat-room-list-element.component";
 
 @Component({
   selector: 'app-chat-room-list',
   standalone: true,
   imports: [
-    NgForOf
+    NgForOf,
+    ChatRoomListElementComponent
   ],
   templateUrl: './chat-room-list.component.html',
   styleUrl: './chat-room-list.component.scss'

@@ -3,8 +3,10 @@
     CREATE
   </div>
   <div class="chat-room-list">
-    <div *ngFor="let chatRoom of chatRoomList" (click)="changeActiveChatRoom(chatRoom)">
-      {{chatRoom.name}}
-    </div>
+    <app-chat-room-list-element
+      *ngFor="let chatRoom of chatRoomList"
+      [chatRoom]="chatRoom"
+      (click)="changeActiveChatRoom(chatRoom)">
+    </app-chat-room-list-element>
   </div>
 </div>
