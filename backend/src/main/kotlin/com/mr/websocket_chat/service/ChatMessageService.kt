@@ -12,7 +12,6 @@ class ChatMessageService @Autowired constructor(
 ) {
 
 	fun saveMessage(chatMessage: ChatMessageEntity) {
-		// TODO: add encryption
 		chatMessageRepository.save(chatMessage)
 	}
 
