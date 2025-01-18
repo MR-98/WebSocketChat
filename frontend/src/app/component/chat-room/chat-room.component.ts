@@ -1,12 +1,13 @@
 import { Component, effect } from '@angular/core';
 import { ChatMessage } from "../../model/chat-message";
 import { MessageComponent } from "../message/message.component";
-import { NgForOf } from "@angular/common";
+import { NgClass, NgForOf, NgIf } from "@angular/common";
 import { WebSocketService } from "../../service/web-socket.service";
 import { DataStoreService } from "../../service/data-store.service";
 import { StompSubscription } from "@stomp/stompjs";
 import { FormsModule } from "@angular/forms";
 import { ChatRoom } from "../../model/chat-room";
+import { ChatRoomSettingsComponent } from "../chat-room-settings/chat-room-settings.component";
 
 @Component({
   selector: 'app-chat-room',
@@ -14,7 +15,10 @@ import { ChatRoom } from "../../model/chat-room";
   imports: [
     MessageComponent,
     NgForOf,
-    FormsModule
+    FormsModule,
+    NgIf,
+    NgClass,
+    ChatRoomSettingsComponent
   ],
   templateUrl: './chat-room.component.html',
   styleUrl: './chat-room.component.scss'
@@ -26,6 +30,7 @@ export class ChatRoomComponent {
   protected chatMessages: ChatMessage[] = []
   protected message: string = '';
   protected chatRoomName: string = '';
+  protected roomSettingVisible: boolean = false;
 
   constructor(
     private websocketService: WebSocketService,
@@ -59,5 +64,9 @@ export class ChatRoomComponent {
   sendMessage() {
     this.websocketService.sendMessage(this.currentChatRoom!.id!!, this.message);
     this.message = '';
+  }
+
+  toggleRoomSettings() {
+    this.roomSettingVisible = !this.roomSettingVisible;
   }
 }

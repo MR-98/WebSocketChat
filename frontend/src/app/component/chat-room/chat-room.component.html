@@ -1,12 +1,18 @@
-<div class="chat-room-container">
-  <div class="chat-room-top-bar">
-    {{ chatRoomName }}
+<div class="chat-room-wrapper" [ngClass]="roomSettingVisible ? 'chat-room-wrapper-two-columns' : 'chat-room-wrapper-one-column'">
+  <div class="chat-room-container">
+    <div class="chat-room-top-bar">
+      {{ chatRoomName }}
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="room-settings-icon" (click)="toggleRoomSettings()">
+        <path d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z"/>
+      </svg>
+    </div>
+    <div class="chat-room-messages-container">
+      <app-message *ngFor="let chatMessage of chatMessages" [chatMessage]="chatMessage"></app-message>
+    </div>
+    <div class="chat-room-input-container">
+      <textarea rows="1" [(ngModel)]="message" (keyup.enter)="sendMessage()" [disabled]="currentChatRoom == undefined"></textarea>
+      <span (click)="sendMessage()">Wyślij</span>
+    </div>
   </div>
-  <div class="chat-room-messages-container">
-    <app-message *ngFor="let chatMessage of chatMessages" [chatMessage]="chatMessage"></app-message>
-  </div>
-  <div class="chat-room-input-container">
-    <textarea rows="1" [(ngModel)]="message" (keyup.enter)="sendMessage()" [disabled]="currentChatRoom == undefined"></textarea>
-    <span (click)="sendMessage()">Wyślij</span>
-  </div>
+  <app-chat-room-settings *ngIf="roomSettingVisible" [chatRoom]="currentChatRoom!!"></app-chat-room-settings>
 </div>
