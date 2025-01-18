@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, effect } from '@angular/core';
 import { ChatRoom } from "../../model/chat-room";
 import { ChatRoomService } from "../../service/chat-room.service";
 import { NgForOf } from "@angular/common";
@@ -20,17 +20,28 @@ export class ChatRoomListComponent {
 
   constructor(
     private chatRoomService: ChatRoomService,
-    private dataStoreService: DataStoreService
+    private dataStoreService: DataStoreService,
   ) {
     this.chatRoomService.getUserChatRooms().subscribe(userChatRooms => {
-      this.chatRoomList = userChatRooms;
-      if(this.chatRoomList.length > 0) {
-        this.changeActiveChatRoom(this.chatRoomList[0])
+      this.dataStoreService.setChatRoomList(userChatRooms);
+      if(userChatRooms.length > 0) {
+        this.changeActiveChatRoom(userChatRooms[0])
       }
     });
+
+    effect(() => {
+      this.chatRoomList = this.dataStoreService.getChatRoomList();
+    })
   }
 
   changeActiveChatRoom(chatRoom: ChatRoom) {
     this.dataStoreService.setCurrentlySelectedChatRoomId(chatRoom)
+  }
+
+  createNewRoom() {
+    this.chatRoomService.createNewRoom("Default room name").subscribe((response) => {
+      this.dataStoreService.setChatRoomList([response, ...this.chatRoomList]);
+      this.dataStoreService.setCurrentlySelectedChatRoomId(response)
+    })
   }
 }

@@ -6,6 +6,7 @@ import { ChatRoom } from "../model/chat-room";
 })
 export class DataStoreService {
   private _currentlySelectedChatRoomId = signal<ChatRoom | undefined>(undefined)
+  private _chatRoomList = signal<ChatRoom[]>([])
 
   constructor() {
   }
@@ -16,5 +17,13 @@ export class DataStoreService {
 
   setCurrentlySelectedChatRoomId(value: ChatRoom) {
     this._currentlySelectedChatRoomId.set(value)
+  }
+
+  getChatRoomList(): ChatRoom[] {
+    return this._chatRoomList();
+  }
+
+  setChatRoomList(value: ChatRoom[]) {
+    this._chatRoomList.set(value)
   }
 }

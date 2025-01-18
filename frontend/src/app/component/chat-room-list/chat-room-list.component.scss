@@ -10,12 +10,16 @@
 }
 
 .chat-room-list-top-bar {
-  display: block;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
   height: 40px;
   box-sizing: border-box;
   padding: 10px;
   border-bottom: 1px solid #111110;
+  font-weight: bold;
+  font-size: 1.5rem;
 }
 
 .chat-room-list {
@@ -24,4 +28,13 @@
   overflow-y: auto;
   padding: 5px;
   box-sizing: border-box;
+}
+
+.create-room-icon {
+  width: 30px;
+  fill: #212121;
+}
+
+.create-room-icon:hover {
+  fill: #313131;
 }

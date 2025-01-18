@@ -17,11 +17,15 @@ class RoomController @Autowired constructor(
 ) {
 
 	@PostMapping
-	fun createRoom(@RequestBody room: ChatRoomEntity): ResponseEntity<ChatRoomEntity> {
-		if (room.users.isEmpty()) {
-			return ResponseEntity.badRequest().build()
-		}
-		val savedRoom = roomRepository.save(room)
+	fun createRoom(@RequestBody roomName: String): ResponseEntity<ChatRoomEntity> {
+		val currentlyAuthenticatedUsername = authUtils.getCurrentlyAuthenticatedUsername() ?: return ResponseEntity.badRequest().build()
+		val userEntity = userRepository.findByUsername(currentlyAuthenticatedUsername) ?: return ResponseEntity.notFound().build()
+		val newRoom = ChatRoomEntity(
+			name = roomName,
+			users = mutableSetOf(userEntity),
+			id = 0
+		)
+		val savedRoom = roomRepository.save(newRoom)
 		return ResponseEntity.ok(savedRoom)
 	}
 

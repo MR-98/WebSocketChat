@@ -43,7 +43,7 @@ export class ChatRoomComponent {
       if (this.currentChatRoom != undefined) {
         this.chatRoomName = this.currentChatRoom.name;
         this.currentSubscription = this.websocketService.subscribeToRoom(
-          this.currentChatRoom.id,
+          this.currentChatRoom.id!!,
           (message: ChatMessage[] | ChatMessage) => {
             if (Array.isArray(message)) {
               this.chatMessages.push(...message);
@@ -57,7 +57,7 @@ export class ChatRoomComponent {
   }
 
   sendMessage() {
-    this.websocketService.sendMessage(this.currentChatRoom!.id, this.message);
+    this.websocketService.sendMessage(this.currentChatRoom!.id!!, this.message);
     this.message = '';
   }
 }
