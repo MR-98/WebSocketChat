@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component
 import java.lang.NumberFormatException
 
 @Component
-class WSChannelInterceptor @Autowired constructor(
+class WebSocketSecurityInterceptor @Autowired constructor(
 	private val authUtils: AuthUtils,
 	private val chatRoomService: ChatRoomService
 ) : ChannelInterceptor {
