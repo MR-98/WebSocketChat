@@ -1,6 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { ChatRoom } from "../../model/chat-room";
 import { ChatRoomService } from "../../service/chat-room.service";
+import { MatDialog } from "@angular/material/dialog";
+import { ChangeRoomNameDialogComponent } from "../../dialog/change-room-name-dialog/change-room-name-dialog.component";
 
 @Component({
   selector: 'app-chat-room-settings',
@@ -12,11 +14,26 @@ import { ChatRoomService } from "../../service/chat-room.service";
 export class ChatRoomSettingsComponent {
 
   @Input() chatRoom!: ChatRoom;
+  readonly dialog = inject(MatDialog);
 
-  constructor(private chatRoomService: ChatRoomService) {
+  constructor(
+    private chatRoomService: ChatRoomService
+  ) {}
+
+
+  changeRoomName() {
+    this.dialog.open(
+      ChangeRoomNameDialogComponent,
+      {
+        data: {
+          currentRoomName: this.chatRoom.name,
+        },
+      }
+    ).afterClosed().subscribe((newRoomName: string) => {
+      if(newRoomName == undefined) {
+        return
+      }
+      this.chatRoomService.changeRoomName(newRoomName, this.chatRoom).subscribe();
+    });
   }
-
-
-
-
 }

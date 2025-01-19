@@ -8,7 +8,7 @@ import { ChatRoom } from "../model/chat-room";
 })
 export class ChatRoomService {
 
-  private url: string = 'http://host.docker.internal:8080/';
+  private url: string = 'http://host.docker.internal:8080/rooms';
 
   constructor(
     private http: HttpClient
@@ -16,14 +16,22 @@ export class ChatRoomService {
 
   getUserChatRooms(): Observable<ChatRoom[]> {
     return this.http.get<ChatRoom[]>(
-      this.url + "rooms"
+      this.url
     )
   }
 
   createNewRoom(defaultRoomName: string) {
     return this.http.post<ChatRoom>(
-      this.url + "rooms",
+      this.url,
       defaultRoomName
+    )
+  }
+
+  changeRoomName(newName: string, room: ChatRoom) {
+    room.name = newName;
+    return this.http.put<ChatRoom>(
+      this.url,
+      room
     )
   }
 }

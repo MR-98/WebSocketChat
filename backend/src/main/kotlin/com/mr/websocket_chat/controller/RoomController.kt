@@ -5,6 +5,7 @@ import com.mr.websocket_chat.repository.ChatRoomRepository
 import com.mr.websocket_chat.repository.UserRepository
 import com.mr.websocket_chat.service.AuthUtils
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -27,6 +28,15 @@ class RoomController @Autowired constructor(
 		)
 		val savedRoom = roomRepository.save(newRoom)
 		return ResponseEntity.ok(savedRoom)
+	}
+
+	@PutMapping
+	fun renameRoom(@RequestBody room: ChatRoomEntity): ResponseEntity<ChatRoomEntity> {
+		val roomEntity = roomRepository.findByIdOrNull(room.id) ?: return ResponseEntity.badRequest().build()
+
+		roomEntity.name = room.name
+		roomRepository.save(roomEntity)
+		return ResponseEntity.ok(roomEntity)
 	}
 
 	@PostMapping("/{roomName}/addUser")

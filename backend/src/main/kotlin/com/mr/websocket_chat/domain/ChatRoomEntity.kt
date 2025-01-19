@@ -6,7 +6,7 @@ import jakarta.persistence.*
 @Entity
 @Table(name = "chat_rooms")
 class ChatRoomEntity (
-	val name: String,
+	var name: String,
 	@JsonIgnoreProperties("rooms")
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
