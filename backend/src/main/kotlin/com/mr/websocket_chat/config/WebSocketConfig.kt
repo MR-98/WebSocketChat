@@ -1,5 +1,6 @@
 package com.mr.websocket_chat.config
 
+import com.mr.websocket_chat.interceptor.WebSocketSecurityInterceptor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
 import org.springframework.messaging.simp.config.ChannelRegistration
