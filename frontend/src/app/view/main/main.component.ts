@@ -3,6 +3,7 @@ import { ChatRoomListComponent } from "../../component/chat-room-list/chat-room-
 import { ChatRoomComponent } from "../../component/chat-room/chat-room.component";
 import { WebSocketService } from "../../service/web-socket.service";
 import { NgIf } from "@angular/common";
+import { SidebarComponent } from "../../component/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-main',
@@ -10,7 +11,8 @@ import { NgIf } from "@angular/common";
   imports: [
     ChatRoomListComponent,
     ChatRoomComponent,
-    NgIf
+    NgIf,
+    SidebarComponent
   ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss'
