@@ -4,13 +4,17 @@ import { ChatRoomService } from "../../service/chat-room.service";
 import { NgForOf } from "@angular/common";
 import { DataStoreService } from "../../service/data-store.service";
 import { ChatRoomListElementComponent } from "../chat-room-list-element/chat-room-list-element.component";
+import { MatIcon } from "@angular/material/icon";
+import { MatIconButton } from "@angular/material/button";
 
 @Component({
   selector: 'app-chat-room-list',
   standalone: true,
   imports: [
     NgForOf,
-    ChatRoomListElementComponent
+    ChatRoomListElementComponent,
+    MatIcon,
+    MatIconButton
   ],
   templateUrl: './chat-room-list.component.html',
   styleUrl: './chat-room-list.component.scss'

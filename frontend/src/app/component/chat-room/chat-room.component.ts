@@ -8,18 +8,22 @@ import { StompSubscription } from "@stomp/stompjs";
 import { FormsModule } from "@angular/forms";
 import { ChatRoom } from "../../model/chat-room";
 import { ChatRoomSettingsComponent } from "../chat-room-settings/chat-room-settings.component";
+import { MatIcon } from "@angular/material/icon";
+import { MatIconButton } from "@angular/material/button";
 
 @Component({
   selector: 'app-chat-room',
   standalone: true,
-  imports: [
-    MessageComponent,
-    NgForOf,
-    FormsModule,
-    NgIf,
-    NgClass,
-    ChatRoomSettingsComponent
-  ],
+	imports: [
+		MessageComponent,
+		NgForOf,
+		FormsModule,
+		NgIf,
+		NgClass,
+		ChatRoomSettingsComponent,
+		MatIcon,
+		MatIconButton
+	],
   templateUrl: './chat-room.component.html',
   styleUrl: './chat-room.component.scss'
 })

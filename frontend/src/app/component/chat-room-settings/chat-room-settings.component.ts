@@ -3,11 +3,14 @@ import { ChatRoom } from "../../model/chat-room";
 import { ChatRoomService } from "../../service/chat-room.service";
 import { MatDialog } from "@angular/material/dialog";
 import { ChangeRoomNameDialogComponent } from "../../dialog/change-room-name-dialog/change-room-name-dialog.component";
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
   selector: 'app-chat-room-settings',
   standalone: true,
-	imports: [],
+  imports: [
+    MatIcon
+  ],
   templateUrl: './chat-room-settings.component.html',
   styleUrl: './chat-room-settings.component.scss'
 })
