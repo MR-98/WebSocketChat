@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, EventEmitter, inject, Input, output, Output } from '@angular/core';
 import { ChatRoom } from "../../model/chat-room";
 import { ChatRoomService } from "../../service/chat-room.service";
 import { MatDialog } from "@angular/material/dialog";
@@ -17,6 +17,7 @@ import { MatIcon } from "@angular/material/icon";
 export class ChatRoomSettingsComponent {
 
   @Input() chatRoom!: ChatRoom;
+  @Output() chatRoomNameUpdated = new EventEmitter<string>();
   readonly dialog = inject(MatDialog);
 
   constructor(
@@ -37,6 +38,7 @@ export class ChatRoomSettingsComponent {
         return
       }
       this.chatRoomService.changeRoomName(newRoomName, this.chatRoom).subscribe();
+      this.chatRoomNameUpdated.emit(newRoomName);
     });
   }
 }

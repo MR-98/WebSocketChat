@@ -14,5 +14,5 @@
       <span (click)="sendMessage()">Wyślij</span>
     </div>
   </div>
-  <app-chat-room-settings *ngIf="roomSettingVisible" [chatRoom]="currentChatRoom!!"></app-chat-room-settings>
+  <app-chat-room-settings *ngIf="roomSettingVisible" [chatRoom]="currentChatRoom!!" (chatRoomNameUpdated)="updateChatRoomName($event)"></app-chat-room-settings>
 </div>

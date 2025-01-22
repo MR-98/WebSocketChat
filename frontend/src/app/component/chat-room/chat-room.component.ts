@@ -73,4 +73,8 @@ export class ChatRoomComponent {
   toggleRoomSettings() {
     this.roomSettingVisible = !this.roomSettingVisible;
   }
+
+  updateChatRoomName(newName: string) {
+    this.chatRoomName = newName;
+  }
 }
