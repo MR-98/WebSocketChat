@@ -29,8 +29,8 @@ class MessageHandler @Autowired constructor(
 		if(subscriberUsername.isNullOrEmpty() || (message.payload as ByteArray).isEmpty() || destination.isNullOrEmpty()) {
 			return null
 		}
-		when(destination.substringBeforeLast(".")) {
-			"/topic/chat.listen" -> {
+		when(destination.removePrefix("/app")) {
+			"/chat.sendMessage" -> {
 				val chatMessage = try {
 					jacksonObjectMapper().readValue(message.payload as ByteArray, ChatMessageEntity::class.java)
 				} catch (e: Exception) {
