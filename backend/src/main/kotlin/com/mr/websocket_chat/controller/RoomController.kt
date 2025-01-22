@@ -4,6 +4,7 @@ import com.mr.websocket_chat.domain.ChatRoomEntity
 import com.mr.websocket_chat.repository.ChatRoomRepository
 import com.mr.websocket_chat.repository.UserRepository
 import com.mr.websocket_chat.service.AuthUtils
+import com.mr.websocket_chat.service.ChatRoomService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.ResponseEntity
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/rooms")
 class RoomController @Autowired constructor(
 	private val roomRepository: ChatRoomRepository,
+	private val chatRoomService: ChatRoomService,
 	private val userRepository: UserRepository,
 	private val authUtils: AuthUtils
 ) {
@@ -37,6 +39,17 @@ class RoomController @Autowired constructor(
 		roomEntity.name = room.name
 		roomRepository.save(roomEntity)
 		return ResponseEntity.ok(roomEntity)
+	}
+
+	@DeleteMapping
+	fun deleteRoom(@RequestBody room: ChatRoomEntity): ResponseEntity<String> {
+		val currentlyAuthenticatedUsername = authUtils.getCurrentlyAuthenticatedUsername() ?: return ResponseEntity.badRequest().build()
+		val userEntity = userRepository.findByUsername(currentlyAuthenticatedUsername) ?: return ResponseEntity.notFound().build()
+		if(!chatRoomService.isUserChatRoomMember(userEntity.username, room)) {
+			return ResponseEntity.badRequest().build()
+		}
+		chatRoomService.deleteChatRoom(room.id)
+		return ResponseEntity.ok().build()
 	}
 
 	@PostMapping("/{roomName}/addUser")

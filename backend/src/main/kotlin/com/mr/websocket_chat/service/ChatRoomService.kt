@@ -11,6 +11,14 @@ class ChatRoomService @Autowired constructor(
 	private val chatRoomRepository: ChatRoomRepository
 ){
 
+	fun chatRoomExists(roomId: Long): Boolean {
+		return chatRoomRepository.existsById(roomId)
+	}
+
+	fun deleteChatRoom(roomId: Long) {
+		chatRoomRepository.deleteById(roomId)
+	}
+
 	fun isUserChatRoomMember(username: String, roomId: Long): Boolean {
 		val room = chatRoomRepository.findById(roomId).getOrNull() ?: return false
 		return isUserChatRoomMember(username, room)

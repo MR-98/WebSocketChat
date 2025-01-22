@@ -2,6 +2,8 @@ package com.mr.websocket_chat.domain
 
 import com.mr.websocket_chat.service.CryptoConverter
 import jakarta.persistence.*
+import org.hibernate.annotations.OnDelete
+import org.hibernate.annotations.OnDeleteAction
 import java.sql.Timestamp
 
 @Entity
@@ -11,6 +13,7 @@ class ChatMessageEntity(
 	val data: String,
 	@ManyToOne
 	@JoinColumn(name = "chat_room_id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	val room: ChatRoomEntity,
 	val sender: String,
 	val timestamp: Timestamp,

@@ -4,6 +4,8 @@ import { ChatRoomService } from "../../service/chat-room.service";
 import { MatDialog } from "@angular/material/dialog";
 import { ChangeRoomNameDialogComponent } from "../../dialog/change-room-name-dialog/change-room-name-dialog.component";
 import { MatIcon } from "@angular/material/icon";
+import { YesNoDialogComponent } from "../../dialog/yes-no-dialog/yes-no-dialog.component";
+import { DataStoreService } from "../../service/data-store.service";
 
 @Component({
   selector: 'app-chat-room-settings',
@@ -21,7 +23,8 @@ export class ChatRoomSettingsComponent {
   readonly dialog = inject(MatDialog);
 
   constructor(
-    private chatRoomService: ChatRoomService
+    private chatRoomService: ChatRoomService,
+    private dataStoreService: DataStoreService
   ) {}
 
 
@@ -39,6 +42,31 @@ export class ChatRoomSettingsComponent {
       }
       this.chatRoomService.changeRoomName(newRoomName, this.chatRoom).subscribe();
       this.chatRoomNameUpdated.emit(newRoomName);
+    });
+  }
+
+  deleteRoom() {
+    this.dialog.open(
+      YesNoDialogComponent,
+      {
+        data: {
+          titleText: "Usuń pokój",
+          contentText: "Czy jesteś pewien że chcesz usunąć pokój? Wszystkie wiadomości zostaną usunięte i nie będzie można ich przywrócić.",
+          yesButtonText: "Tak",
+          noButtonText: "Nie"
+        },
+      }
+    ).afterClosed().subscribe((result: boolean) => {
+      if(result) {
+        this.chatRoomService.deleteRoom(this.chatRoom).subscribe(_ => {
+          let chatRoomList = this.dataStoreService.getChatRoomList();
+          let newChatRoomList = chatRoomList.filter(chatRoomListElement => chatRoomListElement != this.chatRoom);
+          this.dataStoreService.setChatRoomList(newChatRoomList);
+          if(newChatRoomList.length > 0) {
+            this.dataStoreService.setCurrentlySelectedChatRoom(newChatRoomList[0])
+          }
+        })
+      }
     });
   }
 }

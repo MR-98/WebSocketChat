@@ -34,4 +34,13 @@ export class ChatRoomService {
       room
     )
   }
+
+  deleteRoom(chatRoom: ChatRoom) {
+    return this.http.delete<ChatRoom>(
+      this.url,
+      {
+        body: chatRoom
+      }
+    )
+  }
 }

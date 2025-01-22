@@ -15,7 +15,7 @@ export class DataStoreService {
     return this._currentlySelectedChatRoomId();
   }
 
-  setCurrentlySelectedChatRoomId(value: ChatRoom) {
+  setCurrentlySelectedChatRoom(value: ChatRoom) {
     this._currentlySelectedChatRoomId.set(value)
   }
 

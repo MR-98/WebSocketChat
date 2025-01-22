@@ -39,13 +39,13 @@ export class ChatRoomListComponent {
   }
 
   changeActiveChatRoom(chatRoom: ChatRoom) {
-    this.dataStoreService.setCurrentlySelectedChatRoomId(chatRoom)
+    this.dataStoreService.setCurrentlySelectedChatRoom(chatRoom)
   }
 
   createNewRoom() {
     this.chatRoomService.createNewRoom("Default room name").subscribe((response) => {
       this.dataStoreService.setChatRoomList([response, ...this.chatRoomList]);
-      this.dataStoreService.setCurrentlySelectedChatRoomId(response)
+      this.dataStoreService.setCurrentlySelectedChatRoom(response)
     })
   }
 }
