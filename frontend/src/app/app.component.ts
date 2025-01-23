@@ -22,7 +22,8 @@ export class AppComponent {
         {
           username: userProfile.username!!,
           firstName: userProfile.firstName!!,
-          lastName: userProfile.lastName!!
+          lastName: userProfile.lastName!!,
+          fullName: `${userProfile.firstName!!} ${userProfile.lastName!!}`
         }
       )
     })

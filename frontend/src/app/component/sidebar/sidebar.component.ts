@@ -7,6 +7,7 @@ import { MatMenu, MatMenuItem, MatMenuTrigger } from "@angular/material/menu";
 import { KeycloakService } from "keycloak-angular";
 import { MatDivider } from "@angular/material/divider";
 import { MatListItem } from "@angular/material/list";
+import { DataStoreService } from "../../service/data-store.service";
 
 @Component({
   selector: 'app-sidebar',
@@ -27,9 +28,14 @@ import { MatListItem } from "@angular/material/list";
 })
 export class SidebarComponent {
 
+  protected currentUserFullName: string = '';
+
   constructor(
-    private keycloakService: KeycloakService
-  ) {}
+    private keycloakService: KeycloakService,
+    private dataStoreService: DataStoreService
+  ) {
+    this.currentUserFullName = this.dataStoreService.getUserProfile()!!.fullName;
+  }
 
   signOut() {
     this.keycloakService.logout().then();
