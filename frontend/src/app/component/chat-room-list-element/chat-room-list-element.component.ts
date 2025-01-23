@@ -50,8 +50,14 @@ export class ChatRoomListElementComponent implements OnInit, OnDestroy{
   }
 
   getLastMessageText() {
-    if(this.lastMessage?.sender == undefined|| this.lastMessage?.data == undefined) return ""
-    return this.lastMessage?.sender + ": " + this.lastMessage?.data;
+    if (
+      this.lastMessage?.sender?.firstName == undefined ||
+      this.lastMessage?.sender?.lastName == undefined ||
+      this.lastMessage?.data == undefined
+    ) {
+      return ""
+    }
+    return `${this.lastMessage?.sender?.firstName} ${this.lastMessage?.sender?.lastName}: ${this.lastMessage?.data}`;
   }
 
   ngOnDestroy() {
