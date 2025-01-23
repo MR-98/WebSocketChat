@@ -66,6 +66,7 @@ export class ChatRoomComponent {
   }
 
   sendMessage() {
+    if(this.message == "" || this.message == " ") return;
     this.websocketService.sendMessage(this.currentChatRoom!.id!!, this.message);
     this.message = '';
   }

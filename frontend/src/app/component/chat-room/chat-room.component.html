@@ -11,7 +11,7 @@
     </div>
     <div class="chat-room-input-container">
       <textarea rows="1" [(ngModel)]="message" (keyup.enter)="sendMessage()" [disabled]="currentChatRoom == undefined"></textarea>
-      <span (click)="sendMessage()">Wyślij</span>
+      <mat-icon (click)="sendMessage()">send</mat-icon>
     </div>
   </div>
   <app-chat-room-settings *ngIf="roomSettingVisible" [chatRoom]="currentChatRoom!!" (chatRoomNameUpdated)="updateChatRoomName($event)"></app-chat-room-settings>
