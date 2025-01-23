@@ -37,7 +37,7 @@ export class ChatRoomListElementComponent implements OnInit, OnDestroy{
       this.chatRoom.id!!,
       (message: ChatMessage[] | ChatMessage) => {
         if (Array.isArray(message) && message.length > 0) {
-          this.lastMessage = <ChatMessage>(message.pop());
+          this.lastMessage = <ChatMessage>(message.shift());
         } else {
           this.lastMessage = <ChatMessage>message;
         }

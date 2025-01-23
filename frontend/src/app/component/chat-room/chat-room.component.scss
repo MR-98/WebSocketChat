@@ -34,6 +34,8 @@
 }
 
 .chat-room-messages-container {
+  display: flex;
+  flex-direction: column-reverse;
   height: calc(100vh - 120px);
   overflow-y: auto;
 }

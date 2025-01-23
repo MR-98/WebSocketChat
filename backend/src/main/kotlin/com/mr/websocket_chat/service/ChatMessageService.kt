@@ -16,6 +16,6 @@ class ChatMessageService @Autowired constructor(
 	}
 
 	fun loadNewestMessagesForRoom(roomId: String): List<ChatMessageEntity> {
-		return chatMessageRepository.getAllByRoom_IdOrderByTimestampDesc(roomId.toLong(), Limit.of(50)).reversed()
+		return chatMessageRepository.getAllByRoom_IdOrderByTimestampDesc(roomId.toLong(), Limit.of(50))
 	}
 }

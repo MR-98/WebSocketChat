@@ -55,9 +55,9 @@ export class ChatRoomComponent {
           this.currentChatRoom.id!!,
           (message: ChatMessage[] | ChatMessage) => {
             if (Array.isArray(message)) {
-              this.chatMessages.push(...message);
+              this.chatMessages.unshift(...message);
             } else {
-              this.chatMessages.push(message);
+              this.chatMessages.unshift(message);
             }
           }
         )
