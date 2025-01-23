@@ -1,5 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { ChatRoom } from "../model/chat-room";
+import { UserProfile } from "../model/user-profile";
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +8,7 @@ import { ChatRoom } from "../model/chat-room";
 export class DataStoreService {
   private _currentlySelectedChatRoomId = signal<ChatRoom | undefined>(undefined)
   private _chatRoomList = signal<ChatRoom[]>([])
+  private _userProfile = signal<UserProfile | undefined>(undefined)
 
   constructor() {
   }
@@ -25,5 +27,13 @@ export class DataStoreService {
 
   setChatRoomList(value: ChatRoom[]) {
     this._chatRoomList.set(value)
+  }
+
+  getUserProfile(): UserProfile | undefined {
+    return this._userProfile();
+  }
+
+  setUserProfile(value: UserProfile) {
+    this._userProfile.set(value);
   }
 }
