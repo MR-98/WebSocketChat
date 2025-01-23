@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Client, StompSubscription } from '@stomp/stompjs';
 import { ChatMessage } from "../model/chat-message";
 import { KeycloakService } from "keycloak-angular";
+import { DataStoreService } from "./data-store.service";
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,8 @@ import { KeycloakService } from "keycloak-angular";
 export class WebSocketService {
   private client: Client;
   constructor(
-    private keycloakService: KeycloakService
+    private keycloakService: KeycloakService,
+    private dataStoreService: DataStoreService
   ) {
     this.client = new Client({
       brokerURL: 'ws://host.docker.internal:8080/ws-chat', // Adres WebSocket backendu
@@ -56,13 +58,19 @@ export class WebSocketService {
   }
 
   sendMessage(roomId: number, content: string): void {
-    const message = {
+    let currentUserProfile = this.dataStoreService.getUserProfile()!!
+    const message: ChatMessage = {
       data: content,
       room: {
         id: roomId
       },
-      sender: this.keycloakService.getUsername(),
-      timestamp: Date.now()
+      sender: {
+        username: currentUserProfile.username,
+        firstName: currentUserProfile.firstName,
+        lastName: currentUserProfile.lastName
+      },
+      timestamp: Date.now(),
+      id: null
     };
 
     this.client.publish({

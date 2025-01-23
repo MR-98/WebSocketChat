@@ -1,7 +1,9 @@
+import { User } from "./user";
+
 export interface ChatMessage {
   data: string
   room: object
-  sender: string
+  sender: User
   timestamp: number
-  id: number | null
+  id?: number | null
 }

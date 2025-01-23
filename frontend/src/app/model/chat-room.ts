@@ -1,5 +1,7 @@
+import { User } from "./user";
+
 export interface ChatRoom {
   name: string
-  users: object[],
+  users: User[],
   id: number | null
 }

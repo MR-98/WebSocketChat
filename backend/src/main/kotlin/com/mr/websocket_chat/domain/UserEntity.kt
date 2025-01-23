@@ -6,10 +6,11 @@ import jakarta.persistence.*
 @Entity
 @Table(name = "users")
 class UserEntity (
+	@Id
 	val username: String,
+	val firstName: String,
+	val lastName: String,
 	@JsonIgnoreProperties("users")
 	@ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
-	val rooms: MutableList<ChatRoomEntity> = mutableListOf(),
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	val id: Long = 0,
+	val rooms: MutableList<ChatRoomEntity> = mutableListOf()
 )

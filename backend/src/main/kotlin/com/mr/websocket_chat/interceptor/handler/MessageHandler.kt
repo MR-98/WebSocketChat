@@ -36,7 +36,7 @@ class MessageHandler @Autowired constructor(
 				} catch (e: Exception) {
 					return null
 				}
-				if (chatMessage.sender != subscriberUsername ||
+				if (chatMessage.sender.username != subscriberUsername ||
 					!chatRoomService.isUserChatRoomMember(subscriberUsername, chatMessage.room.id)) {
 					return null
 				}

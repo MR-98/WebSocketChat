@@ -12,7 +12,7 @@ class ChatRoomEntity (
 	@JoinTable(
 		name = "room_users",
 		joinColumns = [JoinColumn(name = "room_id")],
-		inverseJoinColumns = [JoinColumn(name = "user_id")]
+		inverseJoinColumns = [JoinColumn(name = "username")]
 	)
 	val users: MutableSet<UserEntity> = mutableSetOf(),
 	@Id

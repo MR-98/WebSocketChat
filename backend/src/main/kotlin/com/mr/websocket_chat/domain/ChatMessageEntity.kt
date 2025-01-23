@@ -15,7 +15,9 @@ class ChatMessageEntity(
 	@JoinColumn(name = "chat_room_id")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	val room: ChatRoomEntity,
-	val sender: String,
+	@ManyToOne
+	@JoinColumn(name = "sender")
+	val sender: UserEntity,
 	val timestamp: Timestamp,
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

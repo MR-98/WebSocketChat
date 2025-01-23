@@ -1,7 +1,7 @@
 <div class="chat-message-wrapper">
-  <div class="chat-message" [ngClass]="currentUser == chatMessage.sender ? 'right-message': ''">
-    <span class="chat-message-sender" *ngIf="currentUser !== chatMessage.sender">
-      {{ chatMessage.sender }}
+  <div class="chat-message" [ngClass]="currentUser == chatMessage.sender?.username ? 'right-message': ''">
+    <span class="chat-message-sender" *ngIf="currentUser !== chatMessage.sender?.username">
+      {{ chatMessage.sender.firstName }} {{ chatMessage.sender.lastName }}
     </span>
     <div class="chat-message-data">
       {{ chatMessage.data }}
