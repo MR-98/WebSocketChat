@@ -1,0 +1,18 @@
+package com.mr.websocket_chat.controller
+
+import com.mr.websocket_chat.domain.UserEntity
+import com.mr.websocket_chat.service.UserService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.bind.annotation.*
+
+@RestController
+@RequestMapping("/users")
+class UserController @Autowired constructor(
+	private val userService: UserService
+){
+
+	@GetMapping("/search")
+	fun searchUsers(@RequestParam query: String): List<UserEntity> {
+		return userService.searchUsers(query)
+	}
+}
