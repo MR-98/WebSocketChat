@@ -10,6 +10,10 @@ class UserService @Autowired constructor(
 	private val userRepository: UserRepository
 ){
 
+	fun findByUsername(username: String): UserEntity? {
+		return userRepository.findByUsername(username)
+	}
+
 	fun searchUsers(query: String): List<UserEntity> {
 		return userRepository.findByFullName(query)
 	}

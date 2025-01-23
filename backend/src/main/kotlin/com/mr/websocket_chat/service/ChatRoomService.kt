@@ -3,6 +3,7 @@ package com.mr.websocket_chat.service
 import com.mr.websocket_chat.domain.ChatRoomEntity
 import com.mr.websocket_chat.repository.ChatRoomRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
@@ -10,6 +11,18 @@ import kotlin.jvm.optionals.getOrNull
 class ChatRoomService @Autowired constructor(
 	private val chatRoomRepository: ChatRoomRepository
 ){
+
+	fun addChatRoom(room: ChatRoomEntity): ChatRoomEntity {
+		return this.chatRoomRepository.save(room)
+	}
+
+	fun findById(roomId: Long): ChatRoomEntity? {
+		return this.chatRoomRepository.findByIdOrNull(roomId)
+	}
+
+	fun getChatRoomsForUser(username: String): List<ChatRoomEntity> {
+		return this.chatRoomRepository.findByUsers_Username(username)
+	}
 
 	fun chatRoomExists(roomId: Long): Boolean {
 		return chatRoomRepository.existsById(roomId)
