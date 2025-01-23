@@ -2,6 +2,7 @@ package com.mr.websocket_chat.interceptor.handler
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.mr.websocket_chat.domain.ChatMessageEntity
+import com.mr.websocket_chat.domain.InvitationEntity
 import com.mr.websocket_chat.service.AuthUtils
 import com.mr.websocket_chat.service.ChatRoomService
 import mu.KotlinLogging
@@ -38,6 +39,20 @@ class MessageHandler @Autowired constructor(
 				}
 				if (chatMessage.sender.username != subscriberUsername ||
 					!chatRoomService.isUserChatRoomMember(subscriberUsername, chatMessage.room.id)) {
+					return null
+				}
+			}
+			"/invitation.sendInvitation" -> {
+				val invitationMessage = try {
+					jacksonObjectMapper().readValue(message.payload as ByteArray, InvitationEntity::class.java)
+				} catch (e: Exception) {
+					return null
+				}
+				if(!chatRoomService.chatRoomExists(invitationMessage.room.id)) {
+					return null
+				}
+				// User is a chat room member already, no need for invitation
+				if(chatRoomService.isUserChatRoomMember(subscriberUsername, invitationMessage.room)) {
 					return null
 				}
 			}

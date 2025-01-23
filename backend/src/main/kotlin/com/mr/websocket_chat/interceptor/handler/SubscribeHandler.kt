@@ -2,6 +2,7 @@ package com.mr.websocket_chat.interceptor.handler
 
 import com.mr.websocket_chat.service.AuthUtils
 import com.mr.websocket_chat.service.ChatRoomService
+import com.mr.websocket_chat.service.UserService
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.Message
@@ -13,7 +14,8 @@ import java.lang.NumberFormatException
 @Component
 class SubscribeHandler @Autowired constructor(
 	private val authUtils: AuthUtils,
-	private val chatRoomService: ChatRoomService
+	private val chatRoomService: ChatRoomService,
+	private val userService: UserService
 ): WebSocketMessageHandler {
 
 	companion object {
@@ -37,6 +39,18 @@ class SubscribeHandler @Autowired constructor(
 				}
 
 				if(!chatRoomService.isUserChatRoomMember(subscriberUsername, roomId)) {
+					return null
+				}
+			}
+			"/topic/invitation.listen" -> {
+				val username = try {
+					destination.substringAfterLast(".")
+				} catch (e: NumberFormatException) {
+					return null
+				}
+
+				val userEntity = userService.findByUsername(username) ?: return null
+				if(userEntity.username == subscriberUsername) {
 					return null
 				}
 			}
