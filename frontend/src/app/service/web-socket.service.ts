@@ -3,6 +3,9 @@ import { Client, StompSubscription } from '@stomp/stompjs';
 import { ChatMessage } from "../model/chat-message";
 import { KeycloakService } from "keycloak-angular";
 import { DataStoreService } from "./data-store.service";
+import { Invitation } from "../model/invitation";
+import { ChatRoom } from "../model/chat-room";
+import { User } from "../model/user";
 
 @Injectable({
   providedIn: 'root',
@@ -57,13 +60,11 @@ export class WebSocketService {
     );
   }
 
-  sendMessage(roomId: number, content: string): void {
+  sendMessage(room: ChatRoom, content: string): void {
     let currentUserProfile = this.dataStoreService.getUserProfile()!!
     const message: ChatMessage = {
       data: content,
-      room: {
-        id: roomId
-      },
+      room: room,
       sender: {
         username: currentUserProfile.username,
         firstName: currentUserProfile.firstName,
@@ -75,6 +76,20 @@ export class WebSocketService {
 
     this.client.publish({
       destination: `/app/chat.sendMessage`,
+      body: JSON.stringify(message),
+      headers: {
+        Authorization: `Bearer ${this.keycloakService.getKeycloakInstance().token}`
+      }
+    });
+  }
+
+  sendInvitation(userToInvite: User, room: ChatRoom) {
+    let message: Invitation = {
+      invitedUser: userToInvite,
+      room: room
+    }
+    this.client.publish({
+      destination: `/app/invitation.sendInvitation`,
       body: JSON.stringify(message),
       headers: {
         Authorization: `Bearer ${this.keycloakService.getKeycloakInstance().token}`

@@ -2,6 +2,6 @@ import { User } from "./user";
 
 export interface ChatRoom {
   name: string
-  users: User[],
-  id: number | null
+  users?: User[],
+  id: number
 }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, output, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { ChatRoom } from "../../model/chat-room";
 import { ChatRoomService } from "../../service/chat-room.service";
 import { MatDialog } from "@angular/material/dialog";
@@ -6,6 +6,9 @@ import { ChangeRoomNameDialogComponent } from "../../dialog/change-room-name-dia
 import { MatIcon } from "@angular/material/icon";
 import { YesNoDialogComponent } from "../../dialog/yes-no-dialog/yes-no-dialog.component";
 import { DataStoreService } from "../../service/data-store.service";
+import { InviteUserDialogComponent } from "../../dialog/invite-user-dialog/invite-user-dialog.component";
+import { WebSocketService } from "../../service/web-socket.service";
+import { User } from "../../model/user";
 
 @Component({
   selector: 'app-chat-room-settings',
@@ -24,7 +27,8 @@ export class ChatRoomSettingsComponent {
 
   constructor(
     private chatRoomService: ChatRoomService,
-    private dataStoreService: DataStoreService
+    private dataStoreService: DataStoreService,
+    private webSocketService: WebSocketService
   ) {}
 
 
@@ -68,5 +72,16 @@ export class ChatRoomSettingsComponent {
         })
       }
     });
+  }
+
+  showInviteDialog() {
+    this.dialog.open(
+      InviteUserDialogComponent
+    ).afterClosed().subscribe((userToInvite: User | undefined) => {
+      if(userToInvite != undefined) {
+        this.webSocketService.sendInvitation(userToInvite, this.chatRoom);
+        // TODO: snack bar alert
+      }
+    })
   }
 }
