@@ -52,7 +52,7 @@ class MessageHandler @Autowired constructor(
 					return null
 				}
 				// User is a chat room member already, no need for invitation
-				if(chatRoomService.isUserChatRoomMember(subscriberUsername, invitationMessage.room)) {
+				if(chatRoomService.isUserChatRoomMember(invitationMessage.invitedUser.username, invitationMessage.room)) {
 					return null
 				}
 			}
