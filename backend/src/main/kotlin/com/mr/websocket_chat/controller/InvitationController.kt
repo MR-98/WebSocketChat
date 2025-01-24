@@ -30,7 +30,7 @@ class InvitationController @Autowired constructor(
 	}
 
 	@MessageMapping("/invitation.sendInvitation")
-	fun sendMessage(@Payload invitation: InvitationEntity) {
+	fun sendInvitation(@Payload invitation: InvitationEntity) {
 		LOG.debug { "RECEIVED INVITATION FOR: " + invitation.invitedUser + " TO JOIN ROOM: " + invitation.room.id}
 		invitationService.saveInvitation(invitation)
 		messagingTemplate.convertAndSend("/topic/invitation.listen." + invitation.invitedUser.username, invitation)
