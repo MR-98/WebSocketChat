@@ -43,7 +43,7 @@ export class ChatRoomListComponent {
   }
 
   createNewRoom() {
-    this.chatRoomService.createNewRoom("Default room name").subscribe((response) => {
+    this.chatRoomService.createNewRoom("Nowy pokój").subscribe((response) => {
       this.dataStoreService.setChatRoomList([response, ...this.chatRoomList]);
       this.dataStoreService.setCurrentlySelectedChatRoom(response)
     })
