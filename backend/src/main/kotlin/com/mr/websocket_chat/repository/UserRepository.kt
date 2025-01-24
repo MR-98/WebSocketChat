@@ -8,6 +8,6 @@ import org.springframework.data.repository.query.Param
 interface UserRepository : JpaRepository<UserEntity, Long> {
 	fun findByUsername(username: String): UserEntity?
 
-	@Query(value = "SELECT * FROM users WHERE concat(first_name, ' ', last_name) LIKE %:query%", nativeQuery = true)
+	@Query(value = "SELECT * FROM users WHERE LOWER(CONCAT(first_name, ' ', last_name)) LIKE LOWER(CONCAT('%', :query, '%'))", nativeQuery = true)
 	fun findByFullName(@Param("query") query: String): List<UserEntity>
 }
