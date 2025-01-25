@@ -1,4 +1,4 @@
-package com.mr.websocket_chat.controller
+package com.mr.websocket_chat.controller.rest
 
 import com.mr.websocket_chat.domain.ChatRoomEntity
 import com.mr.websocket_chat.service.AuthUtils
@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/rooms")
-class RoomController @Autowired constructor(
+@CrossOrigin
+class RoomRestController @Autowired constructor(
 	private val chatRoomService: ChatRoomService,
 	private val userService: UserService,
 	private val authUtils: AuthUtils

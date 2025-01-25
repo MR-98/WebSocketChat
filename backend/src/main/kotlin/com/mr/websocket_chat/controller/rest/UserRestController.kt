@@ -1,4 +1,4 @@
-package com.mr.websocket_chat.controller
+package com.mr.websocket_chat.controller.rest
 
 import com.mr.websocket_chat.domain.UserEntity
 import com.mr.websocket_chat.service.UserService
@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/users")
-class UserController @Autowired constructor(
+@CrossOrigin
+class UserRestController @Autowired constructor(
 	private val userService: UserService
 ){
 

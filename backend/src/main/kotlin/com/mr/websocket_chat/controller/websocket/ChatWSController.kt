@@ -1,4 +1,4 @@
-package com.mr.websocket_chat.controller
+package com.mr.websocket_chat.controller.websocket
 
 import com.mr.websocket_chat.domain.ChatMessageEntity
 import com.mr.websocket_chat.service.ChatMessageService
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Controller
 
 
 @Controller
-class ChatController @Autowired constructor(
+class ChatWSController @Autowired constructor(
 	private val chatMessageService: ChatMessageService
 ){
 

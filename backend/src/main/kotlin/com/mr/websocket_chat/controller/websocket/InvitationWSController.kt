@@ -1,4 +1,4 @@
-package com.mr.websocket_chat.controller
+package com.mr.websocket_chat.controller.websocket
 
 import com.mr.websocket_chat.domain.InvitationEntity
 import com.mr.websocket_chat.service.InvitationService
@@ -12,7 +12,7 @@ import org.springframework.messaging.simp.annotation.SubscribeMapping
 import org.springframework.stereotype.Controller
 
 @Controller
-class InvitationController @Autowired constructor(
+class InvitationWSController @Autowired constructor(
 	private val invitationService: InvitationService
 ) {
 
