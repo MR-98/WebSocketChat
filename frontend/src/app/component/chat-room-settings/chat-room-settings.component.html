@@ -20,4 +20,15 @@
       <span>Usuń pokój</span>
     </div>
   </div>
+  <mat-expansion-panel class="mat-elevation-z0 remove-mat-expansion-panel-padding">
+    <mat-expansion-panel-header>
+      <mat-icon>people</mat-icon>
+      <span>Lista użytkowników</span>
+    </mat-expansion-panel-header>
+    <mat-list>
+      <mat-list-item *ngFor="let user of chatRoom.users">
+        {{user.firstName}} {{user.lastName}}
+      </mat-list-item>
+    </mat-list>
+  </mat-expansion-panel>
 </div>

@@ -32,3 +32,30 @@
 .settings-row:hover {
   background-color: #212121;
 }
+
+mat-expansion-panel {
+  background-color: #131313;
+  border-radius: 0;
+}
+
+mat-expansion-panel-header {
+  height: 24px;
+  padding: 10px;
+  font-size: unset;
+  font-weight: unset;
+  letter-spacing: unset;
+
+  span {
+    margin-left: 10px;
+  }
+}
+
+.mat-expansion-panel-header.mat-expanded {
+  height: 24px;
+}
+
+mat-list {
+  width: 100%;
+  max-height: 200px;
+  overflow: auto;
+}

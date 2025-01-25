@@ -9,12 +9,23 @@ import { DataStoreService } from "../../service/data-store.service";
 import { InviteUserDialogComponent } from "../../dialog/invite-user-dialog/invite-user-dialog.component";
 import { WebSocketService } from "../../service/web-socket.service";
 import { User } from "../../model/user";
+import {
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+} from "@angular/material/expansion";
+import { MatList, MatListItem } from "@angular/material/list";
+import { NgForOf } from "@angular/common";
 
 @Component({
   selector: 'app-chat-room-settings',
   standalone: true,
   imports: [
-    MatIcon
+    MatIcon,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatList,
+    MatListItem,
+    NgForOf
   ],
   templateUrl: './chat-room-settings.component.html',
   styleUrl: './chat-room-settings.component.scss'

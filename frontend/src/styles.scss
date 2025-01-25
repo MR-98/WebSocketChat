@@ -9,3 +9,7 @@ html, body {
   background-color: #202020;
   height: 100%;
 }
+
+.remove-mat-expansion-panel-padding .mat-expansion-panel-content .mat-expansion-panel-body{
+  padding: 0 !important;
+}
