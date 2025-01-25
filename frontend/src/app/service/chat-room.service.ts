@@ -43,4 +43,11 @@ export class ChatRoomService {
       }
     )
   }
+
+  leaveRoom(room: ChatRoom) {
+    return this.http.post<null>(
+      this.url + "/leave/" + room.id,
+      null
+    )
+  }
 }

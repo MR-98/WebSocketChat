@@ -84,4 +84,28 @@ export class ChatRoomSettingsComponent {
       }
     })
   }
+
+  leaveRoom() {
+    this.dialog.open(
+      YesNoDialogComponent,
+      {
+        data: {
+          titleText: "Opuść pokój",
+          contentText: "Czy jesteś pewien że chcesz opuścić pokój? Jeżeli jesteś ostatnim użytkownikiem w pokoju wszystkie wiadomości zostaną usunięte i nie będzie można ich przywrócić.",
+          yesButtonText: "Tak",
+          noButtonText: "Nie"
+        },
+      }
+    ).afterClosed().subscribe((result: boolean) => {
+      if(result) {
+        this.chatRoomService.leaveRoom(this.chatRoom).subscribe( _ => {
+          let newChatList = this.dataStoreService.getChatRoomList().filter(element => element.id != this.chatRoom.id);
+          this.dataStoreService.setChatRoomList([...newChatList]);
+          if(newChatList.length > 0) {
+            this.dataStoreService.setCurrentlySelectedChatRoom(newChatList[0])
+          }
+        })
+      }
+    });
+  }
 }
