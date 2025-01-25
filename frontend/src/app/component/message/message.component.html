@@ -3,7 +3,10 @@
     <span class="chat-message-sender" *ngIf="currentUser !== chatMessage.sender.username">
       {{ chatMessage.sender.firstName }} {{ chatMessage.sender.lastName }}
     </span>
-    <div class="chat-message-data">
+    <div
+      class="chat-message-data"
+      [matTooltip]="formatDate(chatMessage.timestamp)"
+      [matTooltipPosition]="currentUser == chatMessage.sender.username ? 'left' : 'right'">
       {{ chatMessage.data }}
     </div>
   </div>
