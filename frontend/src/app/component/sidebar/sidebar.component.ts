@@ -12,6 +12,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { InvitationsListDialogComponent } from "../../dialog/invitations-list-dialog/invitations-list-dialog.component";
 import { WebSocketService } from "../../service/web-socket.service";
 import { Invitation } from "../../model/invitation";
+import { MatBadge } from "@angular/material/badge";
 
 @Component({
   selector: 'app-sidebar',
@@ -25,7 +26,8 @@ import { Invitation } from "../../model/invitation";
     MatMenuTrigger,
     MatDivider,
     MatListItem,
-    MatMenuItem
+    MatMenuItem,
+    MatBadge
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
@@ -42,15 +44,7 @@ export class SidebarComponent {
     private webSocketService: WebSocketService
   ) {
     this.currentUserFullName = this.dataStoreService.getUserProfile()!!.fullName;
-    this.webSocketService.subscribeInvitations(
-      (invitations: Invitation[] | Invitation) => {
-        if (Array.isArray(invitations)) {
-          this.invitations.unshift(...invitations);
-        } else {
-          this.invitations.unshift(invitations);
-        }
-      }
-    )
+    this.loadInvitations();
   }
 
   signOut() {
@@ -67,6 +61,20 @@ export class SidebarComponent {
       {
         data: {
           invitations: this.invitations
+        }
+      }
+    ).afterClosed().subscribe( (invitations: Invitation[]) => {
+      this.invitations = invitations;
+    });
+  }
+
+  loadInvitations() {
+    this.webSocketService.subscribeInvitations(
+      (invitations: Invitation[] | Invitation) => {
+        if (Array.isArray(invitations)) {
+          this.invitations.unshift(...invitations);
+        } else {
+          this.invitations.unshift(invitations);
         }
       }
     )

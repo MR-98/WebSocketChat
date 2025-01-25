@@ -4,7 +4,7 @@ import {
   MAT_DIALOG_DATA,
   MatDialogActions,
   MatDialogClose,
-  MatDialogContent,
+  MatDialogContent, MatDialogRef,
   MatDialogTitle
 } from "@angular/material/dialog";
 import { MatFormField, MatLabel } from "@angular/material/form-field";
@@ -44,9 +44,11 @@ export class InvitationsListDialogComponent {
 
   constructor(
     private invitationsService: InvitationsService,
-    private dataStoreService: DataStoreService
+    private dataStoreService: DataStoreService,
+    matDialogRef: MatDialogRef<InvitationsListDialogComponent>
   ) {
     this.invitations = this.data["invitations"] ? this.data["invitations"] : [];
+    matDialogRef.beforeClosed().subscribe(() => matDialogRef.close(this.invitations));
   }
 
   acceptInvitation(invitation: Invitation) {
