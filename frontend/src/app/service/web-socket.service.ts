@@ -83,14 +83,30 @@ export class WebSocketService {
     });
   }
 
+  subscribeInvitations(callback: (invitations: Invitation[] | Invitation) => void): StompSubscription {
+    return this.client.subscribe(
+      `/topic/invitation.listen.${this.keycloakService.getUsername()}`,
+      (invitations) => callback(JSON.parse(invitations.body)),
+      {
+        Authorization: `Bearer ${this.keycloakService.getKeycloakInstance().token}`
+      }
+    );
+  }
+
   sendInvitation(userToInvite: User, room: ChatRoom) {
-    let message: Invitation = {
+    let currentUserProfile = this.dataStoreService.getUserProfile()!!
+    let invitation: Invitation = {
       invitedUser: userToInvite,
-      room: room
+      invitingUser: {
+        username: currentUserProfile.username,
+        firstName: currentUserProfile.firstName,
+        lastName: currentUserProfile.lastName
+      },
+      room: room,
     }
     this.client.publish({
       destination: `/app/invitation.sendInvitation`,
-      body: JSON.stringify(message),
+      body: JSON.stringify(invitation),
       headers: {
         Authorization: `Bearer ${this.keycloakService.getKeycloakInstance().token}`
       }

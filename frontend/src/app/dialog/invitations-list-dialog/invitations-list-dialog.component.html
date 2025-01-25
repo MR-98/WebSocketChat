@@ -1,0 +1,29 @@
+<div class="dialog-wrapper">
+  <h4 mat-dialog-title>Zaproszenia</h4>
+  <mat-dialog-content>
+    <div *ngFor="let invitation of invitations" class="invitation-parent">
+      <span class="invitation-text">
+        Użytkownik
+        <span class="invitation-user-wrapper">
+          {{invitation.invitingUser.firstName}} {{invitation.invitingUser.lastName}}
+        </span>
+        zaprasza do dołączenia do pokoju
+        <span class="invitation-room-wrapper">
+          {{invitation.room.name}}
+        </span>
+      </span>
+      <div class="invitation-buttons">
+        <button mat-icon-button (click)="acceptInvitation(invitation)">
+          <mat-icon>check</mat-icon>
+        </button>
+        <button mat-icon-button (click)="rejectInvitation(invitation)">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close>Zamknij</button>
+  </mat-dialog-actions>
+</div>
+
