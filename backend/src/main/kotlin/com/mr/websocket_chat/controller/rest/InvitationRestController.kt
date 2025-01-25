@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/invitations")
-@CrossOrigin
 class InvitationRestController @Autowired constructor(
 	private val authUtils: AuthUtils,
 	private val invitationService: InvitationService

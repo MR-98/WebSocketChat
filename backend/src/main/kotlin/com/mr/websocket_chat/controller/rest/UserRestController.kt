@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/users")
-@CrossOrigin
 class UserRestController @Autowired constructor(
 	private val userService: UserService
 ){

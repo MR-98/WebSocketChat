@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/rooms")
-@CrossOrigin
 class RoomRestController @Autowired constructor(
 	private val chatRoomService: ChatRoomService,
 	private val userService: UserService,
