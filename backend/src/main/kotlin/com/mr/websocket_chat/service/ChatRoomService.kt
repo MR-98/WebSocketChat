@@ -13,15 +13,26 @@ class ChatRoomService @Autowired constructor(
 ){
 
 	fun addChatRoom(room: ChatRoomEntity): ChatRoomEntity {
-		return this.chatRoomRepository.save(room)
+		return chatRoomRepository.save(room)
 	}
 
 	fun findById(roomId: Long): ChatRoomEntity? {
-		return this.chatRoomRepository.findByIdOrNull(roomId)
+		return chatRoomRepository.findByIdOrNull(roomId)
 	}
 
 	fun getChatRoomsForUser(username: String): List<ChatRoomEntity> {
-		return this.chatRoomRepository.findByUsers_Username(username)
+		return chatRoomRepository.findByUsers_Username(username)
+	}
+
+	fun removeUserFromRoom(username: String, roomId: Long): Boolean {
+		val roomEntity = chatRoomRepository.findByIdOrNull(roomId) ?: return false
+		roomEntity.users.removeIf { element -> element.username == username }
+		if(roomEntity.users.isEmpty()) {
+			chatRoomRepository.deleteById(roomId)
+		} else {
+			chatRoomRepository.save(roomEntity)
+		}
+		return true
 	}
 
 	fun chatRoomExists(roomId: Long): Boolean {

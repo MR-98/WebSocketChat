@@ -18,8 +18,10 @@ class RoomRestController @Autowired constructor(
 
 	@PostMapping
 	fun createRoom(@RequestBody roomName: String): ResponseEntity<ChatRoomEntity> {
-		val currentlyAuthenticatedUsername = authUtils.getCurrentlyAuthenticatedUsername() ?: return ResponseEntity.badRequest().build()
-		val userEntity = userService.findByUsername(currentlyAuthenticatedUsername) ?: return ResponseEntity.notFound().build()
+		val currentlyAuthenticatedUsername = authUtils.getCurrentlyAuthenticatedUsername()
+			?: return ResponseEntity.badRequest().build()
+		val userEntity = userService.findByUsername(currentlyAuthenticatedUsername)
+			?: return ResponseEntity.notFound().build()
 		val newRoom = ChatRoomEntity(
 			name = roomName,
 			users = mutableSetOf(userEntity),
@@ -38,10 +40,26 @@ class RoomRestController @Autowired constructor(
 		return ResponseEntity.ok(roomEntity)
 	}
 
+	@PostMapping("/leave/{roomId}")
+	fun leaveRoom(@PathVariable roomId: Long): ResponseEntity<String> {
+		val currentlyAuthenticatedUsername = authUtils.getCurrentlyAuthenticatedUsername()
+			?: return ResponseEntity.badRequest().build()
+		userService.findByUsername(currentlyAuthenticatedUsername)
+			?: return ResponseEntity.notFound().build()
+
+		return if(chatRoomService.removeUserFromRoom(currentlyAuthenticatedUsername, roomId)) {
+			ResponseEntity.ok().build()
+		} else {
+			ResponseEntity.internalServerError().build()
+		}
+	}
+
 	@DeleteMapping
 	fun deleteRoom(@RequestBody room: ChatRoomEntity): ResponseEntity<String> {
-		val currentlyAuthenticatedUsername = authUtils.getCurrentlyAuthenticatedUsername() ?: return ResponseEntity.badRequest().build()
-		val userEntity = userService.findByUsername(currentlyAuthenticatedUsername) ?: return ResponseEntity.notFound().build()
+		val currentlyAuthenticatedUsername = authUtils.getCurrentlyAuthenticatedUsername()
+			?: return ResponseEntity.badRequest().build()
+		val userEntity = userService.findByUsername(currentlyAuthenticatedUsername)
+			?: return ResponseEntity.notFound().build()
 		if(!chatRoomService.isUserChatRoomMember(userEntity.username, room)) {
 			return ResponseEntity.badRequest().build()
 		}

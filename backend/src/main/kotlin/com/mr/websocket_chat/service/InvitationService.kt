@@ -27,13 +27,13 @@ class InvitationService @Autowired constructor(
 
 	fun acceptInvitation(invitation: InvitationEntity): ChatRoomEntity {
 		invitation.room.users.add(invitation.invitedUser)
-		val room = this.roomRepository.save(invitation.room)
+		val room = roomRepository.save(invitation.room)
 		deleteInvitation(invitation)
 		return room
 	}
 
 	fun deleteInvitation(invitation: InvitationEntity) {
-		this.invitationRepository.deleteById(invitation.id)
+		invitationRepository.deleteById(invitation.id)
 	}
 
 }
