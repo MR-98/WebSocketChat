@@ -14,4 +14,7 @@
 .chat-room-list-element-last-message {
   font-size: 0.8rem;
   opacity: 0.8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
