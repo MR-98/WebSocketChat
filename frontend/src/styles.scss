@@ -13,3 +13,20 @@ html, body {
 .remove-mat-expansion-panel-padding .mat-expansion-panel-content .mat-expansion-panel-body{
   padding: 0 !important;
 }
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #eee;
+  border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #004f4f;
+  border-radius: 5px;
+}
