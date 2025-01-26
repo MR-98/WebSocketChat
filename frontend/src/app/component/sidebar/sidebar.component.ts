@@ -13,6 +13,8 @@ import { InvitationsListDialogComponent } from "../../dialog/invitations-list-di
 import { WebSocketService } from "../../service/web-socket.service";
 import { Invitation } from "../../model/invitation";
 import { MatBadge } from "@angular/material/badge";
+import { SettingsDialogComponent } from "../../dialog/settings-dialog/settings-dialog.component";
+import { LocalStorageService } from "../../service/local-storage.service";
 
 @Component({
   selector: 'app-sidebar',
@@ -41,10 +43,13 @@ export class SidebarComponent {
   constructor(
     private keycloakService: KeycloakService,
     private dataStoreService: DataStoreService,
-    private webSocketService: WebSocketService
+    private webSocketService: WebSocketService,
+    private localStorageService: LocalStorageService
   ) {
     this.currentUserFullName = this.dataStoreService.getUserProfile()!!.fullName;
-    this.loadInvitations();
+    if(this.isReceivingInvitationsEnabled()) {
+      this.loadInvitations();
+    }
   }
 
   signOut() {
@@ -78,5 +83,16 @@ export class SidebarComponent {
         }
       }
     )
+  }
+
+  showSettingsDialog() {
+    this.dialog.open(
+      SettingsDialogComponent
+    );
+  }
+
+  isReceivingInvitationsEnabled() {
+    return this.localStorageService.getData("invitationsEnabled") != null ?
+      JSON.parse(this.localStorageService.getData("invitationsEnabled")!!) : true;
   }
 }
