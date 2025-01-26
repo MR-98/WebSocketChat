@@ -48,15 +48,7 @@ export class InviteUserDialogComponent {
   protected myControl = new FormControl<string | User>('');
   protected input = '';
   protected selectedUsername: User | undefined = undefined;
-  protected options: Observable<User[]> = of(
-    [
-      {
-        username: "testowy",
-        firstName: "JAN",
-        lastName: "TESTOWY"
-      }
-    ]
-  )
+  protected options: Observable<User[]> = of([])
 
   constructor(
     public dialogRef: MatDialogRef<InviteUserDialogComponent>,

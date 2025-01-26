@@ -1,7 +1,7 @@
 <div class="dialog-wrapper">
   <h4 mat-dialog-title>Zaproś użytkownika</h4>
   <mat-dialog-content>
-    <mat-form-field class="example-full-width">
+    <mat-form-field>
       <mat-label>Użytkownik</mat-label>
       <input type="text" matInput [matAutocomplete]="auto" [formControl]="myControl">
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)" [displayWith]="displayFn">
