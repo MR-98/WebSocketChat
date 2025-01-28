@@ -1,7 +1,7 @@
 package com.mr.websocket_chat.service
 
-import com.mr.websocket_chat.domain.ChatRoomEntity
-import com.mr.websocket_chat.domain.InvitationEntity
+import com.mr.websocket_chat.domain.jpa.ChatRoomEntity
+import com.mr.websocket_chat.domain.jpa.InvitationEntity
 import com.mr.websocket_chat.repository.ChatRoomRepository
 import com.mr.websocket_chat.repository.InvitationRepository
 import org.springframework.beans.factory.annotation.Autowired

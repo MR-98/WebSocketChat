@@ -1,6 +1,6 @@
 package com.mr.websocket_chat.repository
 
-import com.mr.websocket_chat.domain.InvitationEntity
+import com.mr.websocket_chat.domain.jpa.InvitationEntity
 import org.springframework.data.domain.Limit
 import org.springframework.data.jpa.repository.JpaRepository
 

@@ -1,4 +1,4 @@
-package com.mr.websocket_chat.domain
+package com.mr.websocket_chat.domain.jpa
 
 import jakarta.persistence.*
 import org.hibernate.annotations.OnDelete

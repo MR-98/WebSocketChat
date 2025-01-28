@@ -1,6 +1,6 @@
 package com.mr.websocket_chat.controller.rest
 
-import com.mr.websocket_chat.domain.ChatRoomEntity
+import com.mr.websocket_chat.domain.jpa.ChatRoomEntity
 import com.mr.websocket_chat.service.AuthUtils
 import com.mr.websocket_chat.service.ChatRoomService
 import com.mr.websocket_chat.service.UserService

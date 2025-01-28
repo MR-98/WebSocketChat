@@ -1,6 +1,6 @@
 package com.mr.websocket_chat.service
 
-import com.mr.websocket_chat.domain.UserEntity
+import com.mr.websocket_chat.domain.jpa.UserEntity
 import com.mr.websocket_chat.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

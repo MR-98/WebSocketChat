@@ -1,8 +1,8 @@
 package com.mr.websocket_chat.interceptor.handler
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.mr.websocket_chat.domain.ChatMessageEntity
-import com.mr.websocket_chat.domain.InvitationEntity
+import com.mr.websocket_chat.domain.jpa.ChatMessageEntity
+import com.mr.websocket_chat.domain.jpa.InvitationEntity
 import com.mr.websocket_chat.service.AuthUtils
 import com.mr.websocket_chat.service.ChatRoomService
 import mu.KotlinLogging

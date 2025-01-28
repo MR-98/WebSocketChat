@@ -1,6 +1,6 @@
 package com.mr.websocket_chat.repository
 
-import com.mr.websocket_chat.domain.UserEntity
+import com.mr.websocket_chat.domain.jpa.UserEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param

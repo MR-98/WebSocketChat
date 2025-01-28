@@ -1,6 +1,6 @@
 package com.mr.websocket_chat.controller.websocket
 
-import com.mr.websocket_chat.domain.ChatMessageEntity
+import com.mr.websocket_chat.domain.jpa.ChatMessageEntity
 import com.mr.websocket_chat.service.ChatMessageService
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Autowired

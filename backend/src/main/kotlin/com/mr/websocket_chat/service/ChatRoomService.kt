@@ -1,6 +1,6 @@
 package com.mr.websocket_chat.service
 
-import com.mr.websocket_chat.domain.ChatRoomEntity
+import com.mr.websocket_chat.domain.jpa.ChatRoomEntity
 import com.mr.websocket_chat.repository.ChatRoomRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull

@@ -1,4 +1,4 @@
-package com.mr.websocket_chat.domain
+package com.mr.websocket_chat.domain.jpa
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import jakarta.persistence.*
