@@ -6,6 +6,7 @@ import { DataStoreService } from "./data-store.service";
 import { Invitation } from "../model/invitation";
 import { ChatRoom } from "../model/chat-room";
 import { User } from "../model/user";
+import { environment } from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,7 @@ export class WebSocketService {
     private dataStoreService: DataStoreService
   ) {
     this.client = new Client({
-      brokerURL: 'wss://mr98.site/ws/ws-chat',
+      brokerURL: environment.websocketUrl,
       connectHeaders: {
         Authorization: `Bearer ${this.keycloakService.getKeycloakInstance().token}`
       },

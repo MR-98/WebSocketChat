@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { ChatRoom } from "../model/chat-room";
+import { environment } from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatRoomService {
 
-  private url: string = 'https://mr98.site/api/rooms';
+  private url: string = `${environment.backendUrl}/rooms`;
 
   constructor(
     private http: HttpClient

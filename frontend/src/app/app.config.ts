@@ -6,6 +6,7 @@ import { KeycloakBearerInterceptor, KeycloakService } from "keycloak-angular";
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from "@angular/material/form-field";
+import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -39,7 +40,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        url: 'https://mr98.site/auth/',
+        url: environment.keycloakUrl,
         realm: 'websocket-chat',
         clientId: 'frontend',
       },
