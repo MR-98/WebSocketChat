@@ -7,6 +7,7 @@ services:
     environment:
       JAVA_OPTS: "-Xdebug -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
       HOSTNAME: ${HOSTNAME}
+      KC_HOSTNAME: ${KC_HOSTNAME}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_SERVER: ${DB_SERVER}
