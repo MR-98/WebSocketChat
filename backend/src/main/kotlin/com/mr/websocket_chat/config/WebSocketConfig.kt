@@ -22,7 +22,7 @@ class WebSocketConfig @Autowired constructor(
 	}
 
 	override fun registerStompEndpoints(registry: StompEndpointRegistry) {
-		registry.addEndpoint("/ws-chat").setAllowedOriginPatterns("*")
+		registry.addEndpoint("/ws-chat").setAllowedOrigins("https://mr98.site")
 	}
 
 	override fun configureClientInboundChannel(registration: ChannelRegistration) {

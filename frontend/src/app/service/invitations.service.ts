@@ -8,7 +8,7 @@ import { HttpClient } from "@angular/common/http";
 })
 export class InvitationsService {
 
-  private url: string = 'http://host.docker.internal:8080/invitations';
+  private url: string = 'https://mr98.site/api/invitations';
 
   constructor(
     private http: HttpClient

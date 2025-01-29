@@ -22,11 +22,7 @@ export class MainComponent {
   constructor(
     protected webSocketService: WebSocketService
   ) {
-    this.webSocketService.connect(
-      () => {
-        console.log("CONNECTED");
-      }
-    );
+    this.webSocketService.connect(() => {});
   }
 
 }

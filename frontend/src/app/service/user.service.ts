@@ -8,7 +8,7 @@ import { User } from "../model/user";
 })
 export class UserService {
 
-  private url: string = 'http://host.docker.internal:8080/users';
+  private url: string = 'https://mr98.site/api/users';
 
   constructor(
     private http: HttpClient

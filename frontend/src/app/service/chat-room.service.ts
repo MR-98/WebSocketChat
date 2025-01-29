@@ -8,7 +8,7 @@ import { ChatRoom } from "../model/chat-room";
 })
 export class ChatRoomService {
 
-  private url: string = 'http://host.docker.internal:8080/rooms';
+  private url: string = 'https://mr98.site/api/rooms';
 
   constructor(
     private http: HttpClient

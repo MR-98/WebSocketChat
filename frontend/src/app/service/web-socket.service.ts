@@ -17,14 +17,12 @@ export class WebSocketService {
     private dataStoreService: DataStoreService
   ) {
     this.client = new Client({
-      brokerURL: 'ws://host.docker.internal:8080/ws-chat', // Adres WebSocket backendu
+      brokerURL: 'wss://mr98.site/ws/ws-chat',
       connectHeaders: {
         Authorization: `Bearer ${this.keycloakService.getKeycloakInstance().token}`
       },
-      debug: (str) => console.log(str),
-      reconnectDelay: 0,
-      heartbeatIncoming: 4000,
-      heartbeatOutgoing: 4000,
+      reconnectDelay: 5000,
+      heartbeatOutgoing: 30000,
     });
   }
 
@@ -36,8 +34,6 @@ export class WebSocketService {
     this.client.onStompError = (frame) => {
       console.error('STOMP Error:', frame);
     };
-
-    this.client.debug = (msg) => console.log('STOMP Debug:', msg);
 
     this.client.activate();
   }

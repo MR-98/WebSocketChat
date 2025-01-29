@@ -39,7 +39,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        url: 'http://host.docker.internal:8082/',
+        url: 'https://mr98.site/auth/',
         realm: 'websocket-chat',
         clientId: 'frontend',
       },
