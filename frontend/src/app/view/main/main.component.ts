@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ChatRoomListComponent } from "../../component/chat-room-list/chat-room-list.component";
 import { ChatRoomComponent } from "../../component/chat-room/chat-room.component";
 import { WebSocketService } from "../../service/web-socket.service";
-import { NgIf } from "@angular/common";
+import { NgClass, NgIf } from "@angular/common";
 import { SidebarComponent } from "../../component/sidebar/sidebar.component";
 
 @Component({
@@ -12,12 +12,15 @@ import { SidebarComponent } from "../../component/sidebar/sidebar.component";
     ChatRoomListComponent,
     ChatRoomComponent,
     NgIf,
-    SidebarComponent
+    SidebarComponent,
+    NgClass
   ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss'
 })
 export class MainComponent {
+
+  protected chatRoomActive = false;
 
   constructor(
     protected webSocketService: WebSocketService
@@ -25,4 +28,11 @@ export class MainComponent {
     this.webSocketService.connect(() => {});
   }
 
+  onChatRoomActivated() {
+    this.chatRoomActive = true;
+  }
+
+  onChatRoomDeactivated() {
+    this.chatRoomActive = false;
+  }
 }

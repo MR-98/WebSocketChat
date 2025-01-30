@@ -1,4 +1,13 @@
-import { AfterViewInit, Component, effect, ElementRef, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  effect,
+  ElementRef,
+  EventEmitter,
+  OnDestroy,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { ChatMessage } from "../../model/chat-message";
 import { MessageComponent } from "../message/message.component";
 import { NgClass, NgForOf, NgIf } from "@angular/common";
@@ -31,7 +40,7 @@ import { MatProgressSpinner } from "@angular/material/progress-spinner";
   templateUrl: './chat-room.component.html',
   styleUrl: './chat-room.component.scss'
 })
-export class ChatRoomComponent implements AfterViewInit {
+export class ChatRoomComponent implements AfterViewInit, OnDestroy {
 
   protected currentChatRoom: ChatRoom | undefined;
   private currentSubscription: StompSubscription | undefined;
@@ -43,6 +52,7 @@ export class ChatRoomComponent implements AfterViewInit {
   protected noMoreOldMessages: boolean = false;
 
   @ViewChild('messagesContainer', { static: true }) messagesContainer!: ElementRef;
+  @Output() chatRoomClosed = new EventEmitter<null>();
 
   constructor(
     private websocketService: WebSocketService,
@@ -140,5 +150,19 @@ export class ChatRoomComponent implements AfterViewInit {
         this.oldMessagesLoading = false;
       }
     });
+  }
+
+  closeRoom() {
+    this.chatRoomClosed.emit();
+  }
+
+  ngOnDestroy() {
+    if (this.currentSubscription != undefined) {
+      this.currentSubscription.unsubscribe();
+    }
+    this.chatMessages = [];
+    this.oldMessagesLoading = false;
+    this.noMoreOldMessages = false;
+    this.currentChatRoom = undefined;
   }
 }

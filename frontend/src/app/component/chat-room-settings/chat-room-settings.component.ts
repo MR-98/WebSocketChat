@@ -15,6 +15,7 @@ import {
 } from "@angular/material/expansion";
 import { MatList, MatListItem } from "@angular/material/list";
 import { NgForOf } from "@angular/common";
+import { MatIconButton } from "@angular/material/button";
 
 @Component({
   selector: 'app-chat-room-settings',
@@ -25,7 +26,8 @@ import { NgForOf } from "@angular/common";
     MatExpansionPanelHeader,
     MatList,
     MatListItem,
-    NgForOf
+    NgForOf,
+    MatIconButton
   ],
   templateUrl: './chat-room-settings.component.html',
   styleUrl: './chat-room-settings.component.scss'
@@ -34,6 +36,7 @@ export class ChatRoomSettingsComponent {
 
   @Input() chatRoom!: ChatRoom;
   @Output() chatRoomNameUpdated = new EventEmitter<string>();
+  @Output() toggleChatRoomSettings = new EventEmitter<null>();
   readonly dialog = inject(MatDialog);
 
   constructor(
@@ -118,5 +121,9 @@ export class ChatRoomSettingsComponent {
         })
       }
     });
+  }
+
+  toggleRoomSettings() {
+    this.toggleChatRoomSettings.emit();
   }
 }

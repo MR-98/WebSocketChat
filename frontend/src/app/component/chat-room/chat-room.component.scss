@@ -1,4 +1,5 @@
 .chat-room-wrapper {
+  height: 100%;
   display: grid;
   gap: 10px;
 }
@@ -84,6 +85,26 @@
   display: flex;
   justify-content: center;
   padding: 5px;
+}
+
+.close-room-button {
+  display: none;
+}
+
+@media only screen and (max-width: 1024px) {
+  .chat-room-wrapper {
+    grid-template-columns: auto;
+  }
+
+  .chat-room-wrapper-two-columns > div {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .close-room-button {
+    display: initial;
+  }
 }
 
 

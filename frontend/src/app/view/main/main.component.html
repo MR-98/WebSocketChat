@@ -1,6 +1,17 @@
-<div class="main-view-container">
-  <app-sidebar *ngIf="webSocketService.isConnected()"></app-sidebar>
-  <app-chat-room-list *ngIf="webSocketService.isConnected()"></app-chat-room-list>
-  <app-chat-room *ngIf="webSocketService.isConnected()"></app-chat-room>
+<div class="main-view-container" [ngClass]="chatRoomActive ? 'one-row' : 'two-rows'">
+  <app-sidebar
+    [ngClass]="chatRoomActive ? 'hide-element' : ''"
+    *ngIf="webSocketService.isConnected()"
+  ></app-sidebar>
+  <app-chat-room-list
+    [ngClass]="chatRoomActive ? 'hide-element' : ''"
+    *ngIf="webSocketService.isConnected()"
+    (chatRoomActivated)="onChatRoomActivated()"
+  ></app-chat-room-list>
+  <app-chat-room
+    [ngClass]="chatRoomActive ? '' : 'hide-element'"
+    *ngIf="webSocketService.isConnected()"
+    (chatRoomClosed)="onChatRoomDeactivated()"
+  ></app-chat-room>
 <!--  <app-spinner *ngIf="webSocketService.isConnected()"></app-spinner> TODO -->
 </div>
