@@ -34,7 +34,7 @@ export class ChatRoomListElementComponent implements OnInit, OnDestroy{
 
   ngOnInit() {
     this.currentSubscription = this.webSocketService.subscribeToRoom(
-      this.chatRoom.id!!,
+      this.chatRoom.id,
       (message: ChatMessage[] | ChatMessage) => {
         if (Array.isArray(message) && message.length > 0) {
           this.lastMessage = <ChatMessage>(message.shift());

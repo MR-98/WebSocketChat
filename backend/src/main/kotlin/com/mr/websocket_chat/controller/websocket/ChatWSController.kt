@@ -25,7 +25,7 @@ class ChatWSController @Autowired constructor(
 	}
 
 	@SubscribeMapping("/chat.listen.{roomId}")
-	fun subscribeTopic(@DestinationVariable roomId: String): List<ChatMessageEntity> {
+	fun subscribeTopic(@DestinationVariable roomId: Long): List<ChatMessageEntity> {
 		LOG.debug { "SUBSCRIBE MESSAGE: $roomId" }
 		return chatMessageService.loadNewestMessagesForRoom(roomId)
 	}

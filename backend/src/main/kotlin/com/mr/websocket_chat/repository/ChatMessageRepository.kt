@@ -6,4 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface ChatMessageRepository : JpaRepository<ChatMessageEntity, Long> {
 	fun getAllByRoom_IdOrderByTimestampDesc(chatRoomId: Long, limit: Limit): List<ChatMessageEntity>
+	fun getAllByRoom_IdAndIdLessThanOrderByTimestampDesc(
+		chatRoomId: Long,
+		lessThanMessageId: Long,
+		limit: Limit
+	): List<ChatMessageEntity>
 }

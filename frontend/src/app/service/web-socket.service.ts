@@ -67,8 +67,7 @@ export class WebSocketService {
         firstName: currentUserProfile.firstName,
         lastName: currentUserProfile.lastName
       },
-      timestamp: Date.now(),
-      id: null
+      timestamp: Date.now()
     };
 
     this.client.publish({

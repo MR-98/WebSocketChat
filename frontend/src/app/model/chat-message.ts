@@ -6,5 +6,5 @@ export interface ChatMessage {
   room: ChatRoom
   sender: User
   timestamp: number
-  id?: number | null
+  id?: number
 }
