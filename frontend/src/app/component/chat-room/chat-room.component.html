@@ -1,6 +1,9 @@
 <div class="chat-room-wrapper" [ngClass]="roomSettingVisible ? 'chat-room-wrapper-two-columns' : 'chat-room-wrapper-one-column'">
   <div class="chat-room-container">
     <div class="chat-room-top-bar">
+      <button mat-icon-button (click)="closeRoom()" class="close-room-button">
+        <mat-icon>keyboard_backspace</mat-icon>
+      </button>
       {{ chatRoomName }}
       <button mat-icon-button (click)="toggleRoomSettings()">
         <mat-icon>more_horiz</mat-icon>

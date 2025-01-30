@@ -7,3 +7,18 @@
   padding: 10px;
   box-sizing: border-box;
 }
+
+@media only screen and (max-width: 800px) {
+  .main-view-container {
+    grid-template-columns: auto;
+  }
+
+  .hide-element {
+    display: none;
+  }
+
+  .two-rows {
+    grid-template-rows: 60px calc(100vh - 90px);
+  }
+
+}
