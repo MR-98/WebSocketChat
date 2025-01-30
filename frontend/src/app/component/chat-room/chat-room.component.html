@@ -17,5 +17,10 @@
       <mat-icon (click)="sendMessage()">send</mat-icon>
     </div>
   </div>
-  <app-chat-room-settings *ngIf="roomSettingVisible" [chatRoom]="currentChatRoom!!" (chatRoomNameUpdated)="updateChatRoomName($event)"></app-chat-room-settings>
+  <app-chat-room-settings
+    *ngIf="roomSettingVisible"
+    [chatRoom]="currentChatRoom!!"
+    (chatRoomNameUpdated)="updateChatRoomName($event)"
+    (toggleChatRoomSettings)="toggleRoomSettings()"
+  ></app-chat-room-settings>
 </div>
