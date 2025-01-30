@@ -15,7 +15,15 @@ class ChatMessageService @Autowired constructor(
 		chatMessageRepository.save(chatMessage)
 	}
 
-	fun loadNewestMessagesForRoom(roomId: String): List<ChatMessageEntity> {
-		return chatMessageRepository.getAllByRoom_IdOrderByTimestampDesc(roomId.toLong(), Limit.of(50))
+	fun loadNewestMessagesForRoom(roomId: Long): List<ChatMessageEntity> {
+		return chatMessageRepository.getAllByRoom_IdOrderByTimestampDesc(roomId, Limit.of(50))
+	}
+
+	fun loadOlderMessagesForRoom(roomId: Long, olderThanMessageId: Long, numberOfMessagesToLoad: Int): List<ChatMessageEntity> {
+		return chatMessageRepository.getAllByRoom_IdAndIdLessThanOrderByTimestampDesc(
+			roomId,
+			olderThanMessageId,
+			Limit.of(numberOfMessagesToLoad)
+		)
 	}
 }
