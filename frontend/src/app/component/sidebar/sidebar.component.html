@@ -18,7 +18,7 @@
   <mat-menu #menu="matMenu">
     <mat-list-item>{{ currentUserFullName }}</mat-list-item>
     <mat-divider></mat-divider>
-    <button mat-menu-item (click)="redirectToKeycloakAccountSettings()">Edytuj profil</button>
+    <button mat-menu-item disabled (click)="redirectToKeycloakAccountSettings()">Edytuj profil</button>
     <button mat-menu-item (click)="signOut()">Wyloguj</button>
   </mat-menu>
 </div>
