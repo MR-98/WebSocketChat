@@ -30,3 +30,8 @@ html, body {
   background: #004f4f;
   border-radius: 5px;
 }
+
+.mat-mdc-tooltip-trigger {
+  touch-action: auto !important;
+  -webkit-user-drag: auto !important;
+}

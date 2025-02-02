@@ -10,6 +10,7 @@ import java.sql.Timestamp
 @Table(name = "messages")
 class ChatMessageEntity(
 	@Convert(converter = CryptoConverter::class)
+	@Column(columnDefinition = "TEXT")
 	val data: String,
 	@ManyToOne
 	@JoinColumn(name = "chat_room_id")
