@@ -7,6 +7,7 @@ import com.mr.websocket_chat.domain.jpa.UserEntity
 import com.mr.websocket_chat.repository.ChatMessageRepository
 import com.mr.websocket_chat.repository.ChatRoomRepository
 import com.mr.websocket_chat.repository.InvitationRepository
+import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
@@ -21,6 +22,7 @@ class DatabaseCleaner @Autowired constructor(
 ){
 
 	companion object {
+		private val LOG = KotlinLogging.logger{}
 		private val firstUser = UserEntity(
 			"user1",
 			"Jan"	,
@@ -113,13 +115,15 @@ class DatabaseCleaner @Autowired constructor(
 		)
 	}
 
-	@Scheduled(cron = "0 0 * * * *")
+	@Scheduled(cron = "0 0/5 * * * *")
 	fun initDatabaseCleanup() {
+		LOG.info { "===DATABASE CLEANUP START===" }
 		cleanRoomsTable()
 
 		initRoomsTable()
 		initInvitations()
 		initMessages()
+		LOG.info { "===DATABASE CLEANUP FINISH===" }
 	}
 
 	private fun cleanRoomsTable() {
