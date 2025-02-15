@@ -19,6 +19,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 class WebSocketConfig @Autowired constructor(
 	private val webSocketSecurityInterceptor: WebSocketSecurityInterceptor,
 	@Value("\${websocket-chat.hostname}") private val hostname: String,
+	@Value("\${production.environment}") private val productionEnvironment: Boolean,
 ): WebSocketMessageBrokerConfigurer {
 
 	override fun configureMessageBroker(config: MessageBrokerRegistry) {
@@ -29,7 +30,13 @@ class WebSocketConfig @Autowired constructor(
 	}
 
 	override fun registerStompEndpoints(registry: StompEndpointRegistry) {
-		registry.addEndpoint("/ws-chat").setAllowedOrigins(hostname)
+		registry.addEndpoint("/ws-chat").apply {
+			if(productionEnvironment) {
+				setAllowedOrigins(hostname)
+			} else {
+				setAllowedOrigins("*")
+			}
+		}
 	}
 
 	override fun configureClientInboundChannel(registration: ChannelRegistration) {
