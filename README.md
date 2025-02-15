@@ -1,4 +1,4 @@
-![Logo](https://raw.githubusercontent.com/MR-98/WebSocketChat/refs/heads/develop/docs/banner.png)
+![Logo](https://raw.githubusercontent.com/MR-98/WebSocketChat/refs/heads/develop/docs/images/banner.png)
 # WebSocket Chat
 A web application that allows for real-time communication. The user can join existing rooms or create their own and invite others to them. The use of WebSockets means that new messages are delivered almost immediately. All communication is secured using JWT and Keycloak so that it is not possible to send or receive messages from rooms that you do not belong to. The application resembles Facebook Messenger or Discord in use.
 ## Features
@@ -13,6 +13,9 @@ A web application that allows for real-time communication. The user can join exi
 ## Demo
 [Live Demo](https://mr98.site/chat)
 
+![Example1](https://raw.githubusercontent.com/MR-98/WebSocketChat/refs/heads/develop/docs/images/example1.png)
+![Example2](https://raw.githubusercontent.com/MR-98/WebSocketChat/refs/heads/develop/docs/images/example3.png)
+![Example3](https://raw.githubusercontent.com/MR-98/WebSocketChat/refs/heads/develop/docs/images/example4.png)
 
 ## Tech Stack
 

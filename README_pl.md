@@ -1,4 +1,4 @@
-![Logo](https://raw.githubusercontent.com/MR-98/WebSocketChat/refs/heads/develop/docs/banner.png)
+![Logo](https://raw.githubusercontent.com/MR-98/WebSocketChat/refs/heads/develop/docs/images/banner.png)
 # WebSocket Chat
 
 Aplikacja webowa pozwalająca na komunikację w czasie rzeczywistym. Użytkownik może dołączać do istniejących pokoi lub tworzyć własne i zapraszać do nich innych. Użycie WebSocket'ów powoduje, że nowe wiadomości są dostarczane niemal natychmiast. Cała komunikacja jest zabezpieczona za pomocą JWT i Keycloak'a tak aby nie dało się wysyłać lub odbierać wiadomości z pokoi do których się nie należy. Aplikacja przypomina w użyciu Facebook Messenger lub Discord.
