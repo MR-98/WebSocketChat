@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/chat")
-@CrossOrigin
 class ChatRestController @Autowired constructor(
     private val chatMessageService: ChatMessageService
 ){
