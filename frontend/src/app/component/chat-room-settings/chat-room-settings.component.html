@@ -1,0 +1,37 @@
+<div class="chat-room-settings-container">
+  <button class="toggle-room-settings-button" mat-icon-button (click)="toggleRoomSettings()">
+    <mat-icon>keyboard_backspace</mat-icon>
+  </button>
+  <div class="chat-room-name">
+    {{ chatRoom.name }}
+  </div>
+  <div class="settings-container">
+    <div class="settings-row" (click)="changeRoomName()">
+      <mat-icon>edit</mat-icon>
+      <span>Zmień nazwę</span>
+    </div>
+    <div class="settings-row" (click)="showInviteDialog()">
+      <mat-icon>person_add</mat-icon>
+      <span>Zaproś użytkownika</span>
+    </div>
+    <div class="settings-row" (click)="leaveRoom()">
+      <mat-icon>exit_to_app</mat-icon>
+      <span>Opuść pokój</span>
+    </div>
+    <div class="settings-row" (click)="deleteRoom()">
+      <mat-icon>delete</mat-icon>
+      <span>Usuń pokój</span>
+    </div>
+  </div>
+  <mat-expansion-panel class="mat-elevation-z0 remove-mat-expansion-panel-padding">
+    <mat-expansion-panel-header>
+      <mat-icon>people</mat-icon>
+      <span>Lista użytkowników</span>
+    </mat-expansion-panel-header>
+    <mat-list>
+      <mat-list-item *ngFor="let user of chatRoom.users">
+        {{user.firstName}} {{user.lastName}}
+      </mat-list-item>
+    </mat-list>
+  </mat-expansion-panel>
+</div>

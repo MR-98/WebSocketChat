@@ -1,0 +1,29 @@
+<div class="chat-room-wrapper" [ngClass]="roomSettingVisible ? 'chat-room-wrapper-two-columns' : 'chat-room-wrapper-one-column'">
+  <div class="chat-room-container">
+    <div class="chat-room-top-bar">
+      <button mat-icon-button (click)="closeRoom()" class="close-room-button">
+        <mat-icon>keyboard_backspace</mat-icon>
+      </button>
+      {{ chatRoomName }}
+      <button mat-icon-button (click)="toggleRoomSettings()">
+        <mat-icon>more_horiz</mat-icon>
+      </button>
+    </div>
+    <div class="chat-room-messages-container" #messagesContainer>
+      <app-message *ngFor="let chatMessage of chatMessages" [chatMessage]="chatMessage"></app-message>
+      <div class="chat-room-messages-spinner-wrapper" *ngIf="oldMessagesLoading">
+        <mat-spinner [diameter]="30"></mat-spinner>
+      </div>
+    </div>
+    <div class="chat-room-input-container">
+      <textarea rows="1" [(ngModel)]="message" (keyup.enter)="sendMessage()" [disabled]="currentChatRoom == undefined"></textarea>
+      <mat-icon (click)="sendMessage()">send</mat-icon>
+    </div>
+  </div>
+  <app-chat-room-settings
+    *ngIf="roomSettingVisible"
+    [chatRoom]="currentChatRoom!!"
+    (chatRoomNameUpdated)="updateChatRoomName($event)"
+    (toggleChatRoomSettings)="toggleRoomSettings()"
+  ></app-chat-room-settings>
+</div>

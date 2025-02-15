@@ -28,6 +28,6 @@ COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 #### copy artifact build from the 'build environment'
 COPY --from=build /usr/src/app/dist/websocket-chat/browser /usr/share/nginx/html
 
-EXPOSE 80
+EXPOSE 8081
 
 CMD ["nginx", "-g", "daemon off;"]

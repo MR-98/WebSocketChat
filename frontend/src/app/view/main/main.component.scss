@@ -1,0 +1,28 @@
+.main-view-container {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 60px 300px auto;
+  gap: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+@media only screen and (max-width: 800px) {
+  app-chat-room-list {
+    max-width: calc(100vw - 20px);
+  }
+
+  .main-view-container {
+    grid-template-columns: auto;
+  }
+
+  .hide-element {
+    display: none;
+  }
+
+  .two-rows {
+    grid-template-rows: 60px calc(100vh - 90px);
+  }
+
+}

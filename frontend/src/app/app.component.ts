@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { KeycloakService } from "keycloak-angular";
+import { KeycloakProfile } from "keycloak-js";
+import { DataStoreService } from "./service/data-store.service";
 
 @Component({
   selector: 'app-root',
@@ -9,5 +12,21 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'websocket-chat';
+
+  constructor(
+    private keycloakService: KeycloakService,
+    private dataStoreService: DataStoreService
+  ) {
+    this.keycloakService.loadUserProfile().then((userProfile: KeycloakProfile) => {
+      this.dataStoreService.setUserProfile(
+        {
+          username: userProfile.username!!,
+          firstName: userProfile.firstName!!,
+          lastName: userProfile.lastName!!,
+          fullName: `${userProfile.firstName!!} ${userProfile.lastName!!}`
+        }
+      )
+    })
+  }
+
 }

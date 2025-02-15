@@ -1,0 +1,14 @@
+<div class="dialog-wrapper">
+  <h4 mat-dialog-title>Zmień nazwę pokoju</h4>
+  <mat-dialog-content>
+    <mat-form-field>
+      <mat-label>Nazwa pokoju</mat-label>
+      <input matInput [(ngModel)]="chatRoomNameValue">
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close (click)="onCancel()">Anuluj</button>
+    <button mat-button mat-dialog-close (click)="onApply()" cdkFocusInitial>Zapisz</button>
+  </mat-dialog-actions>
+</div>
+

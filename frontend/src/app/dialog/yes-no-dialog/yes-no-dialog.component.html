@@ -1,0 +1,13 @@
+<div class="dialog-wrapper">
+  <h4 mat-dialog-title>{{titleText}}</h4>
+  <mat-dialog-content>
+    <span>
+      {{contentText}}
+    </span>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close (click)="onNo()">{{noButtonText}}</button>
+    <button mat-button mat-dialog-close (click)="onYes()">{{yesButtonText}}</button>
+  </mat-dialog-actions>
+</div>
+

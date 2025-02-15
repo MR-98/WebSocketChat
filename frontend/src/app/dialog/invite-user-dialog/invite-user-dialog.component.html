@@ -1,0 +1,19 @@
+<div class="dialog-wrapper">
+  <h4 mat-dialog-title>Zaproś użytkownika</h4>
+  <mat-dialog-content>
+    <mat-form-field>
+      <mat-label>Użytkownik</mat-label>
+      <input type="text" matInput [matAutocomplete]="auto" [formControl]="myControl">
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)" [displayWith]="displayFn">
+        <mat-option *ngFor="let user of options | async" [value]="user">
+          {{user.firstName}} {{user.lastName}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close (click)="onCancel()">Anuluj</button>
+    <button mat-button mat-dialog-close (click)="onApply()" cdkFocusInitial>Zaproś</button>
+  </mat-dialog-actions>
+</div>
+

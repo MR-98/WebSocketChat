@@ -1,0 +1,17 @@
+<div class="chat-room-list-container">
+  <div class="chat-room-list-top-bar">
+    <span>Pokoje</span>
+    <button mat-icon-button (click)="createNewRoom()">
+      <mat-icon>
+        add_circle_outline
+      </mat-icon>
+    </button>
+  </div>
+  <div class="chat-room-list">
+    <app-chat-room-list-element
+      *ngFor="let chatRoom of chatRoomList"
+      [chatRoom]="chatRoom"
+      (click)="changeActiveChatRoom(chatRoom)">
+    </app-chat-room-list-element>
+  </div>
+</div>

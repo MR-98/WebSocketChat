@@ -1,0 +1,26 @@
+.dialog-wrapper {
+  color: white;
+}
+
+mat-dialog-content {
+  width: 100%;
+  max-height: 500px;
+}
+
+.invitation-parent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.invitation-buttons {
+  display: flex;
+  flex-direction: row;
+  height: 50px;
+}
+
+.invitation-user-wrapper, .invitation-room-wrapper {
+  font-weight: bold;
+  text-wrap: nowrap;
+}

@@ -1,0 +1,24 @@
+<div class="side-bar-container">
+  <button
+    mat-icon-button
+    [disabled]="!isReceivingInvitationsEnabled()"
+    (click)="showInvitationsDialog()"
+    matBadge="1"
+    matBadgeSize="small"
+    [matBadgeHidden]="invitations.length == 0 || !isReceivingInvitationsEnabled()"
+  >
+    <mat-icon>local_post_office</mat-icon>
+  </button>
+  <button mat-icon-button (click)="showSettingsDialog()">
+    <mat-icon>settings</mat-icon>
+  </button>
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>person</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <mat-list-item>{{ currentUserFullName }}</mat-list-item>
+    <mat-divider></mat-divider>
+    <button mat-menu-item (click)="redirectToKeycloakAccountSettings()">Edytuj profil</button>
+    <button mat-menu-item (click)="signOut()">Wyloguj</button>
+  </mat-menu>
+</div>

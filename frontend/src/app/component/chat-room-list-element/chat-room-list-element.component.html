@@ -1,0 +1,6 @@
+<div class="chat-room-list-element" [ngClass]="isCurrentlySelectedChatRoom() ? 'selected-chat-room-highlight' : ''">
+  {{chatRoom.name}}
+  <div class="chat-room-list-element-last-message">
+    <span>{{getLastMessageText()}}</span>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<div class="dialog-wrapper">
+  <h4 mat-dialog-title>Ustawienia</h4>
+  <mat-dialog-content>
+    <div class="settings-row">
+      <span>Odbieranie zaproszeń</span>
+      <mat-slide-toggle [color]="'cyan'" [(ngModel)]="invitationsEnabled" (ngModelChange)="onInvitationsSettingsChange()"></mat-slide-toggle>
+    </div>
+    <div class="settings-row">
+      <span>Ciemny motyw</span>
+      <mat-slide-toggle disabled [(ngModel)]="darkTheme" (ngModelChange)="onThemeSettingsChange()"></mat-slide-toggle>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close cdkFocusInitial>Zamknij</button>
+  </mat-dialog-actions>
+</div>
+
