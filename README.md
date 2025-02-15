@@ -30,7 +30,7 @@ A web application that allows for real-time communication. The user can join exi
 **Communication:** WebSockets, REST
 
 
-## Uruchomienie lokalne
+## Local deployment
 
 To run the project you must have installed and configured:
 - Java 17
