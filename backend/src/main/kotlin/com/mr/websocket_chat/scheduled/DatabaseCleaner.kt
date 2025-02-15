@@ -38,84 +38,9 @@ class DatabaseCleaner @Autowired constructor(
 			"Anna",
 			"Testowa"
 		)
-		private val firstRoom = ChatRoomEntity(
-			"Pokój 1",
-			users = mutableSetOf(
-				firstUser,
-				secondUser
-			),
-			id = 0
-		)
-		private val secondRoom = ChatRoomEntity(
-			"Pokój 2",
-			users = mutableSetOf(
-				firstUser,
-				thirdUser
-			),
-			id = 0
-		)
-		private val thirdRoom = ChatRoomEntity(
-			"Pokój 3",
-			users = mutableSetOf(
-				secondUser,
-				thirdUser
-			),
-			id = 0
-		)
-		private val firstInvitation = InvitationEntity(
-			firstRoom,
-			thirdUser,
-			firstUser
-		)
-		private val secondInvitation = InvitationEntity(
-			secondRoom,
-			secondUser,
-			firstUser
-		)
-		private val thirdInvitation = InvitationEntity(
-			thirdRoom,
-			firstUser,
-			secondUser
-		)
-		private val firstMessage = ChatMessageEntity(
-			"Bardzo podoba mi się ta aplikacja 💗",
-			firstRoom,
-			firstUser,
-			Timestamp(Date().time - 3 * 60 * 1000) // subtract 3 minutes
-		)
-		private val secondMessage = ChatMessageEntity(
-			"Mi też, powinniśmy zatrudnić developera który ją napisał 👍",
-			firstRoom,
-			secondUser,
-			Timestamp(Date().time)
-		)
-		private val thirdMessage = ChatMessageEntity(
-			"Testowa wiadomość 😀",
-			secondRoom,
-			firstUser,
-			Timestamp(Date().time - 3 * 60 * 1000) // subtract 3 minutes
-		)
-		private val fourthMessage = ChatMessageEntity(
-			"Testowa odpowiedź 😅",
-			secondRoom,
-			thirdUser,
-			Timestamp(Date().time)
-		)
-		private val fifthMessage = ChatMessageEntity(
-			"Cześć, jak się masz?",
-			thirdRoom,
-			secondUser,
-			Timestamp(Date().time - 3 * 60 * 1000) // subtract 3 minutes
-		)
-		private val sixthMessage = ChatMessageEntity(
-			"Cześć, dobrze, a Ty?",
-			thirdRoom,
-			thirdUser,
-			Timestamp(Date().time)
-		)
 	}
 
-	@Scheduled(cron = "0 0/5 * * * *")
+	@Scheduled(cron = "0 0 * * * *")
 	fun initDatabaseCleanup() {
 		LOG.info { "===DATABASE CLEANUP START===" }
 		cleanRoomsTable()
@@ -131,7 +56,31 @@ class DatabaseCleaner @Autowired constructor(
 	}
 
 	private fun initRoomsTable() {
-		chatRoomRepository.saveAll(
+		val firstRoom = ChatRoomEntity(
+			"Pokój 1",
+			users = mutableSetOf(
+				firstUser,
+				secondUser
+			),
+			id = 0
+		)
+		val secondRoom = ChatRoomEntity(
+			"Pokój 2",
+			users = mutableSetOf(
+				firstUser,
+				thirdUser
+			),
+			id = 0
+		)
+		val thirdRoom = ChatRoomEntity(
+			"Pokój 3",
+			users = mutableSetOf(
+				secondUser,
+				thirdUser
+			),
+			id = 0
+		)
+		chatRoomRepository.saveAllAndFlush(
 			listOf(
 				firstRoom,
 				secondRoom,
@@ -141,6 +90,24 @@ class DatabaseCleaner @Autowired constructor(
 	}
 
 	private fun initInvitations() {
+		val firstRoom = chatRoomRepository.findByName("Pokój 1")!!
+		val secondRoom = chatRoomRepository.findByName("Pokój 2")!!
+		val thirdRoom = chatRoomRepository.findByName("Pokój 3")!!
+		val firstInvitation = InvitationEntity(
+			firstRoom,
+			thirdUser,
+			firstUser
+		)
+		val secondInvitation = InvitationEntity(
+			secondRoom,
+			secondUser,
+			firstUser
+		)
+		val thirdInvitation = InvitationEntity(
+			thirdRoom,
+			firstUser,
+			secondUser
+		)
 		invitationRepository.saveAll(
 			listOf(
 				firstInvitation,
@@ -151,7 +118,46 @@ class DatabaseCleaner @Autowired constructor(
 	}
 
 	private fun initMessages() {
-		chatMessageRepository.saveAll(
+		val firstRoom = chatRoomRepository.findByName("Pokój 1")!!
+		val secondRoom = chatRoomRepository.findByName("Pokój 2")!!
+		val thirdRoom = chatRoomRepository.findByName("Pokój 3")!!
+		val firstMessage = ChatMessageEntity(
+			"Bardzo podoba mi się ta aplikacja 💗",
+			firstRoom,
+			firstUser,
+			Timestamp(Date().time - 3 * 60 * 1000) // subtract 3 minutes
+		)
+		val secondMessage = ChatMessageEntity(
+			"Mi też, powinniśmy zatrudnić developera który ją napisał 👍",
+			firstRoom,
+			secondUser,
+			Timestamp(Date().time)
+		)
+		val thirdMessage = ChatMessageEntity(
+			"Testowa wiadomość 😀",
+			secondRoom,
+			firstUser,
+			Timestamp(Date().time - 3 * 60 * 1000) // subtract 3 minutes
+		)
+		val fourthMessage = ChatMessageEntity(
+			"Testowa odpowiedź 😅",
+			secondRoom,
+			thirdUser,
+			Timestamp(Date().time)
+		)
+		val fifthMessage = ChatMessageEntity(
+			"Cześć, jak się masz?",
+			thirdRoom,
+			secondUser,
+			Timestamp(Date().time - 3 * 60 * 1000) // subtract 3 minutes
+		)
+		val sixthMessage = ChatMessageEntity(
+			"Cześć, dobrze, a Ty?",
+			thirdRoom,
+			thirdUser,
+			Timestamp(Date().time)
+		)
+		chatMessageRepository.saveAllAndFlush(
 			listOf(
 				firstMessage,
 				secondMessage,
