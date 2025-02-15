@@ -44,6 +44,20 @@ Steps:
 git clone https://github.com/MR-98/WebSocketChat.git
 cd WebSocketChat
 ```
+2. In the `backend` folder, execute
+```bash
+mvn clean install
+```
+3. In the `docker` folder, execute
+```bash
+docker-compose -f .\docker-compose-dev.yml --env-file=dev.env up -d --build
+```
+4. In the `frontend` folder, execute
+```bash
+npm i
+ng serve --serve-path chat
+```
+5. The frontend is available at `localhost:4200/chat`
 
 ## Roadmap
 
