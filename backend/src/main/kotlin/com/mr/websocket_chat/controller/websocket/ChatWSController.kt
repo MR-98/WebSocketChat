@@ -1,6 +1,8 @@
 package com.mr.websocket_chat.controller.websocket
 
-import com.mr.websocket_chat.domain.jpa.ChatMessageEntity
+import com.mr.websocket_chat.domain.exception.UserNotFoundException
+import com.mr.websocket_chat.domain.rest.ChatMessageDTO
+import com.mr.websocket_chat.domain.rest.ChatMessageToSaveDTO
 import com.mr.websocket_chat.service.ChatMessageService
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,16 +27,21 @@ class ChatWSController @Autowired constructor(
 	}
 
 	@SubscribeMapping("/chat.listen.{roomId}")
-	fun subscribeTopic(@DestinationVariable roomId: Long): List<ChatMessageEntity> {
+	fun subscribeTopic(@DestinationVariable roomId: Long): List<ChatMessageDTO> {
 		LOG.debug { "SUBSCRIBE MESSAGE: $roomId" }
 		return chatMessageService.loadNewestMessagesForRoom(roomId)
 	}
 
 	@MessageMapping("/chat.sendMessage")
-	fun sendMessage(@Payload message: ChatMessageEntity) {
-		LOG.debug { "RECEIVED MESSAGE: " + message.data + " FROM: " + message.sender}
-		chatMessageService.saveMessage(message)
-		messagingTemplate.convertAndSend("/topic/chat.listen." + message.room.id, message)
+	fun sendMessage(@Payload message: ChatMessageToSaveDTO) {
+		LOG.debug { "RECEIVED MESSAGE: " + message.data + " FROM: " + message.senderUsername}
+		try {
+			chatMessageService.saveMessage(message)
+			messagingTemplate.convertAndSend("/topic/chat.listen." + message.roomId, message)
+		} catch (e: UserNotFoundException) {
+			// TODO: error propagation to frontend
+		}
+
 	}
 
 }

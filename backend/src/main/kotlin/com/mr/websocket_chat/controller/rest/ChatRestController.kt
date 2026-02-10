@@ -1,7 +1,7 @@
 package com.mr.websocket_chat.controller.rest
 
-import com.mr.websocket_chat.domain.jpa.ChatMessageEntity
-import com.mr.websocket_chat.domain.rest.LoadOldMessagesRequestBody
+import com.mr.websocket_chat.domain.rest.ChatMessageDTO
+import com.mr.websocket_chat.domain.rest.LoadOldMessagesRequestDTO
 import com.mr.websocket_chat.service.ChatMessageService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -14,7 +14,7 @@ class ChatRestController @Autowired constructor(
 ){
 
     @PostMapping("/loadOldMessages")
-    fun loadOldMessagesForRoom(@RequestBody body: LoadOldMessagesRequestBody): ResponseEntity<List<ChatMessageEntity>> {
+    fun loadOldMessagesForRoom(@RequestBody body: LoadOldMessagesRequestDTO): ResponseEntity<List<ChatMessageDTO>> {
         return ResponseEntity.ok(
             chatMessageService.loadOlderMessagesForRoom(
                 body.roomId,

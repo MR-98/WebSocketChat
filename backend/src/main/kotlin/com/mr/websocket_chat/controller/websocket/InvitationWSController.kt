@@ -1,6 +1,7 @@
 package com.mr.websocket_chat.controller.websocket
 
-import com.mr.websocket_chat.domain.jpa.InvitationEntity
+import com.mr.websocket_chat.domain.rest.InvitationDTO
+import com.mr.websocket_chat.domain.rest.InvitationToSaveDTO
 import com.mr.websocket_chat.service.InvitationService
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,15 +25,15 @@ class InvitationWSController @Autowired constructor(
 	}
 
 	@SubscribeMapping("/invitation.listen.{username}")
-	fun subscribeTopic(@DestinationVariable username: String): List<InvitationEntity> {
+	fun subscribeTopic(@DestinationVariable username: String): List<InvitationDTO> {
 		LOG.debug { "SUBSCRIBE INVITATION: $username" }
 		return invitationService.loadInvitationsForUser(username)
 	}
 
 	@MessageMapping("/invitation.sendInvitation")
-	fun sendInvitation(@Payload invitation: InvitationEntity) {
-		LOG.debug { "RECEIVED INVITATION FOR: " + invitation.invitedUser + " TO JOIN ROOM: " + invitation.room.id}
-		invitationService.saveInvitation(invitation)
-		messagingTemplate.convertAndSend("/topic/invitation.listen." + invitation.invitedUser.username, invitation)
+	fun sendInvitation(@Payload invitation: InvitationToSaveDTO) {
+		LOG.debug { "RECEIVED INVITATION FOR: " + invitation.invitedUser + " TO JOIN ROOM: " + invitation.roomId}
+		invitationService.saveInvitation(invitation, "user1") // TODO: fix
+		messagingTemplate.convertAndSend("/topic/invitation.listen." + invitation.invitedUser, invitation)
 	}
 }

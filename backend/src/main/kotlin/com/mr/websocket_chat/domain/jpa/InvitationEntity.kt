@@ -19,5 +19,5 @@ class InvitationEntity (
 	val invitingUser: UserEntity,
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	val id: Long = 0,
+	val id: Long? = null,
 )

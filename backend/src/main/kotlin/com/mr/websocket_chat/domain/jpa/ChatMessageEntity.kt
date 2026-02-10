@@ -22,5 +22,5 @@ class ChatMessageEntity(
 	val timestamp: Timestamp,
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	val id: Long = 0,
+	val id: Long? = null,
 )

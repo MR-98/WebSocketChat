@@ -1,6 +1,6 @@
 package com.mr.websocket_chat.controller.rest
 
-import com.mr.websocket_chat.domain.jpa.UserEntity
+import com.mr.websocket_chat.domain.rest.UserDTO
 import com.mr.websocket_chat.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
@@ -12,7 +12,7 @@ class UserRestController @Autowired constructor(
 ){
 
 	@GetMapping("/search")
-	fun searchUsers(@RequestParam query: String): List<UserEntity> {
+	fun searchUsers(@RequestParam query: String): List<UserDTO> {
 		return userService.searchUsers(query)
 	}
 }
