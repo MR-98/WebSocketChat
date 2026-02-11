@@ -3,24 +3,21 @@ package com.mr.websocket_chat.controller.rest
 import com.mr.websocket_chat.domain.exception.InvitationNotFoundException
 import com.mr.websocket_chat.domain.rest.ChatRoomDTO
 import com.mr.websocket_chat.domain.rest.UserDTO
-import com.mr.websocket_chat.service.AuthUtils
 import com.mr.websocket_chat.service.InvitationService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/invitations")
 class InvitationRestController @Autowired constructor(
-	private val authUtils: AuthUtils,
 	private val invitationService: InvitationService
 ){
 
 	@PostMapping("/accept/{roomId}")
-	fun acceptInvitation(@PathVariable roomId: Long): ResponseEntity<ChatRoomDTO> {
-		val currentlyAuthenticatedUsername = authUtils.getCurrentlyAuthenticatedUsername()
-			?: return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+	fun acceptInvitation(@PathVariable roomId: Long, authentication: Authentication): ResponseEntity<ChatRoomDTO> {
+		val currentlyAuthenticatedUsername = authentication.name
 
 		try {
 			val newRoom = invitationService.acceptInvitationAndReturnNewRoom(roomId, currentlyAuthenticatedUsername)
@@ -43,9 +40,8 @@ class InvitationRestController @Autowired constructor(
 	}
 
 	@DeleteMapping("/reject/{roomId}")
-	fun rejectInvitation(@PathVariable roomId: Long): ResponseEntity<String> {
-		val currentlyAuthenticatedUsername = authUtils.getCurrentlyAuthenticatedUsername()
-			?: return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+	fun rejectInvitation(@PathVariable roomId: Long, authentication: Authentication): ResponseEntity<String> {
+		val currentlyAuthenticatedUsername = authentication.name
 
 		try {
 		    invitationService.rejectInvitation(roomId, currentlyAuthenticatedUsername)

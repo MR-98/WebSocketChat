@@ -14,10 +14,10 @@ class UserRepositoryTest(@Autowired val entityManager: TestEntityManager, @Autow
 
 	@BeforeEach
 	fun setUp() {
-		entityManager.persist(UserEntity("username1", "Adam", "Kowalski", mutableListOf()))
-		entityManager.persist(UserEntity("username2", "Jan", "Kowalski", mutableListOf()))
-		entityManager.persist(UserEntity("username3", "Jan", "Testowy", mutableListOf()))
-		entityManager.persist(UserEntity("username4", "Abc", "Abc", mutableListOf()))
+		entityManager.persist(UserEntity("username1", "Adam", "Kowalski", "Password", mutableListOf()))
+		entityManager.persist(UserEntity("username2", "Jan", "Kowalski", "Password", mutableListOf()))
+		entityManager.persist(UserEntity("username3", "Jan", "Testowy", "Password", mutableListOf()))
+		entityManager.persist(UserEntity("username4", "Abc", "Abc", "Password", mutableListOf()))
 	}
 
 

@@ -1,12 +1,9 @@
 package com.mr.websocket_chat.interceptor.handler
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.mr.websocket_chat.domain.jpa.ChatMessageEntity
-import com.mr.websocket_chat.domain.jpa.InvitationEntity
-import com.mr.websocket_chat.domain.rest.ChatMessageDTO
+import com.mr.websocket_chat.config.jwt.JwtService
 import com.mr.websocket_chat.domain.rest.ChatMessageToSaveDTO
 import com.mr.websocket_chat.domain.rest.InvitationToSaveDTO
-import com.mr.websocket_chat.service.AuthUtils
 import com.mr.websocket_chat.service.ChatRoomService
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,8 +14,8 @@ import org.springframework.stereotype.Component
 
 @Component
 class MessageHandler @Autowired constructor(
-	private val authUtils: AuthUtils,
-	private val chatRoomService: ChatRoomService
+	private val chatRoomService: ChatRoomService,
+	private val jwtService: JwtService
 ): WebSocketMessageHandler {
 
 	companion object {
@@ -27,8 +24,9 @@ class MessageHandler @Autowired constructor(
 
 	override fun handleMessage(message: Message<*>): Message<*>? {
 		val headerAccessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor::class.java) ?: return null
-		val principal = authUtils.getPrincipalFromAuthorizationHeader(headerAccessor) ?: return null
-		val subscriberUsername = authUtils.getUsernameFromPrincipal(principal)
+		val authHeader = headerAccessor.getFirstNativeHeader("Authorization")
+		val token = jwtService.extractTokenFromHeader(authHeader) ?: return null
+		val subscriberUsername = jwtService.getUsernameFromToken(token)
 		val destination = headerAccessor.destination
 		if(subscriberUsername.isNullOrEmpty() || (message.payload as ByteArray).isEmpty() || destination.isNullOrEmpty()) {
 			return null

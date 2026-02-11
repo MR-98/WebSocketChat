@@ -1,19 +1,23 @@
 package com.mr.websocket_chat.config
 
+import com.mr.websocket_chat.config.jwt.JwtAuthenticationFilter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.web.cors.CorsConfiguration
 
 
 @Configuration
+@EnableWebSecurity
 class SecurityConfig @Autowired constructor(
+	private val jwtAuthenticationFilter: JwtAuthenticationFilter,
 	@Value("\${production.environment}") private val productionEnvironment: Boolean,
 ){
 
@@ -29,27 +33,19 @@ class SecurityConfig @Autowired constructor(
 							configuration.addAllowedMethod(HttpMethod.PATCH)
 							configuration
 						}
-					}
+					}.csrf { csrf -> csrf.disable() }
 				}
 			}
-			.sessionManagement {session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
 			.authorizeHttpRequests { authorize ->
 				authorize
+					.requestMatchers("/api/auth/**").permitAll()
 					.requestMatchers("/ws-chat/**").permitAll()
+					.requestMatchers("/error").permitAll()
 					.anyRequest().authenticated()
 			}
-			.oauth2ResourceServer { oauth2 ->
-				oauth2.jwt { jwt ->
-					jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())
-				}
-			}
-		return http.build()
-	}
+			.sessionManagement {session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
+			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
 
-	@Bean
-	fun jwtAuthenticationConverter(): JwtAuthenticationConverter {
-		val converter = JwtAuthenticationConverter()
-		converter.setJwtGrantedAuthoritiesConverter(KeycloakRoleConverter())
-		return converter
+		return http.build()
 	}
 }

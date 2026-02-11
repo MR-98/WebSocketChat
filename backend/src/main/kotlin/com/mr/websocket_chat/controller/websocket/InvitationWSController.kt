@@ -10,6 +10,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.messaging.simp.annotation.SubscribeMapping
+import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Controller
 
 @Controller
@@ -31,9 +32,10 @@ class InvitationWSController @Autowired constructor(
 	}
 
 	@MessageMapping("/invitation.sendInvitation")
-	fun sendInvitation(@Payload invitation: InvitationToSaveDTO) {
+	fun sendInvitation(@Payload invitation: InvitationToSaveDTO, authentication: Authentication) {
+		val currentlyAuthenticatedUsername = authentication.name
 		LOG.debug { "RECEIVED INVITATION FOR: " + invitation.invitedUser + " TO JOIN ROOM: " + invitation.roomId}
-		invitationService.saveInvitation(invitation, "user1") // TODO: fix
+		invitationService.saveInvitation(invitation, currentlyAuthenticatedUsername)
 		messagingTemplate.convertAndSend("/topic/invitation.listen." + invitation.invitedUser, invitation)
 	}
 }

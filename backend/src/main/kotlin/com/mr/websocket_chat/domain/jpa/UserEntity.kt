@@ -10,6 +10,8 @@ class UserEntity (
 	val username: String,
 	val firstName: String,
 	val lastName: String,
+	@Column(nullable = false)
+	val password: String = "",
 	@JsonIgnoreProperties("users")
 	@ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
 	val rooms: MutableList<ChatRoomEntity> = mutableListOf()

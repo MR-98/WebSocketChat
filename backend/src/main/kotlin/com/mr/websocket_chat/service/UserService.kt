@@ -11,6 +11,21 @@ class UserService @Autowired constructor(
 	private val userRepository: UserRepository
 ){
 
+	fun createUser(username: String, firstName: String, lastName: String, encodedPassword: String): UserEntity {
+		val user = UserEntity(
+			username = username,
+			firstName = firstName,
+			lastName = lastName,
+			password = encodedPassword
+		)
+		userRepository.save(user)
+		return user
+	}
+
+	fun existsByUsername(username: String): Boolean {
+		return userRepository.findByUsername(username) != null
+	}
+
 	fun findByUsername(username: String): UserEntity? {
 		return userRepository.findByUsername(username)
 	}
