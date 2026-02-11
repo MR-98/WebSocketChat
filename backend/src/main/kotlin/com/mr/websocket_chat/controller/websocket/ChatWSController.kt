@@ -36,8 +36,8 @@ class ChatWSController @Autowired constructor(
 	fun sendMessage(@Payload message: ChatMessageToSaveDTO) {
 		LOG.debug { "RECEIVED MESSAGE: " + message.data + " FROM: " + message.senderUsername}
 		try {
-			chatMessageService.saveMessage(message)
-			messagingTemplate.convertAndSend("/topic/chat.listen." + message.roomId, message)
+			val savedMessage = chatMessageService.saveMessage(message)
+			messagingTemplate.convertAndSend("/topic/chat.listen." + savedMessage.room.id, savedMessage)
 		} catch (e: UserNotFoundException) {
 			// TODO: error propagation to frontend
 		}

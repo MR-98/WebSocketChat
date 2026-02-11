@@ -22,17 +22,38 @@ class ChatMessageService @Autowired constructor(
 	private val userRepository: UserRepository
 ) {
 
-	fun saveMessage(chatMessage: ChatMessageToSaveDTO) {
+	fun saveMessage(chatMessage: ChatMessageToSaveDTO): ChatMessageDTO {
 		val room = chatRoomRepository.getReferenceById(chatMessage.roomId)
 		val sender = userRepository.findByUsername(chatMessage.senderUsername)
 			?: throw UserNotFoundException()
-		chatMessageRepository.save(
+		val messageEntity = chatMessageRepository.save(
 			ChatMessageEntity(
                 data = chatMessage.data,
                 room = room,
                 sender = sender,
                 timestamp = chatMessage.timestamp
             )
+		)
+		return ChatMessageDTO(
+			data = messageEntity.data,
+			room = ChatRoomDTO(
+				messageEntity.room.name,
+				users = messageEntity.room.users.map { user ->
+					UserDTO(
+						username = user.username,
+						firstName = user.firstName,
+						lastName = user.lastName
+					)
+				}.toMutableSet(),
+				id = room.id!!,
+			),
+			sender = UserDTO(
+				username = messageEntity.sender.username,
+				firstName = messageEntity.sender.firstName,
+				lastName = messageEntity.sender.lastName
+			),
+			timestamp = messageEntity.timestamp,
+			id = messageEntity.id!!
 		)
 	}
 
@@ -52,7 +73,7 @@ class ChatMessageService @Autowired constructor(
                             lastName = user.lastName
                         )
 					}.toMutableSet(),
-                    id = it.id!!,
+                    id = it.room.id!!,
                 ),
 				sender = UserDTO(
 					username = it.sender.username,
@@ -60,7 +81,7 @@ class ChatMessageService @Autowired constructor(
 					lastName = it.sender.lastName
 				),
 				timestamp = it.timestamp,
-				id = it.id
+				id = it.id!!
 			)
 		}
 	}
@@ -93,7 +114,7 @@ class ChatMessageService @Autowired constructor(
 							lastName = user.lastName
 						)
 					}.toMutableSet(),
-					id = it.id!!,
+					id = it.room.id!!,
 				),
 				sender = UserDTO(
 					username = it.sender.username,
@@ -101,7 +122,7 @@ class ChatMessageService @Autowired constructor(
 					lastName = it.sender.lastName
 				),
 				timestamp = it.timestamp,
-				id = it.id
+				id = it.id!!
 			)
 		}
 	}
