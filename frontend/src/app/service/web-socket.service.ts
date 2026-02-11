@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Client, StompSubscription } from '@stomp/stompjs';
 import { ChatMessage } from "../model/chat-message";
-import { KeycloakService } from "keycloak-angular";
 import { DataStoreService } from "./data-store.service";
 import { Invitation } from "../model/invitation";
 import { ChatRoom } from "../model/chat-room";
 import { User } from "../model/user";
 import { environment } from "../../environments/environment";
+import { AuthService } from "./auth.service";
+import { ChatMessageToSave } from "../model/chat-message-to-save";
 
 @Injectable({
   providedIn: 'root',
@@ -14,13 +15,13 @@ import { environment } from "../../environments/environment";
 export class WebSocketService {
   private client: Client;
   constructor(
-    private keycloakService: KeycloakService,
-    private dataStoreService: DataStoreService
+    private dataStoreService: DataStoreService,
+    private authService: AuthService
   ) {
     this.client = new Client({
       brokerURL: environment.websocketUrl,
       connectHeaders: {
-        Authorization: `Bearer ${this.keycloakService.getKeycloakInstance().token}`
+        Authorization: `Bearer ${this.authService.getToken()}`
       },
       reconnectDelay: 5000,
       heartbeatOutgoing: 30000,
@@ -52,21 +53,17 @@ export class WebSocketService {
       `/topic/chat.listen.${roomId}`,
       (message) => callback(JSON.parse(message.body)),
       {
-        Authorization: `Bearer ${this.keycloakService.getKeycloakInstance().token}`
+        Authorization: `Bearer ${this.authService.getToken()}`
       }
     );
   }
 
   sendMessage(room: ChatRoom, content: string): void {
     let currentUserProfile = this.dataStoreService.getUserProfile()!!
-    const message: ChatMessage = {
+    const message: ChatMessageToSave = {
       data: content,
-      room: room,
-      sender: {
-        username: currentUserProfile.username,
-        firstName: currentUserProfile.firstName,
-        lastName: currentUserProfile.lastName
-      },
+      roomId: room.id,
+      senderUsername: currentUserProfile.username,
       timestamp: Date.now()
     };
 
@@ -74,17 +71,17 @@ export class WebSocketService {
       destination: `/app/chat.sendMessage`,
       body: JSON.stringify(message),
       headers: {
-        Authorization: `Bearer ${this.keycloakService.getKeycloakInstance().token}`
+        Authorization: `Bearer ${this.authService.getToken()}`
       }
     });
   }
 
   subscribeInvitations(callback: (invitations: Invitation[] | Invitation) => void): StompSubscription {
     return this.client.subscribe(
-      `/topic/invitation.listen.${this.keycloakService.getUsername()}`,
+      `/topic/invitation.listen.`,
       (invitations) => callback(JSON.parse(invitations.body)),
       {
-        Authorization: `Bearer ${this.keycloakService.getKeycloakInstance().token}`
+        Authorization: `Bearer ${this.authService.getToken()}`
       }
     );
   }
@@ -104,7 +101,7 @@ export class WebSocketService {
       destination: `/app/invitation.sendInvitation`,
       body: JSON.stringify(invitation),
       headers: {
-        Authorization: `Bearer ${this.keycloakService.getKeycloakInstance().token}`
+        Authorization: `Bearer ${this.authService.getToken()}`
       }
     });
   }

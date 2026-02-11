@@ -15,6 +15,12 @@ export class UserService {
     private http: HttpClient
   ) { }
 
+  getMe(): Observable<User> {
+    return this.http.get<User>(
+      this.url + "/me"
+    )
+  }
+
   getUsers(query: string): Observable<User[]> {
     return this.http.get<User[]>(
       this.url + "/search",

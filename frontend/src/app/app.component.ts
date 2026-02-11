@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { KeycloakService } from "keycloak-angular";
-import { KeycloakProfile } from "keycloak-js";
 import { DataStoreService } from "./service/data-store.service";
+import {UserService} from "./service/user.service";
 
 @Component({
   selector: 'app-root',
@@ -13,17 +12,14 @@ import { DataStoreService } from "./service/data-store.service";
 })
 export class AppComponent {
 
-  constructor(
-    private keycloakService: KeycloakService,
-    private dataStoreService: DataStoreService
-  ) {
-    this.keycloakService.loadUserProfile().then((userProfile: KeycloakProfile) => {
+  constructor(private userService: UserService, private dataStoreService: DataStoreService) {
+    this.userService.getMe().subscribe(user => {
       this.dataStoreService.setUserProfile(
         {
-          username: userProfile.username!!,
-          firstName: userProfile.firstName!!,
-          lastName: userProfile.lastName!!,
-          fullName: `${userProfile.firstName!!} ${userProfile.lastName!!}`
+          username: user.username!!,
+          firstName: user.firstName!!,
+          lastName: user.lastName!!,
+          fullName: `${user.firstName!!} ${user.lastName!!}`
         }
       )
     })
