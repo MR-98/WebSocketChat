@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import { AuthService } from "../../service/auth.service";
 import { Router, RouterLink } from "@angular/router";
+import {NgClass} from "@angular/common";
 
 @Component({
   selector: 'app-register',
@@ -10,18 +11,20 @@ import { Router, RouterLink } from "@angular/router";
     FormsModule,
     ReactiveFormsModule,
     RouterLink,
+    NgClass,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
 
+  protected submitted: boolean = false;
   protected registerForm = new FormGroup({
-    username: new FormControl(''),
-    firstName: new FormControl(''),
-    lastName: new FormControl(''),
-    password: new FormControl(''),
-    repeatPassword: new FormControl('')
+    username: new FormControl('', Validators.required),
+    firstName: new FormControl('', Validators.required),
+    lastName: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required),
+    repeatPassword: new FormControl('', Validators.required)
   })
 
   constructor(
@@ -31,6 +34,10 @@ export class RegisterComponent {
   }
 
   onSubmit() {
+    this.submitted = true;
+    if (this.registerForm.invalid) {
+      return;
+    }
     let username = this.registerForm.controls.username.value!!;
     let firstName = this.registerForm.controls.firstName.value!!;
     let lastName = this.registerForm.controls.lastName.value!!;
@@ -41,4 +48,6 @@ export class RegisterComponent {
       this.router.navigate(['/login']);
     })
   }
+
+  get f(): any { return this.registerForm.controls; }
 }

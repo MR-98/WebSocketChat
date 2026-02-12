@@ -5,23 +5,28 @@
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
       <div class="form-row">
         <label for="username">Nazwa użytkownika:</label>
-        <input id="username" type="text" formControlName="username">
+        <input id="username" type="text" formControlName="username"
+               [ngClass]="{ 'is-invalid': (f.username?.errors && submitted) }">
       </div>
       <div class="form-row">
         <label for="firstName">Imię:</label>
-        <input id="firstName" type="text" formControlName="firstName">
+        <input id="firstName" type="text" formControlName="firstName"
+               [ngClass]="{ 'is-invalid': (f.firstName?.errors && submitted) }">
       </div>
       <div class="form-row">
         <label for="lastName">Nazwisko:</label>
-        <input id="lastName" type="text" formControlName="lastName">
+        <input id="lastName" type="text" formControlName="lastName"
+               [ngClass]="{ 'is-invalid': (f.lastName?.errors && submitted) }">
       </div>
       <div>
         <label for="password">Hasło:</label>
-        <input id="password" type="password" formControlName="password">
+        <input id="password" type="password" formControlName="password"
+               [ngClass]="{ 'is-invalid': (f.password?.errors && submitted) }">
       </div>
       <div>
         <label for="repeatPassword">Powtórz hasło:</label>
-        <input id="repeatPassword" type="password" formControlName="repeatPassword">
+        <input id="repeatPassword" type="password" formControlName="repeatPassword"
+               [ngClass]="{ 'is-invalid': (f.repeatPassword?.errors && submitted) }">
       </div>
       <button type="submit">Zarejestruj się</button>
       <span>Masz już konto? <a [routerLink]="['/login']">Zaloguj się</a></span>
