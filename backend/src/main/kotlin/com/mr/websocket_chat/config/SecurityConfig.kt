@@ -31,6 +31,7 @@ class SecurityConfig @Autowired constructor(
 							configuration.applyPermitDefaultValues()
 							configuration.addAllowedMethod(HttpMethod.DELETE)
 							configuration.addAllowedMethod(HttpMethod.PATCH)
+							configuration.addAllowedMethod(HttpMethod.PUT)
 							configuration
 						}
 					}.csrf { csrf -> csrf.disable() }

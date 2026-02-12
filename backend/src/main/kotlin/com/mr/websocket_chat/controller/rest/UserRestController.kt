@@ -1,6 +1,6 @@
 package com.mr.websocket_chat.controller.rest
 
-import com.mr.websocket_chat.domain.jpa.UserEntity
+import com.mr.websocket_chat.domain.exception.UserNotFoundException
 import com.mr.websocket_chat.domain.rest.UserDTO
 import com.mr.websocket_chat.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,11 +15,14 @@ class UserRestController @Autowired constructor(
 ){
 
 	@GetMapping("/me")
-	fun getMe(authentication: Authentication): ResponseEntity<UserEntity> {
+	fun getMe(authentication: Authentication): ResponseEntity<UserDTO> {
 		val currentlyAuthenticatedUsername = authentication.name
-		val userEntity = userService.findByUsername(currentlyAuthenticatedUsername)
-			?: return ResponseEntity.notFound().build()
-		return ResponseEntity.ok(userEntity)
+		try {
+			val user = userService.findByUsername(currentlyAuthenticatedUsername)
+			return ResponseEntity.ok(user)
+		} catch (e: UserNotFoundException) {
+			return ResponseEntity.notFound().build()
+		}
 	}
 
 	@GetMapping("/search")

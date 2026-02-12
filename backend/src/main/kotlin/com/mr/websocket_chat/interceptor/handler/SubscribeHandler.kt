@@ -50,8 +50,8 @@ class SubscribeHandler @Autowired constructor(
 					return null
 				}
 
-				val userEntity = userService.findByUsername(username) ?: return null
-				if(userEntity.username != subscriberUsername) {
+				val user = userService.findByUsername(username)
+				if(user.username != subscriberUsername) {
 					return null
 				}
 			}

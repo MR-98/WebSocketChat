@@ -1,23 +1,24 @@
 package com.mr.websocket_chat.controller.rest
 
 import com.mr.websocket_chat.config.jwt.JwtService
+import com.mr.websocket_chat.domain.exception.UserNotFoundException
 import com.mr.websocket_chat.domain.rest.JWTValidateResponseDTO
 import com.mr.websocket_chat.domain.rest.LoginRequestDTO
 import com.mr.websocket_chat.domain.rest.LoginResponseDTO
 import com.mr.websocket_chat.domain.rest.RegisterRequestDTO
+import com.mr.websocket_chat.service.AuthService
 import com.mr.websocket_chat.service.UserService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/auth")
 class AuthController(
     private val jwtService: JwtService,
-    private val userService: UserService
+    private val userService: UserService,
+    private val authService: AuthService
 ) {
-    private val passwordEncoder = BCryptPasswordEncoder()
 
     @PostMapping("/register")
     fun register(@RequestBody request: RegisterRequestDTO): ResponseEntity<String> {
@@ -27,27 +28,24 @@ class AuthController(
                 .body("Username is already taken")
         }
 
-        val encodedPassword = passwordEncoder.encode(request.password)
-        userService.createUser(request.username, request.firstName, request.lastName, encodedPassword)
-
+        userService.createUser(request.username, request.firstName, request.lastName, request.password)
         return ResponseEntity.ok().build()
     }
 
     @PostMapping("/login")
-    fun login(@RequestBody request: LoginRequestDTO): ResponseEntity<*> {
-        val user = userService.findByUsername(request.username)
-            ?: return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
-                .body("Invalid username or password")
-
-        if (!passwordEncoder.matches(request.password, user.password)) {
-            return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
-                .body("Invalid username or password")
+    fun login(@RequestBody request: LoginRequestDTO): ResponseEntity<LoginResponseDTO> {
+        try {
+            if (authService.checkIfPasswordValid(request.username, request.password)) {
+                val token = jwtService.generateToken(request.username)
+                return ResponseEntity.ok(LoginResponseDTO(token, request.username))
+            } else {
+                return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .build()
+            }
+        } catch (e: UserNotFoundException) {
+            return ResponseEntity.notFound().build()
         }
-
-        val token = jwtService.generateToken(request.username)
-        return ResponseEntity.ok(LoginResponseDTO(token, request.username))
     }
 
     @GetMapping("/validate")

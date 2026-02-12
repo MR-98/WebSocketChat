@@ -3,10 +3,9 @@ package com.mr.websocket_chat.service
 import com.mr.websocket_chat.domain.exception.ChatRoomNotFoundException
 import com.mr.websocket_chat.domain.exception.UserNotFoundException
 import com.mr.websocket_chat.domain.jpa.ChatMessageEntity
+import com.mr.websocket_chat.domain.mapper.ChatMessageMapper
 import com.mr.websocket_chat.domain.rest.ChatMessageDTO
 import com.mr.websocket_chat.domain.rest.ChatMessageToSaveDTO
-import com.mr.websocket_chat.domain.rest.ChatRoomDTO
-import com.mr.websocket_chat.domain.rest.UserDTO
 import com.mr.websocket_chat.repository.ChatMessageRepository
 import com.mr.websocket_chat.repository.ChatRoomRepository
 import com.mr.websocket_chat.repository.UserRepository
@@ -34,27 +33,7 @@ class ChatMessageService @Autowired constructor(
                 timestamp = chatMessage.timestamp
             )
 		)
-		return ChatMessageDTO(
-			data = messageEntity.data,
-			room = ChatRoomDTO(
-				messageEntity.room.name,
-				users = messageEntity.room.users.map { user ->
-					UserDTO(
-						username = user.username,
-						firstName = user.firstName,
-						lastName = user.lastName
-					)
-				}.toMutableSet(),
-				id = room.id!!,
-			),
-			sender = UserDTO(
-				username = messageEntity.sender.username,
-				firstName = messageEntity.sender.firstName,
-				lastName = messageEntity.sender.lastName
-			),
-			timestamp = messageEntity.timestamp,
-			id = messageEntity.id!!
-		)
+		return ChatMessageMapper.toDTO(messageEntity)
 	}
 
 	fun loadNewestMessagesForRoom(roomId: Long): List<ChatMessageDTO> {
@@ -62,27 +41,7 @@ class ChatMessageService @Autowired constructor(
 			roomId,
 			Limit.of(50)
 		).map {
-			ChatMessageDTO(
-				data = it.data,
-				room = ChatRoomDTO(
-                    it.room.name,
-                    users = it.room.users.map { user ->
-						UserDTO(
-                            username = user.username,
-                            firstName = user.firstName,
-                            lastName = user.lastName
-                        )
-					}.toMutableSet(),
-                    id = it.room.id!!,
-                ),
-				sender = UserDTO(
-					username = it.sender.username,
-					firstName = it.sender.firstName,
-					lastName = it.sender.lastName
-				),
-				timestamp = it.timestamp,
-				id = it.id!!
-			)
+			ChatMessageMapper.toDTO(it)
 		}
 	}
 
@@ -103,27 +62,7 @@ class ChatMessageService @Autowired constructor(
 			olderThanMessageId,
 			Limit.of(numberOfMessagesToLoad)
 		).map {
-			ChatMessageDTO(
-				data = it.data,
-				room = ChatRoomDTO(
-					it.room.name,
-					users = it.room.users.map { user ->
-						UserDTO(
-							username = user.username,
-							firstName = user.firstName,
-							lastName = user.lastName
-						)
-					}.toMutableSet(),
-					id = it.room.id!!,
-				),
-				sender = UserDTO(
-					username = it.sender.username,
-					firstName = it.sender.firstName,
-					lastName = it.sender.lastName
-				),
-				timestamp = it.timestamp,
-				id = it.id!!
-			)
+			ChatMessageMapper.toDTO(it)
 		}
 	}
 }

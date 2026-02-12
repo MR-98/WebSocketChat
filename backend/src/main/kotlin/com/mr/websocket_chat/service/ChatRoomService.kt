@@ -3,8 +3,8 @@ package com.mr.websocket_chat.service
 import com.mr.websocket_chat.domain.exception.ChatRoomNotFoundException
 import com.mr.websocket_chat.domain.exception.UserNotFoundException
 import com.mr.websocket_chat.domain.jpa.ChatRoomEntity
+import com.mr.websocket_chat.domain.mapper.ChatRoomMapper
 import com.mr.websocket_chat.domain.rest.ChatRoomDTO
-import com.mr.websocket_chat.domain.rest.UserDTO
 import com.mr.websocket_chat.repository.ChatRoomRepository
 import com.mr.websocket_chat.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -26,42 +26,21 @@ class ChatRoomService @Autowired constructor(
 				mutableSetOf(creatorEntity)
 			)
 		)
-		println("Created Room: $createdRoom")
-		return ChatRoomDTO(
-            name = createdRoom.name,
-            users = createdRoom.users.map {
-				UserDTO(
-					username = it.username,
-					firstName = it.firstName,
-					lastName = it.lastName
-				)
-			}.toMutableSet(),
-            id = createdRoom.id!!,
-        )
+		return ChatRoomMapper.toDTO(createdRoom)
 	}
 
 	fun getChatRoomsForUser(username: String): List<ChatRoomDTO> {
 		return chatRoomRepository.findByUsers_Username(username).map {
-			ChatRoomDTO(
-				name = it.name,
-				users = it.users.map { user ->
-					UserDTO(
-						username = user.username,
-						firstName = user.firstName,
-						lastName = user.lastName
-					)
-				}.toMutableSet(),
-				id = it.id!!,
-			)
+			ChatRoomMapper.toDTO(it)
 		}
 	}
 
 	fun removeUserFromRoom(roomId: Long, username: String) {
 		val roomEntity = chatRoomRepository.findByIdOrNull(roomId) ?: throw ChatRoomNotFoundException()
-		roomEntity.users.removeIf { element -> element.username == username }
+		val wasAnyoneRemoved = roomEntity.users.removeIf { element -> element.username == username }
 		if(roomEntity.users.isEmpty()) {
 			chatRoomRepository.deleteById(roomId)
-		} else {
+		} else if(wasAnyoneRemoved) {
 			chatRoomRepository.save(roomEntity)
 		}
 	}
@@ -72,36 +51,30 @@ class ChatRoomService @Autowired constructor(
 
 	fun deleteChatRoom(roomId: Long, deletingUser: String) {
 		val roomEntity = chatRoomRepository.findByIdOrNull(roomId) ?: throw ChatRoomNotFoundException()
-		val userEntity = userRepository.findByUsername(deletingUser) ?: throw UserNotFoundException()
-		if(roomEntity.users.contains(userEntity)) {
+		if(isUserChatRoomMember(deletingUser, roomEntity)) {
 			chatRoomRepository.deleteById(roomId)
+		} else {
+			throw RuntimeException("User cannot delete room to which he does not belong. User id: ${deletingUser}, room id: $roomId.")
 		}
 	}
 
 	fun isUserChatRoomMember(username: String, roomId: Long): Boolean {
 		val room = chatRoomRepository.findById(roomId).getOrNull() ?: return false
+		return isUserChatRoomMember(username, room)
+	}
+
+	fun isUserChatRoomMember(username: String, room: ChatRoomEntity): Boolean {
 		return room.users.any { it.username == username }
 	}
 
 	fun changeRoomName(roomId: Long, newRoomName: String, changingUser: String): ChatRoomDTO {
 		val roomEntity = chatRoomRepository.findByIdOrNull(roomId) ?: throw ChatRoomNotFoundException()
-		val userEntity = userRepository.findByUsername(newRoomName) ?: throw UserNotFoundException()
-		if(roomEntity.users.contains(userEntity)) {
-			throw RuntimeException("User cannot change the name of a room to which he does not belong. User id: ${userEntity.username}, room id: $roomId.")
+		if(!isUserChatRoomMember(changingUser, roomEntity)) {
+			throw RuntimeException("User cannot change the name of a room to which he does not belong. User id: ${changingUser}, room id: $roomId.")
 		}
 
 		roomEntity.name = newRoomName
 		chatRoomRepository.save(roomEntity)
-		return ChatRoomDTO(
-			name = roomEntity.name,
-			users = roomEntity.users.map {
-				UserDTO(
-					username = it.username,
-					firstName = it.firstName,
-					lastName = it.lastName
-				)
-			}.toMutableSet(),
-			id = roomEntity.id!!,
-		)
+		return ChatRoomMapper.toDTO(roomEntity)
 	}
 }

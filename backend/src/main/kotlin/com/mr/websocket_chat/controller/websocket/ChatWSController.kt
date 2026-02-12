@@ -39,7 +39,7 @@ class ChatWSController @Autowired constructor(
 			val savedMessage = chatMessageService.saveMessage(message)
 			messagingTemplate.convertAndSend("/topic/chat.listen." + savedMessage.room.id, savedMessage)
 		} catch (e: UserNotFoundException) {
-			// TODO: error propagation to frontend
+			LOG.error("Error while sending invitation. User with username: ${message.senderUsername} not found.", e)
 		}
 
 	}

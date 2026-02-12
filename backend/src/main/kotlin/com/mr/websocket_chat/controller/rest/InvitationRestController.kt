@@ -2,7 +2,6 @@ package com.mr.websocket_chat.controller.rest
 
 import com.mr.websocket_chat.domain.exception.InvitationNotFoundException
 import com.mr.websocket_chat.domain.rest.ChatRoomDTO
-import com.mr.websocket_chat.domain.rest.UserDTO
 import com.mr.websocket_chat.service.InvitationService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -21,19 +20,7 @@ class InvitationRestController @Autowired constructor(
 
 		try {
 			val newRoom = invitationService.acceptInvitationAndReturnNewRoom(roomId, currentlyAuthenticatedUsername)
-			return ResponseEntity.ok(
-				ChatRoomDTO(
-					newRoom.name,
-					users = newRoom.users.map { user ->
-						UserDTO(
-							username = user.username,
-							firstName = user.firstName,
-							lastName = user.lastName
-						)
-					}.toMutableSet(),
-					id = newRoom.id!!,
-				),
-			)
+			return ResponseEntity.ok(newRoom)
 		} catch (e: InvitationNotFoundException) {
 			return ResponseEntity.notFound().build()
 		}

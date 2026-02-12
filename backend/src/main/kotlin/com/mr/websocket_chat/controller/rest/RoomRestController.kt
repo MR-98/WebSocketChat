@@ -30,15 +30,13 @@ class RoomRestController @Autowired constructor(
 	}
 
 	@PutMapping
-	fun renameRoom(@RequestBody room: ChangeRoomNameRequestDTO, authentication: Authentication): ResponseEntity<ChatRoomDTO> {
+	fun renameRoom(@RequestBody body: ChangeRoomNameRequestDTO, authentication: Authentication): ResponseEntity<ChatRoomDTO> {
 		val currentlyAuthenticatedUsername = authentication.name
 
 		try {
-			val roomWithNewName = chatRoomService.changeRoomName(room.roomId, room.newRoomName, currentlyAuthenticatedUsername)
+			val roomWithNewName = chatRoomService.changeRoomName(body.roomId, body.newRoomName, currentlyAuthenticatedUsername)
 			return ResponseEntity.ok(roomWithNewName)
 		} catch (e: ChatRoomNotFoundException) {
-			return ResponseEntity.notFound().build()
-		} catch (e: UserNotFoundException) {
 			return ResponseEntity.notFound().build()
 		} catch (e: RuntimeException) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build()
@@ -59,7 +57,7 @@ class RoomRestController @Autowired constructor(
 		}
 	}
 
-	@DeleteMapping
+	@DeleteMapping("/{roomId}")
 	fun deleteRoom(@PathVariable roomId: Long, authentication: Authentication): ResponseEntity<String> {
 		val currentlyAuthenticatedUsername = authentication.name
 
@@ -68,8 +66,8 @@ class RoomRestController @Autowired constructor(
 			return ResponseEntity.ok().build()
 		} catch (e: ChatRoomNotFoundException) {
 			return ResponseEntity.notFound().build()
-		} catch (e: UserNotFoundException) {
-			return ResponseEntity.notFound().build()
+		} catch (e: RuntimeException) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build()
 		}
 	}
 

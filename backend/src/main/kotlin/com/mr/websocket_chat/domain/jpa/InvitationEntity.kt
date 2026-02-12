@@ -5,7 +5,15 @@ import org.hibernate.annotations.OnDelete
 import org.hibernate.annotations.OnDeleteAction
 
 @Entity
-@Table(name = "invitations")
+@Table(
+	name = "invitations",
+	uniqueConstraints = [
+		UniqueConstraint(
+			name = "uk_chat_room_id_invited_user",
+			columnNames = ["chat_room_id", "invited_user"]
+		)
+	]
+)
 class InvitationEntity (
 	@ManyToOne
 	@JoinColumn(name = "chat_room_id")
