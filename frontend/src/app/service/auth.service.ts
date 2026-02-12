@@ -66,13 +66,11 @@ export class AuthService {
     const now = Date.now();
 
     if (now >= expirationDate) {
-      this.logout();
       return false;
     }
 
     return true;
   }
-
 
   isAuthenticated(): boolean {
     return this.isTokenValid();

@@ -37,7 +37,6 @@ export class WebSocketService {
     this.client.onStompError = (frame) => {
       console.error('STOMP Error:', frame);
       this.disconnect();
-      this.connect(onConnectCallback);
     };
 
     this.client.activate();

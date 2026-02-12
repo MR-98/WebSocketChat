@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AuthService } from "../../service/auth.service";
-import { Router } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-register',
   standalone: true,
   imports: [
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterLink,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
@@ -37,7 +38,7 @@ export class RegisterComponent {
     let repeatPassword = this.registerForm.controls.repeatPassword.value!!;
     if(password != repeatPassword) return;
     this.authService.register(username, firstName, lastName, password).subscribe(_ => {
-      this.router.navigate(['/']);
+      this.router.navigate(['/login']);
     })
   }
 }
