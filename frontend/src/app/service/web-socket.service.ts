@@ -8,6 +8,7 @@ import { User } from "../model/user";
 import { environment } from "../../environments/environment";
 import { AuthService } from "./auth.service";
 import { ChatMessageToSave } from "../model/chat-message-to-save";
+import {InvitationToSave} from "../model/invitations-to-save";
 
 @Injectable({
   providedIn: 'root',
@@ -35,6 +36,8 @@ export class WebSocketService {
 
     this.client.onStompError = (frame) => {
       console.error('STOMP Error:', frame);
+      this.disconnect();
+      this.connect(onConnectCallback);
     };
 
     this.client.activate();
@@ -77,8 +80,9 @@ export class WebSocketService {
   }
 
   subscribeInvitations(callback: (invitations: Invitation[] | Invitation) => void): StompSubscription {
+    let currentUserProfile = this.dataStoreService.getUserProfile()!!
     return this.client.subscribe(
-      `/topic/invitation.listen.`,
+      `/topic/invitation.listen.${currentUserProfile.username}`,
       (invitations) => callback(JSON.parse(invitations.body)),
       {
         Authorization: `Bearer ${this.authService.getToken()}`
@@ -87,15 +91,9 @@ export class WebSocketService {
   }
 
   sendInvitation(userToInvite: User, room: ChatRoom) {
-    let currentUserProfile = this.dataStoreService.getUserProfile()!!
-    let invitation: Invitation = {
-      invitedUser: userToInvite,
-      invitingUser: {
-        username: currentUserProfile.username,
-        firstName: currentUserProfile.firstName,
-        lastName: currentUserProfile.lastName
-      },
-      room: room,
+    let invitation: InvitationToSave = {
+      invitedUser: userToInvite.username,
+      roomId: room.id,
     }
     this.client.publish({
       destination: `/app/invitation.sendInvitation`,

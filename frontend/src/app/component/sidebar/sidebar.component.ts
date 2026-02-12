@@ -58,8 +58,9 @@ export class SidebarComponent {
           invitations: this.invitations
         }
       }
-    ).afterClosed().subscribe( (invitations: Invitation[]) => {
-      this.invitations = invitations;
+    ).afterClosed().subscribe(_ => {
+      this.invitations = [];
+      this.loadInvitations();
     });
   }
 
