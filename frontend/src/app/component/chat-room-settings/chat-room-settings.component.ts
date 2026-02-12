@@ -58,7 +58,7 @@ export class ChatRoomSettingsComponent {
       if(newRoomName == undefined) {
         return
       }
-      this.chatRoomService.changeRoomName(newRoomName, this.chatRoom).subscribe();
+      this.chatRoomService.changeRoomName(newRoomName, this.chatRoom.id).subscribe();
       this.chatRoomNameUpdated.emit(newRoomName);
     });
   }
@@ -76,7 +76,7 @@ export class ChatRoomSettingsComponent {
       }
     ).afterClosed().subscribe((result: boolean) => {
       if(result) {
-        this.chatRoomService.deleteRoom(this.chatRoom).subscribe(_ => {
+        this.chatRoomService.deleteRoom(this.chatRoom.id).subscribe(_ => {
           let chatRoomList = this.dataStoreService.getChatRoomList();
           let newChatRoomList = chatRoomList.filter(chatRoomListElement => chatRoomListElement != this.chatRoom);
           this.dataStoreService.setChatRoomList(newChatRoomList);

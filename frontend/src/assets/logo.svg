@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="120" height="60" viewBox="0 0 130 60" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <!-- Gradient akcentowy -->
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00dddd"/>
+      <stop offset="100%" stop-color="#00dddd"/>
+    </linearGradient>
+
+     Neon glow
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Ikona -->
+  <g transform="translate(25,0)">
+    <!-- Dymek -->
+    <path d="M0 0
+             h80
+             a15 15 0 0 1 15 15
+             v25
+             a15 15 0 0 1 -15 15
+             h-40
+             l-18 18
+             v-18
+             h-22
+             a15 15 0 0 1 -15 -15
+             v-25
+             a15 15 0 0 1 15 -15 z"
+          fill="#131313"
+          stroke="url(#accentGradient)"
+          stroke-width="3"
+          filter="url(#glow)"/>
+
+    <!-- Symbol WebSocket < > -->
+    <text x="20" y="40"
+          font-family="Montserrat, sans-serif"
+          font-size="28"
+          font-weight="bold"
+          fill="#00dddd"
+          filter="url(#glow)">
+      &lt; &gt;
+    </text>
+  </g>
+
+</svg>

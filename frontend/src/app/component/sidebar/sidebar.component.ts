@@ -1,10 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { ChatRoomListElementComponent } from "../chat-room-list-element/chat-room-list-element.component";
-import { NgForOf } from "@angular/common";
 import { MatIconButton } from "@angular/material/button";
 import { MatIcon } from "@angular/material/icon";
 import { MatMenu, MatMenuItem, MatMenuTrigger } from "@angular/material/menu";
-import { KeycloakService } from "keycloak-angular";
 import { MatDivider } from "@angular/material/divider";
 import { MatListItem } from "@angular/material/list";
 import { DataStoreService } from "../../service/data-store.service";
@@ -15,13 +12,13 @@ import { Invitation } from "../../model/invitation";
 import { MatBadge } from "@angular/material/badge";
 import { SettingsDialogComponent } from "../../dialog/settings-dialog/settings-dialog.component";
 import { LocalStorageService } from "../../service/local-storage.service";
+import { AuthService } from "../../service/auth.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
   imports: [
-    ChatRoomListElementComponent,
-    NgForOf,
     MatIcon,
     MatIconButton,
     MatMenu,
@@ -41,23 +38,16 @@ export class SidebarComponent {
   protected invitations: Invitation[] = [];
 
   constructor(
-    private keycloakService: KeycloakService,
     private dataStoreService: DataStoreService,
     private webSocketService: WebSocketService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private authService: AuthService,
+    private router: Router
   ) {
     this.currentUserFullName = this.dataStoreService.getUserProfile()!!.fullName;
     if(this.isReceivingInvitationsEnabled()) {
       this.loadInvitations();
     }
-  }
-
-  signOut() {
-    this.keycloakService.logout().then();
-  }
-
-  redirectToKeycloakAccountSettings() {
-    this.keycloakService.getKeycloakInstance().accountManagement().then();
   }
 
   showInvitationsDialog() {
@@ -68,8 +58,9 @@ export class SidebarComponent {
           invitations: this.invitations
         }
       }
-    ).afterClosed().subscribe( (invitations: Invitation[]) => {
-      this.invitations = invitations;
+    ).afterClosed().subscribe(_ => {
+      this.invitations = [];
+      this.loadInvitations();
     });
   }
 
@@ -94,5 +85,13 @@ export class SidebarComponent {
   isReceivingInvitationsEnabled() {
     return this.localStorageService.getData("invitationsEnabled") != null ?
       JSON.parse(this.localStorageService.getData("invitationsEnabled")!!) : true;
+  }
+
+  signOut() {
+    this.authService.logout()
+  }
+
+  profileEditClicked() {
+    this.router.navigate(['/account'])
   }
 }

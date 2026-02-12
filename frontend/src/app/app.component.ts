@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import {Component, effect} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { KeycloakService } from "keycloak-angular";
-import { KeycloakProfile } from "keycloak-js";
 import { DataStoreService } from "./service/data-store.service";
+import {UserService} from "./service/user.service";
+import {AuthService} from "./service/auth.service";
 
 @Component({
   selector: 'app-root',
@@ -14,19 +14,24 @@ import { DataStoreService } from "./service/data-store.service";
 export class AppComponent {
 
   constructor(
-    private keycloakService: KeycloakService,
-    private dataStoreService: DataStoreService
+    private userService: UserService,
+    private dataStoreService: DataStoreService,
+    private authService: AuthService,
   ) {
-    this.keycloakService.loadUserProfile().then((userProfile: KeycloakProfile) => {
-      this.dataStoreService.setUserProfile(
-        {
-          username: userProfile.username!!,
-          firstName: userProfile.firstName!!,
-          lastName: userProfile.lastName!!,
-          fullName: `${userProfile.firstName!!} ${userProfile.lastName!!}`
-        }
-      )
+
+    this.authService.isAuthenticated$.subscribe(isAuthenticated => {
+      if(isAuthenticated) {
+        this.userService.getMe().subscribe(user => {
+          this.dataStoreService.setUserProfile(
+            {
+              username: user.username!!,
+              firstName: user.firstName!!,
+              lastName: user.lastName!!,
+              fullName: `${user.firstName!!} ${user.lastName!!}`
+            }
+          )
+        })
+      }
     })
   }
-
 }

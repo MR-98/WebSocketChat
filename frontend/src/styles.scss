@@ -35,3 +35,8 @@ html, body {
   touch-action: auto !important;
   -webkit-user-drag: auto !important;
 }
+
+a {
+  text-decoration: none;
+  color: inherit;
+}

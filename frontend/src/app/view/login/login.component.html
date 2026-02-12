@@ -1,0 +1,20 @@
+<div class="login-form-container">
+  <div class="login-form-wrapper">
+    <img src="assets/logo.svg" height="200" width="240" alt="logo image"/>
+    <h5>Witaj z powrotem w Websocket Chat!</h5>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-row">
+        <label for="username">Nazwa użytkownika:</label>
+        <input id="username" type="text" formControlName="username"
+               [ngClass]="{ 'is-invalid': (f.username?.errors && submitted) }">
+      </div>
+      <div class="form-row">
+        <label for="password">Hasło:</label>
+        <input id="password" type="password" formControlName="password"
+               [ngClass]="{ 'is-invalid': (f.password?.errors && submitted) }">
+      </div>
+      <button type="submit">Zaloguj się</button>
+      <span>Nie masz jeszcze konta? <a [routerLink]="['/register']">Zarejestruj się</a></span>
+    </form>
+  </div>
+</div>

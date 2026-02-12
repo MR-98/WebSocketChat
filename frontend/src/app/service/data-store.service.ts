@@ -8,7 +8,14 @@ import { UserProfile } from "../model/user-profile";
 export class DataStoreService {
   private _currentlySelectedChatRoomId = signal<ChatRoom | undefined>(undefined)
   private _chatRoomList = signal<ChatRoom[]>([])
-  private _userProfile = signal<UserProfile | undefined>(undefined)
+  private _userProfile = signal<UserProfile>(
+    {
+      firstName: "",
+      fullName: "",
+      lastName: "",
+      username: ""
+    }
+  )
 
   constructor() {
   }
