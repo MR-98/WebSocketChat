@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ChatMessage } from "../../model/chat-message";
-import { NgClass, NgIf } from "@angular/common";
+import {NgClass, NgForOf, NgIf} from "@angular/common";
 import { DataStoreService } from "../../service/data-store.service";
 import { MatTooltip } from "@angular/material/tooltip";
 
@@ -10,7 +10,8 @@ import { MatTooltip } from "@angular/material/tooltip";
   imports: [
     NgClass,
     NgIf,
-    MatTooltip
+    MatTooltip,
+    NgForOf
   ],
   templateUrl: './message.component.html',
   styleUrl: './message.component.scss'

@@ -8,6 +8,20 @@
       [matTooltip]="formatDate(chatMessage.timestamp)"
       [matTooltipPosition]="currentUser == chatMessage.sender.username ? 'left' : 'right'">
       {{ chatMessage.data }}
+      <ng-container *ngIf="chatMessage.attachments.length > 0">
+        <div class="chat-message-attachments-wrapper" *ngFor="let attachment of chatMessage.attachments">
+          <img *ngIf="attachment.type === 'IMAGE'"
+               [src]="attachment.url"
+               [alt]="attachment.fileName"
+               class="chat-image" />
+
+          <a *ngIf="attachment.type === 'FILE'"
+             [href]="attachment.url"
+             target="_blank">
+            {{ attachment.fileName }}
+          </a>
+        </div>
+      </ng-container>
     </div>
   </div>
 </div>

@@ -1,0 +1,22 @@
+<div class="message-input-container">
+
+  <div>
+    <input type="file" #fileInput (change)="onFilesUpload($event)" multiple style="display: none;" />
+    <button mat-icon-button (click)="fileInput.click()">
+      <mat-icon>control_point</mat-icon>
+    </button>
+  </div>
+
+  <div class="message-input-textarea-wrapper">
+    <div class="message-input-uploaded-files-wrapper" *ngIf="uploadedFiles.length > 0">
+      <div class="message-input-uploaded-file" *ngFor="let file of uploadedFiles">
+        <img height="50" width="50" [src]="file.url"  alt="uploaded-image-preview"/>
+      </div>
+    </div>
+    <textarea rows="1" [(ngModel)]="message" (keyup.enter)="sendMessage()" [disabled]="currentChatRoom == undefined"></textarea>
+  </div>
+
+  <button mat-icon-button (click)="sendMessage()" [disabled]="uploadingFilesInProgress">
+    <mat-icon>send</mat-icon>
+  </button>
+</div>

@@ -22,6 +22,7 @@ import { MatIconButton } from "@angular/material/button";
 import { debounceTime, fromEvent } from "rxjs";
 import { ChatService } from "../../service/chat.service";
 import { MatProgressSpinner } from "@angular/material/progress-spinner";
+import { MessageInputComponent } from "../message-input/message-input.component";
 
 @Component({
   selector: 'app-chat-room',
@@ -35,7 +36,8 @@ import { MatProgressSpinner } from "@angular/material/progress-spinner";
     ChatRoomSettingsComponent,
     MatIcon,
     MatIconButton,
-    MatProgressSpinner
+    MatProgressSpinner,
+    MessageInputComponent
   ],
   templateUrl: './chat-room.component.html',
   styleUrl: './chat-room.component.scss'
@@ -45,7 +47,6 @@ export class ChatRoomComponent implements AfterViewInit, OnDestroy {
   protected currentChatRoom: ChatRoom | undefined;
   private currentSubscription: StompSubscription | undefined;
   protected chatMessages: ChatMessage[] = []
-  protected message: string = '';
   protected chatRoomName: string = '';
   protected roomSettingVisible: boolean = false;
   protected oldMessagesLoading: boolean = false;
@@ -57,7 +58,8 @@ export class ChatRoomComponent implements AfterViewInit, OnDestroy {
   constructor(
     private websocketService: WebSocketService,
     private dataStoreService: DataStoreService,
-    private chatService: ChatService
+    private chatService: ChatService,
+
   ) {
     effect(() => {
       if (!this.websocketService.isConnected()) return
@@ -96,12 +98,6 @@ export class ChatRoomComponent implements AfterViewInit, OnDestroy {
         }
       }
     )
-  }
-
-  protected sendMessage() {
-    if(this.message == "" || this.message == " ") return;
-    this.websocketService.sendMessage(this.currentChatRoom!!, this.message);
-    this.message = '';
   }
 
   protected toggleRoomSettings() {
