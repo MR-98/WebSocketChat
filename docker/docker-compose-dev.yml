@@ -9,7 +9,6 @@ services:
       PRODUCTION_ENVIRONMENT: false
       JAVA_OPTS: "-Xdebug -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
       HOSTNAME: ${HOSTNAME}
-      KC_HOSTNAME: ${KC_HOSTNAME}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_SERVER: ${DB_SERVER}
@@ -17,6 +16,8 @@ services:
     ports:
       - 8080:8080
       - 5005:5005
+    volumes:
+      - ~/.aws:/root/.aws:ro
 
   websocket-chat-db:
     image: postgres:17.2-alpine3.21
