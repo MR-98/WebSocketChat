@@ -20,6 +20,12 @@ class ChatMessageEntity(
 	@JoinColumn(name = "sender")
 	val sender: UserEntity,
 	val timestamp: Timestamp,
+	@OneToMany(
+		mappedBy = "message",
+		cascade = [CascadeType.ALL],
+		orphanRemoval = true
+	)
+	var attachments: List<AttachmentEntity> = listOf(),
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	val id: Long? = null,

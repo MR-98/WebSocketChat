@@ -6,5 +6,6 @@ data class ChatMessageToSaveDTO(
     val data: String,
     val roomId: Long,
     val senderUsername: String,
-    val timestamp: Timestamp
+    val timestamp: Timestamp,
+    val attachmentIds: List<Long> = emptyList()
 )

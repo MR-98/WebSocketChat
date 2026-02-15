@@ -7,5 +7,6 @@ data class ChatMessageDTO(
     val room: ChatRoomDTO,
     val sender: UserDTO,
     val timestamp: Timestamp,
+    val attachments: List<AttachmentDTO> = emptyList(),
     val id: Long
 )
