@@ -1,10 +1,14 @@
 package com.mr.websocket_chat.controller.rest
 
+import com.mr.websocket_chat.domain.exception.AttachmentNotFoundException
 import com.mr.websocket_chat.domain.rest.AttachmentDTO
+import com.mr.websocket_chat.domain.rest.GetDownloadURLResponseDTO
 import com.mr.websocket_chat.service.AttachmentService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -26,6 +30,18 @@ class AttachmentRestController @Autowired constructor(
         try {
             val result = attachmentService.saveAttachments(attachments, chatRoomId, uploaderUsername)
             return ResponseEntity.ok().body(result)
+        } catch (e: Exception) {
+            return ResponseEntity.internalServerError().build()
+        }
+    }
+
+    @GetMapping("/download-url/{attachmentId}")
+    fun getDownloadUrl(@PathVariable("attachmentId") attachmentId: Long): ResponseEntity<GetDownloadURLResponseDTO> {
+        try {
+            val url = attachmentService.getDownloadUrl(attachmentId)
+            return ResponseEntity.ok().body(GetDownloadURLResponseDTO(url))
+        } catch (e: AttachmentNotFoundException) {
+            return ResponseEntity.notFound().build()
         } catch (e: Exception) {
             return ResponseEntity.internalServerError().build()
         }

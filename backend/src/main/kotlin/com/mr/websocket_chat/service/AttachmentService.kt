@@ -1,11 +1,13 @@
 package com.mr.websocket_chat.service
 
 import com.mr.websocket_chat.domain.enum.AttachmentType
+import com.mr.websocket_chat.domain.exception.AttachmentNotFoundException
 import com.mr.websocket_chat.domain.jpa.AttachmentEntity
 import com.mr.websocket_chat.domain.mapper.AttachmentMapper
 import com.mr.websocket_chat.domain.rest.AttachmentDTO
 import com.mr.websocket_chat.repository.AttachmentRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
@@ -52,5 +54,12 @@ class AttachmentService @Autowired constructor(
         } else {
             AttachmentType.FILE
         }
+    }
+
+    fun getDownloadUrl(attachmentId: Long): String {
+        val attachment = attachmentRepository.findByIdOrNull(attachmentId) ?: throw AttachmentNotFoundException()
+        val s3Key = attachment.s3Key
+        val filename = attachment.fileName
+        return s3Service.generateDownloadUrl(s3Key, filename)
     }
 }

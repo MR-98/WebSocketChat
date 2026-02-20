@@ -21,7 +21,7 @@ class S3Service @Autowired constructor(
     @Value("\${app.aws.s3.bucket-name}") private val bucketName: String
 ){
 
-    fun uploadFile(file:MultipartFile, s3Key: String) {
+    fun uploadFile(file: MultipartFile, s3Key: String) {
         val request = PutObjectRequest.builder()
             .bucket(bucketName)
             .key(s3Key)
@@ -57,6 +57,23 @@ class S3Service @Autowired constructor(
             ?.lowercase()
 
         return "chat/$chatRoomId/${UUID.randomUUID()}.$extension"
+    }
+
+    fun generateDownloadUrl(s3Key: String, fileName: String): String {
+        val getObjectRequest = GetObjectRequest.builder()
+            .bucket(bucketName)
+            .key(s3Key)
+            .responseContentDisposition("attachment; filename=\"${fileName}\"")
+            .build()
+
+        val presignRequest = GetObjectPresignRequest.builder()
+            .signatureDuration(Duration.ofMinutes(1))
+            .getObjectRequest(getObjectRequest)
+            .build()
+
+        val presignedObject = s3Presigner.presignGetObject(presignRequest)
+
+        return presignedObject.url().toString()
     }
 
     fun deleteFile(s3Key: String) {
