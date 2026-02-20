@@ -3,6 +3,7 @@ import { environment } from "../../environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { Attachment } from "../model/attachment";
 import { DataStoreService } from "./data-store.service";
+import { GetDownloadUrlResponse } from "../model/get-download-url-response";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class AttachmentsService {
 
   constructor(
     private http: HttpClient,
-    private dataStoreService: DataStoreService,
+    private dataStoreService: DataStoreService
   ) { }
 
   uploadAttachments(files: File[], chatRoomId: number) {
@@ -30,5 +31,13 @@ export class AttachmentsService {
       this.url,
       formData
     )
+  }
+
+  downloadFile(id: number) {
+    this.http
+      .get<GetDownloadUrlResponse>(`${this.url}/download-url/${id}`)
+      .subscribe((res: GetDownloadUrlResponse) => {
+        window.location.href = res.downloadURL;
+      });
   }
 }

@@ -16,8 +16,7 @@
                class="chat-image" />
 
           <a *ngIf="attachment.type === 'FILE'"
-             [href]="attachment.url"
-             target="_blank">
+             (click)="downloadFile(attachment.id)">
             {{ attachment.fileName }}
           </a>
         </div>
