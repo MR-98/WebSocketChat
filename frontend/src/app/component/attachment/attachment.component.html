@@ -1,0 +1,12 @@
+<ng-container>
+  <img *ngIf="attachment.type === 'IMAGE'"
+       [src]="attachment.url"
+       [alt]="attachment.fileName"
+       class="attachment image-attachment"/>
+
+  <a *ngIf="attachment.type === 'FILE'" (click)="downloadFile(attachment.id)" class="attachment file-attachment">
+    <mat-icon>insert_drive_file</mat-icon>
+    {{ attachment.fileName }}
+  </a>
+
+</ng-container>

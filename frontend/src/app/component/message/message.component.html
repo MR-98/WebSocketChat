@@ -10,15 +10,7 @@
       {{ chatMessage.data }}
       <ng-container *ngIf="chatMessage.attachments.length > 0">
         <div class="chat-message-attachments-wrapper" *ngFor="let attachment of chatMessage.attachments">
-          <img *ngIf="attachment.type === 'IMAGE'"
-               [src]="attachment.url"
-               [alt]="attachment.fileName"
-               class="chat-image" />
-
-          <a *ngIf="attachment.type === 'FILE'"
-             (click)="downloadFile(attachment.id)">
-            {{ attachment.fileName }}
-          </a>
+          <app-attachment [attachment]="attachment"></app-attachment>
         </div>
       </ng-container>
     </div>
