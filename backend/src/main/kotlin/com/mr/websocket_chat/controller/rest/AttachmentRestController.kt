@@ -7,6 +7,7 @@ import com.mr.websocket_chat.service.AttachmentService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -44,6 +45,17 @@ class AttachmentRestController @Autowired constructor(
             return ResponseEntity.notFound().build()
         } catch (e: Exception) {
             return ResponseEntity.internalServerError().build()
+        }
+    }
+
+    @DeleteMapping("/{attachmentId}")
+    fun deleteAttachment(@PathVariable("attachmentId") attachmentId: Long): ResponseEntity<Void> {
+        try {
+            attachmentService.deleteAttachment(attachmentId)
+            return ResponseEntity.ok().build()
+        } catch (e: AttachmentNotFoundException) {
+            // Attachment does not exist, no need to remove it, 200 is returned
+            return ResponseEntity.ok().build()
         }
     }
 }

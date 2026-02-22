@@ -62,4 +62,10 @@ class AttachmentService @Autowired constructor(
         val filename = attachment.fileName
         return s3Service.generateDownloadUrl(s3Key, filename)
     }
+
+    fun deleteAttachment(attachmentId: Long) {
+        val attachment = attachmentRepository.findByIdOrNull(attachmentId) ?: throw AttachmentNotFoundException()
+        attachmentRepository.deleteById(attachmentId)
+        s3Service.deleteFile(attachment.s3Key)
+    }
 }

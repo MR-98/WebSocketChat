@@ -6,9 +6,7 @@ import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import software.amazon.awssdk.core.sync.RequestBody
 import software.amazon.awssdk.services.s3.S3Client
-import software.amazon.awssdk.services.s3.model.DeleteObjectRequest
-import software.amazon.awssdk.services.s3.model.GetObjectRequest
-import software.amazon.awssdk.services.s3.model.PutObjectRequest
+import software.amazon.awssdk.services.s3.model.*
 import software.amazon.awssdk.services.s3.presigner.S3Presigner
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest
 import java.time.Duration
@@ -83,5 +81,28 @@ class S3Service @Autowired constructor(
             .build()
 
         s3Client.deleteObject(request)
+    }
+
+    fun deleteFiles(s3Keys: List<String>) {
+        // From documentation: "The request can contain a list of up to 1000 keys that you want to delete"
+        s3Keys.chunked(1000).forEach{ s3KeysChunk ->
+            val objectsToDelete = s3KeysChunk.map {
+                ObjectIdentifier.builder()
+                    .key(it)
+                    .build()
+            }
+
+            val delete = Delete.builder()
+                .objects(objectsToDelete)
+                .quiet(false)
+                .build()
+
+            val request = DeleteObjectsRequest.builder()
+                .bucket(bucketName)
+                .delete(delete)
+                .build()
+
+            s3Client.deleteObjects(request)
+        }
     }
 }
