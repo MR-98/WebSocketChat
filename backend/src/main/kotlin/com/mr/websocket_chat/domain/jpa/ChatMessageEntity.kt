@@ -7,7 +7,15 @@ import org.hibernate.annotations.OnDeleteAction
 import java.sql.Timestamp
 
 @Entity
-@Table(name = "messages")
+@Table(
+	name = "messages",
+	indexes = [
+		Index(
+			name = "idx_messages_room_timestamp_desc",
+			columnList = "chat_room_id, timestamp desc"
+		)
+	]
+)
 class ChatMessageEntity(
 	@Convert(converter = CryptoConverter::class)
 	@Column(columnDefinition = "TEXT")
