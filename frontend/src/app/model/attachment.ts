@@ -1,8 +1,13 @@
 export interface Attachment {
   fileName: string,
-  type: 'IMAGE' | 'FILE',
+  type: AttachmentType,
   url: string,
   size?: number,
   contentType?: string
   id: number
+}
+
+export enum AttachmentType {
+  IMAGE = "IMAGE",
+  FILE = "FILE",
 }

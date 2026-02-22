@@ -43,41 +43,44 @@ textarea:focus {
   max-height: 70px;
   flex-direction: row;
   padding: 10px;
-  column-gap: 10px;
+  column-gap: 20px;
 }
 
-//.message-input-uploaded-files-wrapper {
-//  display: flex;
-//  flex-direction: row;
-//  position: absolute;
-//}
-//
-//.message-input-wrapper {
-//  height: 60px;
-//  padding: 10px;
-//  box-sizing: border-box;
-//  display: flex;
-//  justify-content: center;
-//  color: white;
-//  column-gap: 10px;
-//  align-items: center;
-//
-//  textarea {
-//    width: 100%;
-//    height: 40px;
-//    margin: 0;
-//    border: none;
-//    overflow: hidden;
-//    box-sizing: border-box;
-//    border-radius: 10px;
-//    padding: 10px;
-//    resize: none;
-//    background-color: #212121;
-//    color: white;
-//    font-size: 1.2em;
-//  }
-//
-//  textarea:focus {
-//    outline: none !important;
-//  }
-//}
+.uploaded-image-preview {
+  img {
+    border-radius: 10px;
+  }
+}
+
+.uploaded-file-preview {
+  border-radius: 10px;
+  background-color: #131313;
+  display: block;
+  box-sizing: border-box;
+  padding: 5px;
+
+  .file-icon {
+    height: 40px;
+    width: 40px;
+    font-size: 40px;
+    color: white;
+  }
+}
+
+.uploaded-file-preview, .uploaded-image-preview {
+  position: relative;
+  width: 50px;
+  height: 50px;
+
+  .delete-uploaded-file-icon {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+    background-color: #131313;
+    color: white;
+    border-radius: 50%;
+  }
+}

@@ -2,15 +2,26 @@
 
   <div>
     <input type="file" #fileInput (change)="onFilesUpload($event)" multiple style="display: none;" />
-    <button mat-icon-button (click)="fileInput.click()">
+    <button mat-icon-button (click)="fileInput.click()" [disabled]="uploadingFilesInProgress">
       <mat-icon>control_point</mat-icon>
     </button>
   </div>
 
   <div class="message-input-textarea-wrapper">
-    <div class="message-input-uploaded-files-wrapper" *ngIf="uploadedFiles.length > 0">
-      <div class="message-input-uploaded-file" *ngFor="let file of uploadedFiles">
-        <img height="50" width="50" [src]="file.url"  alt="uploaded-image-preview"/>
+    <div class="message-input-uploaded-files-wrapper" *ngIf="uploadedFiles.length > 0 || uploadingFilesInProgress">
+      <mat-spinner [diameter]="50" *ngIf="uploadingFilesInProgress"></mat-spinner>
+      <div class="message-input-uploaded-file"
+           *ngFor="let file of uploadedFiles; index as i"
+           [matTooltip]="file.fileName"
+           [matTooltipPosition]="'above'">
+        <div class="uploaded-image-preview" *ngIf="file.type == AttachmentType.IMAGE">
+          <mat-icon class="delete-uploaded-file-icon mat-elevation-z8" (click)="removeImage(i)">close</mat-icon>
+          <img height="50" width="50" [src]="file.url"  alt="Uploaded image preview"/>
+        </div>
+        <div class="uploaded-file-preview" *ngIf="file.type == AttachmentType.FILE" >
+          <mat-icon class="delete-uploaded-file-icon mat-elevation-z8">close</mat-icon>
+          <mat-icon class="file-icon">insert_drive_file</mat-icon>
+        </div>
       </div>
     </div>
     <textarea rows="1" [(ngModel)]="message" (keyup.enter)="sendMessage()" [disabled]="currentChatRoom == undefined"></textarea>
