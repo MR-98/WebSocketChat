@@ -10,6 +10,8 @@ import { DataStoreService } from "../../service/data-store.service";
 import { Attachment, AttachmentType } from "../../model/attachment";
 import { MatProgressSpinner } from "@angular/material/progress-spinner";
 import { MatTooltip } from "@angular/material/tooltip";
+import { HttpErrorResponse } from "@angular/common/http";
+import { ErrorCode } from "../../model/error-message";
 
 @Component({
   selector: 'app-message-input',
@@ -35,6 +37,7 @@ export class MessageInputComponent implements OnDestroy {
   protected readonly AttachmentType = AttachmentType;
 
   private MAX_NUMBER_OF_ATTACHMENTS = 5;
+  private MAX_ATTACHMENT_SIZE_IN_MB = 5;
 
   constructor(
     private websocketService: WebSocketService,
@@ -49,7 +52,7 @@ export class MessageInputComponent implements OnDestroy {
   }
 
   protected sendMessage() {
-    if((this.message == "" || this.message == " ") && this.uploadedFiles.length == 0) return;
+    if ((this.message == "" || this.message == " ") && this.uploadedFiles.length == 0) return;
     let attachmentIds = this.uploadedFiles.map(file => file.id);
     this.websocketService.sendMessage(this.currentChatRoom!!, this.message, attachmentIds);
     this.message = '';
@@ -59,9 +62,9 @@ export class MessageInputComponent implements OnDestroy {
   onFilesUpload($event: Event) {
     const input = $event.target as HTMLInputElement;
     if (!input.files) return;
-    if(this.uploadedFiles.length + input.files.length > this.MAX_NUMBER_OF_ATTACHMENTS) {
+    if (this.uploadedFiles.length + input.files.length > this.MAX_NUMBER_OF_ATTACHMENTS) {
       // TODO: snack bar
-      alert("Error! Maximum number of attachments: " + this.MAX_NUMBER_OF_ATTACHMENTS);
+      alert("Błąd! Maksymalna liczba załączników: " + this.MAX_NUMBER_OF_ATTACHMENTS);
       return;
     }
     this.uploadingFilesInProgress = true;
@@ -73,9 +76,13 @@ export class MessageInputComponent implements OnDestroy {
         this.uploadedFiles.push(...attachments);
         this.uploadingFilesInProgress = false;
       },
-      error: error => {
+      error: (response: HttpErrorResponse) => {
         // TODO: snack bar
-        alert("Error!");
+        if(response.status == 413 || response.error.errorCode == ErrorCode.ATTACHMENT_TOO_BIG) {
+          alert("Błąd! Załącznik zbyt duży. Maksymalny rozmiar załącznika to " + this.MAX_ATTACHMENT_SIZE_IN_MB + "MB.");
+        } else if (response.error.errorCode == ErrorCode.UNSUPPORTED_ATTACHMENT_EXTENSION) {
+          alert("Błąd! Nieznane rozszerzenie załącznika.");
+        }
         this.uploadingFilesInProgress = false;
       }
     });
