@@ -18,7 +18,7 @@ import { AttachmentComponent } from "../attachment/attachment.component";
   templateUrl: './message.component.html',
   styleUrl: './message.component.scss'
 })
-export class MessageComponent{
+export class MessageComponent {
 
   @Input() chatMessage!: ChatMessage;
   protected currentUser: string = '';

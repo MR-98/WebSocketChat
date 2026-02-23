@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogActions,
-  MatDialogClose, MatDialogContainer,
+  MatDialogClose,
   MatDialogContent,
   MatDialogRef,
   MatDialogTitle
@@ -24,8 +24,7 @@ import { FormsModule } from "@angular/forms";
     MatFormField,
     MatInput,
     FormsModule,
-    MatLabel,
-    MatDialogContainer
+    MatLabel
   ],
   templateUrl: './change-room-name-dialog.component.html',
   styleUrl: './change-room-name-dialog.component.scss',

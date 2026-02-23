@@ -8,7 +8,7 @@ import { User } from "../model/user";
 import { environment } from "../../environments/environment";
 import { AuthService } from "./auth.service";
 import { ChatMessageToSave } from "../model/chat-message-to-save";
-import {InvitationToSave} from "../model/invitations-to-save";
+import { InvitationToSave } from "../model/invitations-to-save";
 
 @Injectable({
   providedIn: 'root',

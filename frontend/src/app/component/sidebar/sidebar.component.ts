@@ -45,7 +45,7 @@ export class SidebarComponent {
     private router: Router
   ) {
     this.currentUserFullName = this.dataStoreService.getUserProfile()!!.fullName;
-    if(this.isReceivingInvitationsEnabled()) {
+    if (this.isReceivingInvitationsEnabled()) {
       this.loadInvitations();
     }
   }

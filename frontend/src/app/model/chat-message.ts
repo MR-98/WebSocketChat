@@ -1,6 +1,6 @@
 import { User } from "./user";
 import { ChatRoom } from "./chat-room";
-import {Attachment} from "./attachment";
+import { Attachment } from "./attachment";
 
 export interface ChatMessage {
   data: string

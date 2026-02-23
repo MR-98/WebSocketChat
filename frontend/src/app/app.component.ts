@@ -1,8 +1,8 @@
-import {Component, effect} from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { DataStoreService } from "./service/data-store.service";
-import {UserService} from "./service/user.service";
-import {AuthService} from "./service/auth.service";
+import { UserService } from "./service/user.service";
+import { AuthService } from "./service/auth.service";
 
 @Component({
   selector: 'app-root',
@@ -20,7 +20,7 @@ export class AppComponent {
   ) {
 
     this.authService.isAuthenticated$.subscribe(isAuthenticated => {
-      if(isAuthenticated) {
+      if (isAuthenticated) {
         this.userService.getMe().subscribe(user => {
           this.dataStoreService.setUserProfile(
             {
