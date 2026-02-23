@@ -1,7 +1,10 @@
 package com.mr.websocket_chat.controller.rest
 
+import com.mr.websocket_chat.domain.enum.ErrorCode
 import com.mr.websocket_chat.domain.exception.AttachmentNotFoundException
-import com.mr.websocket_chat.domain.rest.AttachmentDTO
+import com.mr.websocket_chat.domain.exception.AttachmentTooBigException
+import com.mr.websocket_chat.domain.exception.UnsupportedAttachmentExtensionException
+import com.mr.websocket_chat.domain.rest.ErrorMessageDTO
 import com.mr.websocket_chat.domain.rest.GetDownloadURLResponseDTO
 import com.mr.websocket_chat.service.AttachmentService
 import org.springframework.beans.factory.annotation.Autowired
@@ -27,10 +30,14 @@ class AttachmentRestController @Autowired constructor(
         @RequestParam("attachments") attachments: List<MultipartFile>,
         @RequestParam("chatRoomId") chatRoomId: Long,
         @RequestParam("uploaderUsername") uploaderUsername: String,
-    ): ResponseEntity<List<AttachmentDTO>> {
+    ): ResponseEntity<Any> {
         try {
             val result = attachmentService.saveAttachments(attachments, chatRoomId, uploaderUsername)
             return ResponseEntity.ok().body(result)
+        } catch (e: AttachmentTooBigException) {
+            return ResponseEntity.badRequest().body(ErrorMessageDTO(ErrorCode.ATTACHMENT_TOO_BIG))
+        } catch (e: UnsupportedAttachmentExtensionException) {
+            return ResponseEntity.badRequest().body(ErrorMessageDTO(ErrorCode.UNSUPPORTED_ATTACHMENT_EXTENSION))
         } catch (e: Exception) {
             return ResponseEntity.internalServerError().build()
         }

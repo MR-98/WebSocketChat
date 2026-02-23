@@ -2,6 +2,8 @@ package com.mr.websocket_chat.service
 
 import com.mr.websocket_chat.domain.enum.AttachmentType
 import com.mr.websocket_chat.domain.exception.AttachmentNotFoundException
+import com.mr.websocket_chat.domain.exception.AttachmentTooBigException
+import com.mr.websocket_chat.domain.exception.UnsupportedAttachmentExtensionException
 import com.mr.websocket_chat.domain.jpa.AttachmentEntity
 import com.mr.websocket_chat.domain.mapper.AttachmentMapper
 import com.mr.websocket_chat.domain.rest.AttachmentDTO
@@ -21,12 +23,33 @@ class AttachmentService @Autowired constructor(
     private val s3Service: S3Service
 ) {
 
+    companion object {
+        private const val MAX_ATTACHMENT_SIZE_IN_MB = 5 * 1024 * 1024
+        private val SUPPORTED_ATTACHMENT_EXTENSIONS = arrayOf(
+            "png",
+            "jpeg",
+            "jpg",
+            "gif",
+            "webp",
+            "bmp",
+            "pdf",
+            "doc",
+            "docx",
+            "ppt",
+            "pptx",
+            "xls",
+            "xlsx",
+            "txt",
+            "csv")
+    }
+
     @Transactional
     fun saveAttachments(
         attachments: List<MultipartFile>,
         chatRoomId: Long,
         uploaderUsername: String
     ): List<AttachmentDTO> {
+        validateAttachments(attachments)
         val attachmentsToSave = attachments.map {
             val s3Key = s3Service.generateS3Key(
                 file = it,
@@ -45,6 +68,15 @@ class AttachmentService @Autowired constructor(
             )
         }
         return attachmentRepository.saveAll(attachmentsToSave).map { attachmentMapper.toDTO(it) }
+    }
+
+    private fun validateAttachments(attachments: List<MultipartFile>) {
+        if(attachments.any { it.size > MAX_ATTACHMENT_SIZE_IN_MB }) {
+            throw AttachmentTooBigException()
+        }
+        if (attachments.any { !SUPPORTED_ATTACHMENT_EXTENSIONS.contains(it.originalFilename?.substringAfterLast('.'))}) {
+            throw UnsupportedAttachmentExtensionException()
+        }
     }
 
     private fun resolveAttachmentType(file: MultipartFile): AttachmentType {
