@@ -16,13 +16,18 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.data.domain.Limit
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class InvitationService @Autowired constructor(
 	private val invitationRepository: InvitationRepository,
 	private val chatRoomRepository: ChatRoomRepository,
 	private val userRepository: UserRepository,
+	private val invitationMapper: InvitationMapper,
+	private val chatRoomMapper: ChatRoomMapper
 ){
+
+	@Transactional
 	fun saveInvitation(invitation: InvitationToSaveDTO, invitingUser: String): InvitationDTO {
 		val chatRoomEntity = chatRoomRepository.findByIdOrNull(invitation.roomId)
 			?: throw ChatRoomNotFoundException()
@@ -38,33 +43,33 @@ class InvitationService @Autowired constructor(
 				invitingUser = invitingUserEntity
 			)
 		)
-		return InvitationMapper.toDTO(invitationEntity)
+		return invitationMapper.toDTO(invitationEntity)
 	}
 
+	@Transactional(readOnly = true)
 	fun loadInvitationsForUser(username: String): List<InvitationDTO> {
 		return invitationRepository.getAllByInvitedUser_Username(username, Limit.of(50)).map {
-			InvitationMapper.toDTO(it)
+			invitationMapper.toDTO(it)
 		}
 	}
 
+	@Transactional(readOnly = true)
 	fun findInvitationForRoomAndUser(roomId: Long, username: String): InvitationEntity? {
 		return invitationRepository.findByRoom_IdAndInvitedUser_Username(roomId, username)
 	}
 
+	@Transactional
 	fun acceptInvitationAndReturnNewRoom(roomId: Long, username: String): ChatRoomDTO {
 		val invitation = findInvitationForRoomAndUser(roomId, username) ?: throw InvitationNotFoundException()
 		invitation.room.users.add(invitation.invitedUser)
 		val room = chatRoomRepository.save(invitation.room)
-		deleteInvitation(invitation)
-		return ChatRoomMapper.toDTO(room)
+		invitationRepository.deleteById(invitation.id!!)
+		return chatRoomMapper.toDTO(room)
 	}
 
+	@Transactional
 	fun rejectInvitation(roomId: Long, username: String) {
 		val invitation = findInvitationForRoomAndUser(roomId, username) ?: throw InvitationNotFoundException()
-		deleteInvitation(invitation)
-	}
-
-	fun deleteInvitation(invitation: InvitationEntity) {
 		invitationRepository.deleteById(invitation.id!!)
 	}
 

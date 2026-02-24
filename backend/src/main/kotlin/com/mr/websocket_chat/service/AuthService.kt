@@ -5,6 +5,7 @@ import com.mr.websocket_chat.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class AuthService @Autowired constructor(
@@ -13,6 +14,7 @@ class AuthService @Autowired constructor(
 
     private val passwordEncoder = BCryptPasswordEncoder()
 
+    @Transactional(readOnly = true)
     fun checkIfPasswordValid(username: String, password: String): Boolean {
         val userEntity = userRepository.findByUsername(username) ?: throw UserNotFoundException()
         return passwordEncoder.matches(password, userEntity.password)

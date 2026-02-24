@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { ChatMessage } from "../../model/chat-message";
-import { NgClass, NgIf } from "@angular/common";
+import { NgClass, NgForOf, NgIf } from "@angular/common";
 import { DataStoreService } from "../../service/data-store.service";
 import { MatTooltip } from "@angular/material/tooltip";
+import { AttachmentComponent } from "../attachment/attachment.component";
 
 @Component({
   selector: 'app-message',
@@ -10,17 +11,21 @@ import { MatTooltip } from "@angular/material/tooltip";
   imports: [
     NgClass,
     NgIf,
-    MatTooltip
+    MatTooltip,
+    NgForOf,
+    AttachmentComponent
   ],
   templateUrl: './message.component.html',
   styleUrl: './message.component.scss'
 })
-export class MessageComponent{
+export class MessageComponent {
 
   @Input() chatMessage!: ChatMessage;
   protected currentUser: string = '';
 
-  constructor(dataStoreService: DataStoreService) {
+  constructor(
+    dataStoreService: DataStoreService,
+  ) {
     this.currentUser = dataStoreService.getUserProfile()!!.username;
   }
 

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { AuthService } from "../../service/auth.service";
 import { Router, RouterLink } from "@angular/router";
-import {NgClass} from "@angular/common";
+import { NgClass } from "@angular/common";
 
 @Component({
   selector: 'app-register',
@@ -43,7 +43,7 @@ export class RegisterComponent {
     let lastName = this.registerForm.controls.lastName.value!!;
     let password = this.registerForm.controls.password.value!!;
     let repeatPassword = this.registerForm.controls.repeatPassword.value!!;
-    if(password != repeatPassword) return;
+    if (password != repeatPassword) return;
     this.authService.register(username, firstName, lastName, password).subscribe(_ => {
       this.router.navigate(['/login']);
     })

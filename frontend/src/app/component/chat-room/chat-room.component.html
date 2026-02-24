@@ -15,10 +15,7 @@
         <mat-spinner [diameter]="30"></mat-spinner>
       </div>
     </div>
-    <div class="chat-room-input-container">
-      <textarea rows="1" [(ngModel)]="message" (keyup.enter)="sendMessage()" [disabled]="currentChatRoom == undefined"></textarea>
-      <mat-icon (click)="sendMessage()">send</mat-icon>
-    </div>
+    <app-message-input></app-message-input>
   </div>
   <app-chat-room-settings
     *ngIf="roomSettingVisible"

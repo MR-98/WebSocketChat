@@ -3,6 +3,7 @@ package com.mr.websocket_chat.service
 import com.mr.websocket_chat.domain.exception.ChatRoomNotFoundException
 import com.mr.websocket_chat.domain.jpa.ChatRoomEntity
 import com.mr.websocket_chat.domain.jpa.UserEntity
+import com.mr.websocket_chat.domain.mapper.ChatRoomMapper
 import com.mr.websocket_chat.repository.ChatRoomRepository
 import com.mr.websocket_chat.repository.UserRepository
 import io.mockk.every
@@ -23,8 +24,11 @@ class ChatRoomServiceTest {
 	@MockK
 	private val userRepository: UserRepository = mockk()
 
+	@MockK
+	private val chatRoomMapper: ChatRoomMapper = mockk()
+
 	@InjectMockKs
-	private val chatRoomService: ChatRoomService = ChatRoomService(chatRoomRepository, userRepository)
+	private val chatRoomService: ChatRoomService = ChatRoomService(chatRoomRepository, userRepository, chatRoomMapper)
 
 	private lateinit var chatRoomEntity: ChatRoomEntity
 

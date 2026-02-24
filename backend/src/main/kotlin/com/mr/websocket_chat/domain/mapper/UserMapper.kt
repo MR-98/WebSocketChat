@@ -2,8 +2,10 @@ package com.mr.websocket_chat.domain.mapper
 
 import com.mr.websocket_chat.domain.jpa.UserEntity
 import com.mr.websocket_chat.domain.rest.UserDTO
+import org.springframework.stereotype.Component
 
-object UserMapper {
+@Component
+class UserMapper {
 
     fun toDTO(user: UserEntity): UserDTO {
         return UserDTO(

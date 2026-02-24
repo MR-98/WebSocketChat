@@ -8,7 +8,7 @@ import { User } from "../model/user";
 import { environment } from "../../environments/environment";
 import { AuthService } from "./auth.service";
 import { ChatMessageToSave } from "../model/chat-message-to-save";
-import {InvitationToSave} from "../model/invitations-to-save";
+import { InvitationToSave } from "../model/invitations-to-save";
 
 @Injectable({
   providedIn: 'root',
@@ -60,13 +60,14 @@ export class WebSocketService {
     );
   }
 
-  sendMessage(room: ChatRoom, content: string): void {
+  sendMessage(room: ChatRoom, content: string, attachmentIds: number[] = []): void {
     let currentUserProfile = this.dataStoreService.getUserProfile()!!
     const message: ChatMessageToSave = {
       data: content,
       roomId: room.id,
       senderUsername: currentUserProfile.username,
-      timestamp: Date.now()
+      timestamp: Date.now(),
+      attachmentIds: attachmentIds
     };
 
     this.client.publish({

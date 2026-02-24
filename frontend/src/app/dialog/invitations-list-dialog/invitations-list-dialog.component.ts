@@ -45,7 +45,7 @@ export class InvitationsListDialogComponent {
   }
 
   acceptInvitation(invitation: Invitation) {
-    this.invitationsService.acceptInvitation(invitation.room).subscribe( (newRoom: ChatRoom) => {
+    this.invitationsService.acceptInvitation(invitation.room).subscribe((newRoom: ChatRoom) => {
       this.invitations = this.invitations.filter(element => element.id != invitation.id);
       this.dataStoreService.setChatRoomList([...this.dataStoreService.getChatRoomList(), newRoom]);
     });
@@ -53,7 +53,7 @@ export class InvitationsListDialogComponent {
 
 
   rejectInvitation(invitation: Invitation) {
-    this.invitationsService.deleteInvitation(invitation.room).subscribe( _ => {
+    this.invitationsService.deleteInvitation(invitation.room).subscribe(_ => {
       this.invitations = this.invitations.filter(element => element.id != invitation.id);
     });
   }
