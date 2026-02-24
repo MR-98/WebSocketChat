@@ -23,6 +23,8 @@ import { debounceTime, fromEvent } from "rxjs";
 import { ChatService } from "../../service/chat.service";
 import { MatProgressSpinner } from "@angular/material/progress-spinner";
 import { MessageInputComponent } from "../message-input/message-input.component";
+import { NotificationsService } from "../../service/notifications.service";
+import { UserProfile } from "../../model/user-profile";
 
 @Component({
   selector: 'app-chat-room',
@@ -45,6 +47,7 @@ import { MessageInputComponent } from "../message-input/message-input.component"
 export class ChatRoomComponent implements AfterViewInit, OnDestroy {
 
   protected currentChatRoom: ChatRoom | undefined;
+  protected currentUserProfile: UserProfile | undefined;
   private currentSubscription: StompSubscription | undefined;
   protected chatMessages: ChatMessage[] = []
   protected chatRoomName: string = '';
@@ -59,14 +62,15 @@ export class ChatRoomComponent implements AfterViewInit, OnDestroy {
     private websocketService: WebSocketService,
     private dataStoreService: DataStoreService,
     private chatService: ChatService,
-
+    private notificationsService: NotificationsService
   ) {
     effect(() => {
       if (!this.websocketService.isConnected()) return
 
       this.currentChatRoom = this.dataStoreService.getCurrentlySelectedChatRoom();
+      this.currentUserProfile = this.dataStoreService.getUserProfile()!!;
       this.reloadCurrentChatRoom();
-    })
+    });
   }
 
   ngAfterViewInit() {
@@ -91,11 +95,7 @@ export class ChatRoomComponent implements AfterViewInit, OnDestroy {
       // @ts-ignore
       this.currentChatRoom.id,
       (message: ChatMessage[] | ChatMessage) => {
-        if (Array.isArray(message)) {
-          this.chatMessages.unshift(...message);
-        } else {
-          this.chatMessages.unshift(message);
-        }
+        this.handleNewMessages(message);
       }
     )
   }
@@ -116,6 +116,17 @@ export class ChatRoomComponent implements AfterViewInit, OnDestroy {
         this.callApiToGetOldMessages();
       }
     });
+  }
+
+  private handleNewMessages(message: ChatMessage[] | ChatMessage) {
+    if (Array.isArray(message)) {
+      this.chatMessages.unshift(...message);
+    } else {
+      this.chatMessages.unshift(message);
+      if (this.shouldSendNewMessageNotification(message)) {
+        this.notificationsService.sendNewMessageNotification(message);
+      }
+    }
   }
 
   private shouldLoadOldMessages(scrollEvent: any): boolean {
@@ -160,5 +171,9 @@ export class ChatRoomComponent implements AfterViewInit, OnDestroy {
     this.oldMessagesLoading = false;
     this.noMoreOldMessages = false;
     this.currentChatRoom = undefined;
+  }
+
+  private shouldSendNewMessageNotification(message: ChatMessage): boolean {
+    return this.currentUserProfile!!.username != message.sender.username;
   }
 }
