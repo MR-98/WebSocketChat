@@ -3,15 +3,19 @@ import { RouterOutlet } from '@angular/router';
 import { DataStoreService } from "./service/data-store.service";
 import { UserService } from "./service/user.service";
 import { AuthService } from "./service/auth.service";
+import { NgIf } from "@angular/common";
+import { LoadingComponent } from "./view/loading/loading.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, NgIf, LoadingComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
+
+  protected applicationLoaded = false;
 
   constructor(
     private userService: UserService,
@@ -29,8 +33,11 @@ export class AppComponent {
               lastName: user.lastName!!,
               fullName: `${user.firstName!!} ${user.lastName!!}`
             }
-          )
+          );
+          this.applicationLoaded = true;
         })
+      } else {
+        this.applicationLoaded = true;
       }
     })
   }
