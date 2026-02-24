@@ -1,10 +1,7 @@
 services:
   backend:
     container_name: backend
-    image: websocket-chat-backend:latest
-    build:
-      context: ../backend
-      dockerfile: ./Dockerfile
+    image: ghcr.io/mr-98/websocket-chat-backend:latest
     environment:
       JAVA_OPTS: "-Xdebug -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
       HOSTNAME: ${HOSTNAME}
@@ -20,10 +17,7 @@ services:
 
   frontend:
     container_name: frontend
-    image: websocket-chat-frontend:latest
-    build:
-      context: ../frontend
-      dockerfile: ./Dockerfile
+    image: ghcr.io/mr-98/websocket-chat-frontend:latest
     ports:
       - 8081:8081
 
