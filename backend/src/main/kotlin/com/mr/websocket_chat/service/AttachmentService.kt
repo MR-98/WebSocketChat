@@ -18,7 +18,7 @@ import java.time.Instant
 
 @Service
 class AttachmentService @Autowired constructor(
-    val attachmentRepository: AttachmentRepository,
+    private val attachmentRepository: AttachmentRepository,
     private val attachmentMapper: AttachmentMapper,
     private val s3Service: S3Service
 ) {
