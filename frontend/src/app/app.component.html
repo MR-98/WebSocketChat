@@ -1,1 +1,6 @@
-<router-outlet></router-outlet>
+<ng-container *ngIf="applicationLoaded">
+  <router-outlet></router-outlet>
+</ng-container>
+<ng-container *ngIf="!applicationLoaded">
+  <app-loading></app-loading>
+</ng-container>
