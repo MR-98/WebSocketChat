@@ -17,5 +17,5 @@ class ChatRoomEntity (
 	val users: MutableSet<UserEntity> = mutableSetOf(),
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	val id: Long,
+	val id: Long? = null,
 )

@@ -5,11 +5,10 @@ import {
   MAT_DIALOG_DATA,
   MatDialogActions,
   MatDialogClose,
-  MatDialogContent, MatDialogRef,
+  MatDialogContent,
+  MatDialogRef,
   MatDialogTitle
 } from "@angular/material/dialog";
-import { MatFormField, MatLabel } from "@angular/material/form-field";
-import { MatInput } from "@angular/material/input";
 
 @Component({
   selector: 'app-yes-no-dialog',
@@ -20,10 +19,7 @@ import { MatInput } from "@angular/material/input";
     MatDialogActions,
     MatDialogClose,
     MatDialogContent,
-    MatDialogTitle,
-    MatFormField,
-    MatInput,
-    MatLabel
+    MatDialogTitle
   ],
   templateUrl: './yes-no-dialog.component.html',
   styleUrl: './yes-no-dialog.component.scss'

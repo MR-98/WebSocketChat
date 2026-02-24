@@ -8,6 +8,11 @@
       [matTooltip]="formatDate(chatMessage.timestamp)"
       [matTooltipPosition]="currentUser == chatMessage.sender.username ? 'left' : 'right'">
       {{ chatMessage.data }}
+      <ng-container *ngIf="chatMessage.attachments.length > 0">
+        <div class="chat-message-attachments-wrapper" *ngFor="let attachment of chatMessage.attachments">
+          <app-attachment [attachment]="attachment"></app-attachment>
+        </div>
+      </ng-container>
     </div>
   </div>
 </div>

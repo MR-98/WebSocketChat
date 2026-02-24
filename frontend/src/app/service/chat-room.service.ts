@@ -28,20 +28,19 @@ export class ChatRoomService {
     )
   }
 
-  changeRoomName(newName: string, room: ChatRoom) {
-    room.name = newName;
+  changeRoomName(newName: string, roomId: number) {
     return this.http.put<ChatRoom>(
       this.url,
-      room
+      {
+        roomId: roomId,
+        newRoomName: newName
+      }
     )
   }
 
-  deleteRoom(chatRoom: ChatRoom) {
+  deleteRoom(roomId: number) {
     return this.http.delete<ChatRoom>(
-      this.url,
-      {
-        body: chatRoom
-      }
+      this.url + "/" + roomId
     )
   }
 

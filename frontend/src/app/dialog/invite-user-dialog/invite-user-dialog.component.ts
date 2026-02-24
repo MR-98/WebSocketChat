@@ -1,10 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatButton } from "@angular/material/button";
 import {
-  MAT_DIALOG_DATA,
   MatDialogActions,
   MatDialogClose,
-  MatDialogContent, MatDialogRef,
+  MatDialogContent,
+  MatDialogRef,
   MatDialogTitle
 } from "@angular/material/dialog";
 import { MatFormField, MatLabel } from "@angular/material/form-field";
@@ -53,14 +53,13 @@ export class InviteUserDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<InviteUserDialogComponent>,
     private userService: UserService
-
   ) {
     this.options = this.myControl.valueChanges.pipe(
       startWith(''),
       debounceTime(400),
       distinctUntilChanged(),
       switchMap(val => {
-        if(typeof val == "string" && val.length >= 3) {
+        if (typeof val == "string" && val.length >= 3) {
           return this.userService.getUsers(val)
         }
         return of()
