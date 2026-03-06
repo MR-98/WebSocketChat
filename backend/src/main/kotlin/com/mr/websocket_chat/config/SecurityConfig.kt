@@ -19,6 +19,7 @@ import org.springframework.web.cors.CorsConfiguration
 class SecurityConfig @Autowired constructor(
 	private val jwtAuthenticationFilter: JwtAuthenticationFilter,
 	@Value("\${production.environment}") private val productionEnvironment: Boolean,
+	@Value("\${api.prefix}") private val apiPrefix: String
 ){
 
 	@Bean
@@ -34,14 +35,15 @@ class SecurityConfig @Autowired constructor(
 							configuration.addAllowedMethod(HttpMethod.PUT)
 							configuration
 						}
-					}.csrf { csrf -> csrf.disable() }
+					}
 				}
+				it.csrf { csrf -> csrf.disable() }
 			}
 			.authorizeHttpRequests { authorize ->
 				authorize
-					.requestMatchers("/api/auth/**").permitAll()
+					.requestMatchers("${apiPrefix}/auth/**").permitAll()
 					.requestMatchers("/ws-chat/**").permitAll()
-					.requestMatchers("/error").permitAll()
+					.requestMatchers("${apiPrefix}/error").permitAll()
 					.anyRequest().authenticated()
 			}
 			.sessionManagement {session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
