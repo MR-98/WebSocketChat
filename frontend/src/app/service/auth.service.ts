@@ -21,7 +21,7 @@ export class AuthService {
   ) {}
 
   login(username: string, password: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(this.url + '/api/auth/login', { username, password })
+    return this.http.post<LoginResponse>(this.url + '/auth/login', { username, password })
       .pipe(
         tap(response => {
           this.setToken(response.token);
@@ -31,7 +31,7 @@ export class AuthService {
   }
 
   register(username: string, firstName: string, lastName: string, password: string) {
-    return this.http.post(this.url + '/api/auth/register', { username, firstName, lastName, password })
+    return this.http.post(this.url + '/auth/register', { username, firstName, lastName, password })
   }
 
   logout(): void {
