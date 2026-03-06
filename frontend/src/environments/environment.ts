@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  backendUrl: 'https://mr98.site/api',
-  websocketUrl: 'wss://mr98.site/ws/ws-chat'
+  backendUrl: 'https://chat.mr98.site/api/v1',
+  websocketUrl: 'wss://chat.mr98.site/ws/ws-chat'
 };

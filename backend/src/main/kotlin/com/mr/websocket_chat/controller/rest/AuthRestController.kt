@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 class AuthController(
     private val jwtService: JwtService,
     private val userService: UserService,
