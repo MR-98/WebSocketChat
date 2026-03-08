@@ -1,12 +1,11 @@
-import { APP_INITIALIZER, ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { KeycloakBearerInterceptor, KeycloakService } from "keycloak-angular";
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from "@angular/material/form-field";
-import { environment } from '../environments/environment';
+import { AuthInterceptor } from "./interceptor/auth.interceptor";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,15 +13,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withInterceptorsFromDi()),
     {
-      provide: APP_INITIALIZER,
-      useFactory: initializeKeycloak,
-      multi: true,
-      deps: [KeycloakService]
-    },
-    KeycloakService,
-    {
       provide: HTTP_INTERCEPTORS,
-      useClass: KeycloakBearerInterceptor,
+      useClass: AuthInterceptor,
       multi: true
     },
     {
@@ -35,18 +27,3 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync()
   ]
 };
-
-function initializeKeycloak(keycloak: KeycloakService) {
-  return () =>
-    keycloak.init({
-      config: {
-        url: environment.keycloakUrl,
-        realm: 'websocket-chat',
-        clientId: 'frontend',
-      },
-      initOptions: {
-        onLoad: 'login-required',
-      },
-      loadUserProfileAtStartUp: true
-    });
-}

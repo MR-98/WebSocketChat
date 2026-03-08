@@ -22,6 +22,9 @@ import { MatIconButton } from "@angular/material/button";
 import { debounceTime, fromEvent } from "rxjs";
 import { ChatService } from "../../service/chat.service";
 import { MatProgressSpinner } from "@angular/material/progress-spinner";
+import { MessageInputComponent } from "../message-input/message-input.component";
+import { NotificationsService } from "../../service/notifications.service";
+import { UserProfile } from "../../model/user-profile";
 
 @Component({
   selector: 'app-chat-room',
@@ -35,7 +38,8 @@ import { MatProgressSpinner } from "@angular/material/progress-spinner";
     ChatRoomSettingsComponent,
     MatIcon,
     MatIconButton,
-    MatProgressSpinner
+    MatProgressSpinner,
+    MessageInputComponent
   ],
   templateUrl: './chat-room.component.html',
   styleUrl: './chat-room.component.scss'
@@ -43,9 +47,9 @@ import { MatProgressSpinner } from "@angular/material/progress-spinner";
 export class ChatRoomComponent implements AfterViewInit, OnDestroy {
 
   protected currentChatRoom: ChatRoom | undefined;
+  protected currentUserProfile: UserProfile | undefined;
   private currentSubscription: StompSubscription | undefined;
   protected chatMessages: ChatMessage[] = []
-  protected message: string = '';
   protected chatRoomName: string = '';
   protected roomSettingVisible: boolean = false;
   protected oldMessagesLoading: boolean = false;
@@ -57,14 +61,16 @@ export class ChatRoomComponent implements AfterViewInit, OnDestroy {
   constructor(
     private websocketService: WebSocketService,
     private dataStoreService: DataStoreService,
-    private chatService: ChatService
+    private chatService: ChatService,
+    private notificationsService: NotificationsService
   ) {
     effect(() => {
       if (!this.websocketService.isConnected()) return
 
       this.currentChatRoom = this.dataStoreService.getCurrentlySelectedChatRoom();
+      this.currentUserProfile = this.dataStoreService.getUserProfile()!!;
       this.reloadCurrentChatRoom();
-    })
+    });
   }
 
   ngAfterViewInit() {
@@ -89,19 +95,9 @@ export class ChatRoomComponent implements AfterViewInit, OnDestroy {
       // @ts-ignore
       this.currentChatRoom.id,
       (message: ChatMessage[] | ChatMessage) => {
-        if (Array.isArray(message)) {
-          this.chatMessages.unshift(...message);
-        } else {
-          this.chatMessages.unshift(message);
-        }
+        this.handleNewMessages(message);
       }
     )
-  }
-
-  protected sendMessage() {
-    if(this.message == "" || this.message == " ") return;
-    this.websocketService.sendMessage(this.currentChatRoom!!, this.message);
-    this.message = '';
   }
 
   protected toggleRoomSettings() {
@@ -120,6 +116,17 @@ export class ChatRoomComponent implements AfterViewInit, OnDestroy {
         this.callApiToGetOldMessages();
       }
     });
+  }
+
+  private handleNewMessages(message: ChatMessage[] | ChatMessage) {
+    if (Array.isArray(message)) {
+      this.chatMessages.unshift(...message);
+    } else {
+      this.chatMessages.unshift(message);
+      if (this.shouldSendNewMessageNotification(message)) {
+        this.notificationsService.sendNewMessageNotification(message);
+      }
+    }
   }
 
   private shouldLoadOldMessages(scrollEvent: any): boolean {
@@ -164,5 +171,9 @@ export class ChatRoomComponent implements AfterViewInit, OnDestroy {
     this.oldMessagesLoading = false;
     this.noMoreOldMessages = false;
     this.currentChatRoom = undefined;
+  }
+
+  private shouldSendNewMessageNotification(message: ChatMessage): boolean {
+    return this.currentUserProfile!!.username != message.sender.username;
   }
 }

@@ -9,10 +9,7 @@ import { DataStoreService } from "../../service/data-store.service";
 import { InviteUserDialogComponent } from "../../dialog/invite-user-dialog/invite-user-dialog.component";
 import { WebSocketService } from "../../service/web-socket.service";
 import { User } from "../../model/user";
-import {
-  MatExpansionPanel,
-  MatExpansionPanelHeader,
-} from "@angular/material/expansion";
+import { MatExpansionPanel, MatExpansionPanelHeader, } from "@angular/material/expansion";
 import { MatList, MatListItem } from "@angular/material/list";
 import { NgForOf } from "@angular/common";
 import { MatIconButton } from "@angular/material/button";
@@ -55,10 +52,10 @@ export class ChatRoomSettingsComponent {
         },
       }
     ).afterClosed().subscribe((newRoomName: string) => {
-      if(newRoomName == undefined) {
+      if (newRoomName == undefined) {
         return
       }
-      this.chatRoomService.changeRoomName(newRoomName, this.chatRoom).subscribe();
+      this.chatRoomService.changeRoomName(newRoomName, this.chatRoom.id).subscribe();
       this.chatRoomNameUpdated.emit(newRoomName);
     });
   }
@@ -75,12 +72,12 @@ export class ChatRoomSettingsComponent {
         },
       }
     ).afterClosed().subscribe((result: boolean) => {
-      if(result) {
-        this.chatRoomService.deleteRoom(this.chatRoom).subscribe(_ => {
+      if (result) {
+        this.chatRoomService.deleteRoom(this.chatRoom.id).subscribe(_ => {
           let chatRoomList = this.dataStoreService.getChatRoomList();
           let newChatRoomList = chatRoomList.filter(chatRoomListElement => chatRoomListElement != this.chatRoom);
           this.dataStoreService.setChatRoomList(newChatRoomList);
-          if(newChatRoomList.length > 0) {
+          if (newChatRoomList.length > 0) {
             this.dataStoreService.setCurrentlySelectedChatRoom(newChatRoomList[0])
           }
         })
@@ -92,7 +89,7 @@ export class ChatRoomSettingsComponent {
     this.dialog.open(
       InviteUserDialogComponent
     ).afterClosed().subscribe((userToInvite: User | undefined) => {
-      if(userToInvite != undefined) {
+      if (userToInvite != undefined) {
         this.webSocketService.sendInvitation(userToInvite, this.chatRoom);
         // TODO: snack bar alert
       }
@@ -111,11 +108,11 @@ export class ChatRoomSettingsComponent {
         },
       }
     ).afterClosed().subscribe((result: boolean) => {
-      if(result) {
-        this.chatRoomService.leaveRoom(this.chatRoom).subscribe( _ => {
+      if (result) {
+        this.chatRoomService.leaveRoom(this.chatRoom).subscribe(_ => {
           let newChatList = this.dataStoreService.getChatRoomList().filter(element => element.id != this.chatRoom.id);
           this.dataStoreService.setChatRoomList([...newChatList]);
-          if(newChatList.length > 0) {
+          if (newChatList.length > 0) {
             this.dataStoreService.setCurrentlySelectedChatRoom(newChatList[0])
           }
         })

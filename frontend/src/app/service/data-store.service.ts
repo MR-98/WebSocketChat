@@ -8,7 +8,7 @@ import { UserProfile } from "../model/user-profile";
 export class DataStoreService {
   private _currentlySelectedChatRoomId = signal<ChatRoom | undefined>(undefined)
   private _chatRoomList = signal<ChatRoom[]>([])
-  private _userProfile = signal<UserProfile | undefined>(undefined)
+  private _userProfile = signal<UserProfile | null>(null)
 
   constructor() {
   }
@@ -29,7 +29,7 @@ export class DataStoreService {
     this._chatRoomList.set(value)
   }
 
-  getUserProfile(): UserProfile | undefined {
+  getUserProfile(): UserProfile | null {
     return this._userProfile();
   }
 

@@ -22,12 +22,20 @@ RUN npm run build --prod
 ### STAGE 2: Run ###
 FROM nginxinc/nginx-unprivileged
 
-#### copy nginx conf
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+#### copy nginx template
+COPY ./nginx.conf.template /etc/nginx/templates/default.conf.template
 
 #### copy artifact build from the 'build environment'
 COPY --from=build /usr/src/app/dist/websocket-chat/browser /usr/share/nginx/html
 
+### copy docker-entrypoint.sh
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+USER root
+RUN chmod +x /docker-entrypoint.sh \
+    && chown -R 101:101 /usr/share/nginx/html
+USER 101
+
 EXPOSE 8081
 
+ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]

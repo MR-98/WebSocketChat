@@ -28,8 +28,10 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
-              }
+                "input": "public",
+                "output": "./"
+              },
+              "src/assets"
             ],
             "styles": [
               "@angular/material/prebuilt-themes/cyan-orange.css",
@@ -56,13 +58,7 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.development.ts"
-                }
-              ]
+              "sourceMap": true
             }
           },
           "defaultConfiguration": "production"
@@ -94,8 +90,10 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
-              }
+                "input": "public",
+                "output": "./"
+              },
+              "src/assets"
             ],
             "styles": [
               "@angular/material/prebuilt-themes/cyan-orange.css",
@@ -106,5 +104,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

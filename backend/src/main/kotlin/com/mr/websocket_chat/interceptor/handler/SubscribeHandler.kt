@@ -1,6 +1,6 @@
 package com.mr.websocket_chat.interceptor.handler
 
-import com.mr.websocket_chat.service.AuthUtils
+import com.mr.websocket_chat.config.jwt.JwtService
 import com.mr.websocket_chat.service.ChatRoomService
 import com.mr.websocket_chat.service.UserService
 import mu.KotlinLogging
@@ -13,9 +13,9 @@ import java.lang.NumberFormatException
 
 @Component
 class SubscribeHandler @Autowired constructor(
-	private val authUtils: AuthUtils,
 	private val chatRoomService: ChatRoomService,
-	private val userService: UserService
+	private val userService: UserService,
+	private val jwtService: JwtService
 ): WebSocketMessageHandler {
 
 	companion object {
@@ -24,8 +24,9 @@ class SubscribeHandler @Autowired constructor(
 
 	override fun handleMessage(message: Message<*>): Message<*>? {
 		val headerAccessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor::class.java) ?: return null
-		val principal = authUtils.getPrincipalFromAuthorizationHeader(headerAccessor) ?: return null
-		val subscriberUsername = authUtils.getUsernameFromPrincipal(principal)
+		val authHeader = headerAccessor.getFirstNativeHeader("Authorization")
+		val token = jwtService.extractTokenFromHeader(authHeader) ?: return null
+		val subscriberUsername = jwtService.getUsernameFromToken(token)
 		val destination = headerAccessor.destination
 		if(subscriberUsername.isNullOrEmpty() || destination.isNullOrEmpty()) {
 			return null
@@ -49,8 +50,8 @@ class SubscribeHandler @Autowired constructor(
 					return null
 				}
 
-				val userEntity = userService.findByUsername(username) ?: return null
-				if(userEntity.username != subscriberUsername) {
+				val user = userService.findByUsername(username)
+				if(user.username != subscriberUsername) {
 					return null
 				}
 			}

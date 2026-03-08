@@ -1,6 +1,6 @@
 server {
     listen 8081;
-    server_name mr98.site;
+    server_name ${DOMAIN_NAME};
 
     default_type application/octet-stream;
 
@@ -14,9 +14,20 @@ server {
     client_max_body_size    256M;
 
     root /usr/share/nginx/html;
-    set  $allowOriginSite *;
 
-    location /chat {
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-Content-Type-Options "nosniff";
+    add_header Referrer-Policy "strict-origin-when-cross-origin";
+
+    location /assets/env.js {
+        add_header Cache-Control "no-store, no-cache, must-revalidate";
+        expires 0;
+        add_header X-Frame-Options "SAMEORIGIN";
+        add_header X-Content-Type-Options "nosniff";
+        add_header Referrer-Policy "strict-origin-when-cross-origin";
+    }
+
+    location / {
         try_files $uri $uri/ /index.html =404;
     }
 }

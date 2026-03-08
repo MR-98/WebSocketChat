@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ChatRoom } from "../../model/chat-room";
 import { DataStoreService } from "../../service/data-store.service";
-import { NgClass, NgIf } from "@angular/common";
+import { NgClass } from "@angular/common";
 import { WebSocketService } from "../../service/web-socket.service";
 import { ChatMessage } from "../../model/chat-message";
 import { StompSubscription } from "@stomp/stompjs";
@@ -10,13 +10,12 @@ import { StompSubscription } from "@stomp/stompjs";
   selector: 'app-chat-room-list-element',
   standalone: true,
   imports: [
-    NgClass,
-    NgIf
+    NgClass
   ],
   templateUrl: './chat-room-list-element.component.html',
   styleUrl: './chat-room-list-element.component.scss'
 })
-export class ChatRoomListElementComponent implements OnInit, OnDestroy{
+export class ChatRoomListElementComponent implements OnInit, OnDestroy {
 
   @Input() chatRoom: ChatRoom = {
     name: "",

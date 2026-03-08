@@ -1,10 +1,6 @@
 import { Component } from '@angular/core';
-import { AsyncPipe, NgForOf } from "@angular/common";
-import { MatAutocomplete, MatAutocompleteTrigger, MatOption } from "@angular/material/autocomplete";
 import { MatButton } from "@angular/material/button";
 import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } from "@angular/material/dialog";
-import { MatFormField, MatLabel } from "@angular/material/form-field";
-import { MatInput } from "@angular/material/input";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { LocalStorageService } from "../../service/local-storage.service";
 import { MatSlideToggle } from "@angular/material/slide-toggle";
@@ -13,19 +9,11 @@ import { MatSlideToggle } from "@angular/material/slide-toggle";
   selector: 'app-settings-dialog',
   standalone: true,
   imports: [
-    AsyncPipe,
-    MatAutocomplete,
-    MatAutocompleteTrigger,
     MatButton,
     MatDialogActions,
     MatDialogClose,
     MatDialogContent,
     MatDialogTitle,
-    MatFormField,
-    MatInput,
-    MatLabel,
-    MatOption,
-    NgForOf,
     ReactiveFormsModule,
     MatSlideToggle,
     FormsModule

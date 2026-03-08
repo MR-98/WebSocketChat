@@ -2,18 +2,21 @@ import { Injectable } from '@angular/core';
 import { ChatRoom } from "../model/chat-room";
 import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
-import { environment } from "../../environments/environment";
+import { ConfigService } from "./config.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class InvitationsService {
 
-  private url: string = `${environment.backendUrl}/invitations`;
+  private readonly url: string;
 
   constructor(
-    private http: HttpClient
-  ) { }
+    private http: HttpClient,
+    private configService: ConfigService,
+  ) {
+    this.url = `${this.configService.restUrl}/invitations`;
+  }
 
   acceptInvitation(chatRoom: ChatRoom): Observable<ChatRoom> {
     return this.http.post<ChatRoom>(

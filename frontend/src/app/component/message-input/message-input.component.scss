@@ -1,0 +1,86 @@
+.message-input-container {
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  grid-template-rows: 1fr;
+  column-gap: 10px;
+  align-items: end;
+  background-color: black;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.message-input-textarea-wrapper {
+  background-color: #212121;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  box-sizing: border-box;
+}
+
+textarea {
+  width: 100%;
+  height: 40px;
+  margin: 0;
+  border: none;
+  overflow: hidden;
+  box-sizing: border-box;
+  border-radius: 10px;
+  padding: 10px;
+  resize: none;
+  background: none;
+  color: white;
+  font-size: 1.2em;
+}
+
+textarea:focus {
+  outline: none !important;
+}
+
+.message-input-uploaded-files-wrapper {
+  box-sizing: border-box;
+  display: flex;
+  max-height: 70px;
+  flex-direction: row;
+  padding: 10px;
+  column-gap: 20px;
+}
+
+.uploaded-image-preview {
+  img {
+    border-radius: 10px;
+  }
+}
+
+.uploaded-file-preview {
+  border-radius: 10px;
+  background-color: #131313;
+  display: block;
+  box-sizing: border-box;
+  padding: 5px;
+
+  .file-icon {
+    height: 40px;
+    width: 40px;
+    font-size: 40px;
+    color: white;
+  }
+}
+
+.uploaded-file-preview, .uploaded-image-preview {
+  position: relative;
+  width: 50px;
+  height: 50px;
+
+  .delete-uploaded-file-icon {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+    background-color: #131313;
+    color: white;
+    border-radius: 50%;
+  }
+}

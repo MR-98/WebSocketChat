@@ -1,14 +1,10 @@
 services:
   backend:
     container_name: backend
-    image: websocket-chat-backend:latest
-    build:
-      context: ../backend
-      dockerfile: ./Dockerfile
+    image: ghcr.io/mr-98/websocket-chat-backend:latest
     environment:
       JAVA_OPTS: "-Xdebug -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
       HOSTNAME: ${HOSTNAME}
-      KC_HOSTNAME: ${KC_HOSTNAME}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_SERVER: ${DB_SERVER}
@@ -16,13 +12,14 @@ services:
     ports:
       - 8080:8080
       - 5005:5005
+    volumes:
+      - ~/.aws:/root/.aws:ro
 
   frontend:
     container_name: frontend
-    image: websocket-chat-frontend:latest
-    build:
-      context: ../frontend
-      dockerfile: ./Dockerfile
+    image: ghcr.io/mr-98/websocket-chat-frontend:latest
+    environment:
+      HOSTNAME: ${HOSTNAME}
     ports:
       - 8081:8081
 
@@ -33,7 +30,7 @@ services:
     environment:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_USER: ${DB_USER}
-      POSTGRES_MULTIPLE_DATABASES: websocket_chat_db,keycloak,nginx
+      POSTGRES_MULTIPLE_DATABASES: websocket_chat_db,nginx
     ports:
       - ${DB_PORT}:5432
     volumes:
@@ -44,26 +41,6 @@ services:
       interval: 1s
       timeout: 5s
       retries: 10
-
-  keycloak:
-    image: quay.io/keycloak/keycloak:26.0.7
-    container_name: keycloak
-    command: start-dev
-    environment:
-      KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://${DB_SERVER}:${DB_PORT}/keycloak
-      KC_DB_USERNAME: ${DB_USER}
-      KC_DB_PASSWORD: ${DB_PASSWORD}
-      KC_HTTP_ENABLED: true
-      KC_PROXY_HEADERS: xforwarded
-      KC_HTTP_RELATIVE_PATH: /auth
-    ports:
-      - 8082:8080
-    volumes:
-      - ./keycloak/custom-theme:/opt/keycloak/themes/custom-theme
-    depends_on:
-      - websocket-chat-db
-    restart: always
 
   nginx-proxy-manager:
     container_name: nginx-proxy-manager

@@ -1,7 +1,25 @@
+# -------- BUILD --------
+FROM maven:3.9.6-eclipse-temurin-17 AS builder
+
+WORKDIR /app
+
+COPY pom.xml .
+
+RUN mvn dependency:go-offline
+
+COPY src ./src
+
+RUN mvn clean package
+
+# -------- RUN --------
 FROM amazoncorretto:17.0.12
+
+WORKDIR /app
+
+COPY --from=builder /app/target/*.jar app.jar
+
 ENV PORT 8080
 EXPOSE 8080
 EXPOSE 5005
-COPY target/*.jar app.jar
 
 ENTRYPOINT exec java $JAVA_OPTS -jar app.jar
