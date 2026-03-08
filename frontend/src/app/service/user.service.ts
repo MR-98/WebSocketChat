@@ -2,18 +2,21 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { User } from "../model/user";
-import { environment } from "../../environments/environment";
+import { ConfigService } from "./config.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private url: string = `${environment.backendUrl}/users`;
+  private readonly url: string;
 
   constructor(
-    private http: HttpClient
-  ) { }
+    private http: HttpClient,
+    private configService: ConfigService,
+  ) {
+    this.url = `${this.configService.restUrl}/users`;
+  }
 
   getMe(): Observable<User> {
     return this.http.get<User>(

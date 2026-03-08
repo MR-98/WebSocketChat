@@ -18,6 +18,8 @@ services:
   frontend:
     container_name: frontend
     image: ghcr.io/mr-98/websocket-chat-frontend:latest
+    environment:
+      HOSTNAME: ${HOSTNAME}
     ports:
       - 8081:8081
 

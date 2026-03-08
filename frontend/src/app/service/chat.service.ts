@@ -1,19 +1,22 @@
 import { Injectable } from '@angular/core';
-import { environment } from "../../environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { ChatMessage } from "../model/chat-message";
 import { Observable } from "rxjs";
+import { ConfigService } from "./config.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
 
-  private url: string = `${environment.backendUrl}/chat`;
+  private readonly url: string;
 
   constructor(
-    private http: HttpClient
-  ) { }
+    private http: HttpClient,
+    private configService: ConfigService,
+  ) {
+    this.url = `${this.configService.restUrl}/chat`;
+  }
 
   loadOldMessagesForRoom(roomId: number, oldestMessageId: number): Observable<ChatMessage[]> {
     return this.http.post<ChatMessage[]>(
