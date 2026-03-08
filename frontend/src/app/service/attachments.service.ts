@@ -1,22 +1,25 @@
 import { Injectable } from '@angular/core';
-import { environment } from "../../environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { Attachment } from "../model/attachment";
 import { DataStoreService } from "./data-store.service";
 import { GetDownloadUrlResponse } from "../model/get-download-url-response";
 import { Observable } from "rxjs";
+import { ConfigService } from "./config.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AttachmentsService {
 
-  private url: string = `${environment.backendUrl}/attachments`;
+  private readonly url: string = '';
 
   constructor(
     private http: HttpClient,
-    private dataStoreService: DataStoreService
-  ) { }
+    private dataStoreService: DataStoreService,
+    private configService: ConfigService,
+  ) {
+    this.url = `${this.configService.restUrl}/attachments`;
+  }
 
   uploadAttachments(files: File[], chatRoomId: number) {
     let currentUserProfile = this.dataStoreService.getUserProfile()!!

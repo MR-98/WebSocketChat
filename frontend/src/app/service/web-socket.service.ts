@@ -5,10 +5,10 @@ import { DataStoreService } from "./data-store.service";
 import { Invitation } from "../model/invitation";
 import { ChatRoom } from "../model/chat-room";
 import { User } from "../model/user";
-import { environment } from "../../environments/environment";
 import { AuthService } from "./auth.service";
 import { ChatMessageToSave } from "../model/chat-message-to-save";
 import { InvitationToSave } from "../model/invitations-to-save";
+import { ConfigService } from "./config.service";
 
 @Injectable({
   providedIn: 'root',
@@ -17,10 +17,11 @@ export class WebSocketService {
   private client: Client;
   constructor(
     private dataStoreService: DataStoreService,
-    private authService: AuthService
+    private authService: AuthService,
+    private configService: ConfigService,
   ) {
     this.client = new Client({
-      brokerURL: environment.websocketUrl,
+      brokerURL: configService.websocketUrl,
       connectHeaders: {
         Authorization: `Bearer ${this.authService.getToken()}`
       },

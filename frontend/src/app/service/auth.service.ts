@@ -3,22 +3,25 @@ import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { BehaviorSubject, Observable, tap } from "rxjs";
 import { LoginResponse } from "../model/login-response";
-import { environment } from "../../environments/environment";
+import { ConfigService } from "./config.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private url: string = `${environment.backendUrl}`;
+  private readonly url: string;
   private readonly TOKEN_KEY = 'jwt_token';
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasToken());
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
   constructor(
     private http: HttpClient,
-    private router: Router
-  ) {}
+    private router: Router,
+    private configService: ConfigService,
+  ) {
+    this.url = this.configService.restUrl;
+  }
 
   login(username: string, password: string): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(this.url + '/auth/login', { username, password })
